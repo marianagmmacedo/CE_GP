@@ -1,7 +1,9 @@
-package GP;
+package br.poli.gp;
 
 import java.util.HashMap;
 import java.util.Random;
+
+import br.poli.gp.arvore.Funcao;
 
 public class Main {
 
@@ -13,7 +15,7 @@ public class Main {
 		HashMap<String, Integer> hm = new HashMap<String, Integer>();
 		hm.put("x", 0);
 		
-		Expressao.index = hm;
+		Funcao.index = hm;
 		for (int x = 0; x < 10; x++){
 			hm.replace("x", x);
 			gp.calcularValor();
