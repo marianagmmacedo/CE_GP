@@ -5,6 +5,8 @@ import br.poli.gp.arvore.Funcao;
 
 public class Subtracao extends Funcao{
 
+	private static final long serialVersionUID = -2578207134051816462L;
+
 	public Subtracao() {
 		super("-");
 		this.numeroMaximoTermo = Parametros.TAMANHO_MAXIMO_LARGURA_ARVORE;

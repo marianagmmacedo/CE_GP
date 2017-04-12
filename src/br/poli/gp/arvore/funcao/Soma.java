@@ -5,6 +5,8 @@ import br.poli.gp.arvore.Funcao;
 
 public class Soma extends Funcao {
 
+	private static final long serialVersionUID = -5494585914574328953L;
+
 	public Soma() {
 		super("+");
 		this.numeroMaximoTermo = Parametros.TAMANHO_MAXIMO_LARGURA_ARVORE;

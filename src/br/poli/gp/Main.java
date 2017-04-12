@@ -18,13 +18,6 @@ public class Main {
 		System.out.println("CL:" + clone.toString());
 		
 		
-		HashMap<String, Integer> hm = new HashMap<String, Integer>();
-		hm.put("x", 0);
-		
-		Funcao.index = hm;
-		for (int x = 0; x < 10; x++){
-			hm.replace("x", x);
-			gp.calcularValor();
-		}
+
 	}
 }
