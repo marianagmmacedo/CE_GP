@@ -1,5 +1,7 @@
 package br.poli.gp.arvore.funcao;
 
+import java.util.HashMap;
+
 import br.poli.gp.Common;
 import br.poli.gp.arvore.Funcao;
 
@@ -12,7 +14,7 @@ public class Numero extends Funcao{
 	}
 
 	@Override
-	public double calcularExpressao() {
+	public double calcularExpressao(HashMap<String, Double> hm) {
 		return Double.parseDouble(this.valor);
 	}
 

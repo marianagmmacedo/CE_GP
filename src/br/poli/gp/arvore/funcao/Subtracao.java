@@ -1,5 +1,7 @@
 package br.poli.gp.arvore.funcao;
 
+import java.util.HashMap;
+
 import br.poli.gp.Parametros;
 import br.poli.gp.arvore.Funcao;
 
@@ -13,10 +15,10 @@ public class Subtracao extends Funcao{
 	}
 
 	@Override
-	public double calcularExpressao() {
+	public double calcularExpressao(HashMap<String, Double> hm) {
 		double subtracao = 0.0;
 		for (int numeroNos = 0; numeroNos < nos.size(); numeroNos++) {
-			subtracao -= nos.get(numeroNos).calcularExpressao();
+			subtracao -= nos.get(numeroNos).calcularExpressao(hm);
 		}
 		return subtracao;
 	}

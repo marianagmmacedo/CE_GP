@@ -14,7 +14,7 @@ public abstract class Funcao implements Serializable {
 	public List<Funcao> nos;
 	public Funcao pai;
 	
-	public static HashMap<String, Integer> index;
+	public static HashMap<String, Integer> index; // PRECISA?
 
 	public Funcao(){}
 	
@@ -23,7 +23,7 @@ public abstract class Funcao implements Serializable {
 		this.valor = valor;
 	}
 
-	public abstract double calcularExpressao();
+	public abstract double calcularExpressao(HashMap<String, Double> hm);
 	
 	public String toString(){
 		String temp = valor;
@@ -59,4 +59,24 @@ public abstract class Funcao implements Serializable {
 		
 		this.pai = paiFilha;
 	}
+	
+	public void mutacao(Funcao fFilha) {
+		
+		Funcao paiFilha = fFilha.pai;
+		
+		if (paiFilha != null){
+			paiFilha.nos.remove(fFilha);
+			paiFilha.nos.add(this);
+		}
+		
+		fFilha.pai = this.pai;
+		
+		if (this.pai != null){
+			this.pai.nos.remove(this);
+			this.pai.nos.add(fFilha);
+		}
+		
+		this.pai = paiFilha;
+	}
+
 }

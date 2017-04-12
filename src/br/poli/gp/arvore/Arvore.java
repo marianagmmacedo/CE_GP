@@ -1,13 +1,19 @@
 package br.poli.gp.arvore;
 
 import br.poli.gp.Parametros;
+import br.poli.gp.arvore.funcao.Cosseno;
+import br.poli.gp.arvore.funcao.Divisao;
+import br.poli.gp.arvore.funcao.Multiplicacao;
 import br.poli.gp.arvore.funcao.Numero;
+import br.poli.gp.arvore.funcao.Power;
 import br.poli.gp.arvore.funcao.Seno;
 import br.poli.gp.arvore.funcao.Soma;
 import br.poli.gp.arvore.funcao.Subtracao;
+import br.poli.gp.arvore.funcao.Tangente;
 import br.poli.gp.arvore.funcao.Variavel;
 
 import java.io.Serializable;
+import java.util.HashMap;
 
 import br.poli.gp.Common;
 
@@ -22,8 +28,8 @@ public class Arvore implements Serializable {
 		return ("Expressao: (" + no.toString() + ")");
 	}
 
-	public double calcularValor() {
-		return no.calcularExpressao();
+	public double calcularValor(HashMap<String, Double> hm) {
+		return no.calcularExpressao(hm);
 	}
 	
 	public static Funcao criarNovaExpressaoAleatoria(int profundidade, int profundidadeMaxima) {
@@ -41,7 +47,7 @@ public class Arvore implements Serializable {
 			}
 		}
 		
-		//Fluxo caso seja nó de função.
+		//Fluxo caso seja nï¿½ de funï¿½ï¿½o.
 		Funcao expressao = null;
 		
 		int numRand = Common.RANDOM.nextInt(Parametros.NUMERO_TOTAL_FUNCAO);
@@ -55,6 +61,21 @@ public class Arvore implements Serializable {
 			break;
 		case 2:
 			expressao = new Seno();
+			break;
+		case 3:
+			expressao = new Cosseno();
+			break;
+		case 4:
+			expressao = new Tangente();
+			break;
+		case 5:
+			expressao = new Multiplicacao();
+			break;
+		case 6:
+			expressao = new Divisao();
+			break;
+		case 7:
+			expressao = new Power();
 			break;
 			//			case 4:
 			//				return "/";

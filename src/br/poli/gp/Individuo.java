@@ -2,6 +2,7 @@ package br.poli.gp;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import br.poli.gp.arvore.Arvore;
@@ -26,12 +27,14 @@ public class Individuo implements Serializable {
 		arvore = new Arvore();
 		noFuncao = new ArrayList<Funcao>();
 		
-		if (tipoInicializacao == EInicializacao.Aleatoria)
-			arvore.no = Arvore.criarNovaExpressaoAleatoria(1, Common.RANDOM.nextInt(Parametros.TAMANHO_MAXIMO_PROFUNDIDADE_ARVORE));
-		else if (tipoInicializacao == EInicializacao.Completa)
+		if (tipoInicializacao == EInicializacao.Aleatoria){
+			arvore.no = Arvore.criarNovaExpressaoAleatoria(1, 1 + Common.RANDOM.nextInt(Parametros.TAMANHO_MAXIMO_PROFUNDIDADE_ARVORE-1));
+		}else if (tipoInicializacao == EInicializacao.Completa)
 			arvore.no = Arvore.criarNovaExpressaoAleatoria(1, Parametros.TAMANHO_MAXIMO_PROFUNDIDADE_ARVORE);
 		else if (tipoInicializacao == EInicializacao.MetadeProfundidade)
 			arvore.no = Arvore.criarNovaExpressaoAleatoria(1, Parametros.TAMANHO_MAXIMO_PROFUNDIDADE_ARVORE/2);
+		else if (tipoInicializacao == EInicializacao.Mutacao)
+			arvore.no = Arvore.criarNovaExpressaoAleatoria(1, Parametros.TAMANHO_MAXIMO_MUTACAO_PROFUNDIDADE);
 		
 		atualizarReferenciaNosFuncao(noFuncao);
 	}
@@ -44,7 +47,7 @@ public class Individuo implements Serializable {
 		return arvore.toString();
 	}
 
-	public double calcularValor() {
-		return arvore.calcularValor();
+	public double calcularValor(HashMap<String, Double> hm) {
+		return arvore.calcularValor(hm);
 	}
 }

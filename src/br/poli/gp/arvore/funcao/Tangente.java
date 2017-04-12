@@ -4,18 +4,18 @@ import java.util.HashMap;
 
 import br.poli.gp.arvore.Funcao;
 
-public class Seno extends Funcao{
+public class Tangente extends Funcao{
 
-	private static final long serialVersionUID = -4963733915003354366L;
+	private static final long serialVersionUID = -3286648095169057790L;
 
-	public Seno() {
-		super("Sin");
+	public Tangente() {
+		super("Tan");
 		this.numeroMaximoTermo = 1;
 	}
 
 	@Override
 	public double calcularExpressao(HashMap<String, Double> hm) {		
-		return Math.sin(nos.get(0).calcularExpressao(hm));
+		return Math.tan(nos.get(0).calcularExpressao(hm));
 	}
 	
 	public String toString(){

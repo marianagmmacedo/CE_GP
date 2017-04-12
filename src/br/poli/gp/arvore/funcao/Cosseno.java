@@ -4,18 +4,18 @@ import java.util.HashMap;
 
 import br.poli.gp.arvore.Funcao;
 
-public class Seno extends Funcao{
+public class Cosseno extends Funcao{
 
-	private static final long serialVersionUID = -4963733915003354366L;
+	private static final long serialVersionUID = -4681976996996751347L;
 
-	public Seno() {
-		super("Sin");
+	public Cosseno() {
+		super("Cos");
 		this.numeroMaximoTermo = 1;
 	}
 
 	@Override
 	public double calcularExpressao(HashMap<String, Double> hm) {		
-		return Math.sin(nos.get(0).calcularExpressao(hm));
+		return Math.cos(nos.get(0).calcularExpressao(hm));
 	}
 	
 	public String toString(){
