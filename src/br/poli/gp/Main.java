@@ -10,7 +10,13 @@ public class Main {
 	public static void main(String[] args) {
 		
 		AlgoritmoGP gp = new AlgoritmoGP();
-		System.out.println(gp.toString());
+		AlgoritmoGP clone = new AlgoritmoGP();
+		
+		clone.populacao.set(0, (Individuo)Common.DeepCopy(gp.populacao.get(0)));
+				
+		System.out.println("GP:" + gp.toString());
+		System.out.println("CL:" + clone.toString());
+		
 		
 		HashMap<String, Integer> hm = new HashMap<String, Integer>();
 		hm.put("x", 0);
@@ -21,5 +27,4 @@ public class Main {
 			gp.calcularValor();
 		}
 	}
-
 }

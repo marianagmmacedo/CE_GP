@@ -6,20 +6,24 @@ import br.poli.gp.arvore.funcao.Seno;
 import br.poli.gp.arvore.funcao.Soma;
 import br.poli.gp.arvore.funcao.Subtracao;
 import br.poli.gp.arvore.funcao.Variavel;
+
+import java.io.Serializable;
+
 import br.poli.gp.Common;
 
-public class Arvore {
+public class Arvore implements Serializable {
 
+	private static final long serialVersionUID = 2L;
 	
-	public Funcao nos;
+	public Funcao no;
 	public int tamanhoAtualArvore;
 
 	public String toString(){
-		return ("Expressao: (" + nos.toString() + ")");
+		return ("Expressao: (" + no.toString() + ")");
 	}
 
 	public double calcularValor() {
-		return nos.calcularExpressao();
+		return no.calcularExpressao();
 	}
 	
 	public static Funcao criarNovaExpressaoAleatoria(int profundidade, int profundidadeMaxima) {
