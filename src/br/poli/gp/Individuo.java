@@ -18,6 +18,7 @@ public class Individuo implements Serializable {
 
 	public Individuo(int tamanhoProfundidade){
 		arvore = new Arvore();
+		fitness = Parametros.TIPO_DE_OTIMIZACAO == "MINIMIZACAO"? Double.MAX_VALUE: Double.MIN_VALUE;
 		arvore.no = Arvore.criarNovaExpressaoAleatoria(1, tamanhoProfundidade);
 		noFuncao = new ArrayList<Funcao>();
 		atualizarReferenciaNosFuncao(noFuncao);

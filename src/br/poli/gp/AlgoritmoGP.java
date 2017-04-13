@@ -21,9 +21,10 @@ import br.poli.gp.util.DemoModule;
 import br.poli.gp.util.LineChart;
 
 public class AlgoritmoGP {
-	
+	//jmathplot
 	ArrayList<Individuo> populacao;
 	Individuo melhorIndividuo;
+	// OTIMIZAR MELHORINDIVIDUO c resilient backpropagation
 	//     <X     , Y     >
 	HashMap<Double, Double> serieTemporal;
 	
@@ -34,6 +35,7 @@ public class AlgoritmoGP {
 		for (int cadaIndividuo = 0; cadaIndividuo < Parametros.NUMERO_TOTAL_INDIVIDUO; cadaIndividuo++) {
 			populacao.add(new Individuo(tipoInicializacao));
 		}
+		calcularFitnessPopulacao();
 		melhorIndividuo = (Individuo) Common.DeepCopy(populacao.get(0));
 		runGP();
 	}
@@ -45,6 +47,7 @@ public class AlgoritmoGP {
 		for (int cadaIndividuo = 0; cadaIndividuo < Parametros.NUMERO_TOTAL_INDIVIDUO; cadaIndividuo++) {
 			populacao.add(new Individuo(profundidadeIndividuo));
 		}
+		calcularFitnessPopulacao();
 		melhorIndividuo = (Individuo) Common.DeepCopy(populacao.get(0));
 		runGP();
 	}
@@ -55,11 +58,13 @@ public class AlgoritmoGP {
 			cruzamentoMutacao();
 			atualizarMelhorIndividuo();
 			getFit[iteracao] = melhorIndividuo.fitness;
+			System.out.println(getFit[iteracao]);
 		}
 		showFitness(getFit);
 	}
 	
 	private void cruzamentoMutacao() {
+		// restrigir a arvore resposta
 		for (int cadaIndividuo = 0; cadaIndividuo < Parametros.NUMERO_TOTAL_INDIVIDUO; cadaIndividuo++) {
 			if(Common.RANDOM.nextDouble() > Parametros.TAXA_CRUZAMENTO_MUTACAO){
 				gerarDescendentes(populacao.get(cadaIndividuo), populacao.get(Common.RANDOM.nextInt(Parametros.NUMERO_TOTAL_INDIVIDUO)));
@@ -115,14 +120,16 @@ public class AlgoritmoGP {
 		hm.put("x", 0d);
 		
 		for(Individuo i : populacao){
-			double fitness = 0;
+			double fitness = 0.0;
 			for(Map.Entry<Double, Double> entry : serieTemporal.entrySet()){
 				hm.replace("x", entry.getKey());
+//				System.err.println(entry.getValue());
+//				System.err.println(i.calcularValor(hm));
 				fitness += Math.pow(entry.getValue() - i.calcularValor(hm), 2); //REGRA PARA CALCULAR O FITNESS DEVE SER DISCUTIDA
 				// COMO VAI TRATAR NAN?
 			}
 			
-			i.fitness = fitness;
+			i.fitness = fitness/serieTemporal.size();
 		}
 	}
 	
@@ -136,6 +143,7 @@ public class AlgoritmoGP {
 	}
 
 	private void menorIndividuo() {
+		// MANTER A MENOR ARVORE
 		double menor = melhorIndividuo.fitness;
 		for(Individuo i: populacao){
 			if(i.fitness < menor){
@@ -146,6 +154,7 @@ public class AlgoritmoGP {
 	}
 	
 	private void maiorIndividuo() {
+		// MANTER A MENOR ARVORE
 		double maior = melhorIndividuo.fitness;
 		for(Individuo i: populacao){
 			if(i.fitness > maior){
