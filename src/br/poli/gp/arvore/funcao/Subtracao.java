@@ -16,8 +16,8 @@ public class Subtracao extends Funcao{
 
 	@Override
 	public double calcularExpressao(HashMap<String, Double> hm) {
-		double subtracao = 0.0;
-		for (int numeroNos = 0; numeroNos < nos.size(); numeroNos++) {
+		double subtracao =  nos.get(0).calcularExpressao(hm);
+		for (int numeroNos = 1; numeroNos < nos.size(); numeroNos++) {
 			subtracao -= nos.get(numeroNos).calcularExpressao(hm);
 		}
 		return subtracao;
@@ -26,7 +26,7 @@ public class Subtracao extends Funcao{
 	public String toString(){
 		String s = "(";
 		for(Funcao e : nos){
-			s+= s.equals(")")?e.toString():"-" + e.toString();
+			s+= s.equals("(")?e.toString():"-" + e.toString();
 		}
 		return s + ")";
 	}

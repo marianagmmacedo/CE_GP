@@ -26,7 +26,7 @@ public class Multiplicacao extends Funcao {
 	public String toString(){
 		String s = "(";
 		for(Funcao e : this.nos){
-			s+= s.equals(")")?e.toString():"*" + e.toString();
+			s+= s.equals("(")?e.toString():"*" + e.toString();
 		}
 		return s + ")";
 	}

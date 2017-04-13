@@ -16,9 +16,9 @@ public class Divisao extends Funcao {
 
 	@Override
 	public double calcularExpressao(HashMap<String, Double> hm) {
-		double divisao = 1.0;
-		for (Funcao no : this.nos) {
-			divisao /= no.calcularExpressao(hm);
+		double divisao = this.nos.get(0).calcularExpressao(hm);
+		for (int numeroNos = 1; numeroNos < nos.size(); numeroNos++) {
+			divisao /= nos.get(numeroNos).calcularExpressao(hm);
 		}
 		return divisao;
 	}
@@ -26,7 +26,7 @@ public class Divisao extends Funcao {
 	public String toString(){
 		String s = "(";
 		for(Funcao e : this.nos){
-			s+= s.equals(")")?e.toString():"/" + e.toString();
+			s+= s.equals("(")?e.toString():"/" + e.toString();
 		}
 		return s + ")";
 	}

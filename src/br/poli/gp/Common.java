@@ -1,9 +1,14 @@
 package br.poli.gp;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.nio.file.Path;
+import java.util.HashMap;
 import java.util.Random;
 
 public class Common {
@@ -45,6 +50,30 @@ public class Common {
 	        
 	        return clone;
 	    }
+		
+		public static HashMap<Double, Double> lerBase(String nomeBase){
+			
+			HashMap<Double, Double> base = new HashMap<Double, Double>();
+			
+			try{
+				File directory = new File(".\\");
+				BufferedReader in = new BufferedReader(new FileReader(directory.getAbsolutePath() + "\\src\\Bases\\" + nomeBase + ".txt"));
+				String line;
+				
+				double i = 0;
+				
+				while((line = in.readLine())!= null){
+					base.put(i++, Double.parseDouble(line));
+				}
+				
+				in.close();
+				
+			} catch (Exception e){
+				System.out.println(e);
+			}
+			
+			return base;
+		}
 		
 	
 }

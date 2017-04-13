@@ -35,9 +35,6 @@ public class AlgoritmoGP {
 		for (int cadaIndividuo = 0; cadaIndividuo < Parametros.NUMERO_TOTAL_INDIVIDUO; cadaIndividuo++) {
 			populacao.add(new Individuo(tipoInicializacao));
 		}
-		calcularFitnessPopulacao();
-		melhorIndividuo = (Individuo) Common.DeepCopy(populacao.get(0));
-		runGP();
 	}
 
 	public AlgoritmoGP(int profundidadeIndividuo, HashMap<Double, Double> serieTemporal) throws IOException{
@@ -47,13 +44,12 @@ public class AlgoritmoGP {
 		for (int cadaIndividuo = 0; cadaIndividuo < Parametros.NUMERO_TOTAL_INDIVIDUO; cadaIndividuo++) {
 			populacao.add(new Individuo(profundidadeIndividuo));
 		}
-		calcularFitnessPopulacao();
-		melhorIndividuo = (Individuo) Common.DeepCopy(populacao.get(0));
-		runGP();
 	}
 	
-	private void runGP() throws IOException {
+	public void runGP() throws IOException {
+		
 		double[] getFit = new double[Parametros.NUMERO_TOTAL_ITERACAO];
+		
 		for (int iteracao = 0; iteracao < Parametros.NUMERO_TOTAL_ITERACAO; iteracao++) {
 			cruzamentoMutacao();
 			atualizarMelhorIndividuo();
@@ -65,36 +61,28 @@ public class AlgoritmoGP {
 	
 	private void cruzamentoMutacao() {
 		// restrigir a arvore resposta
-		for (int cadaIndividuo = 0; cadaIndividuo < Parametros.NUMERO_TOTAL_INDIVIDUO; cadaIndividuo++) {
+		int tamanhoPopulacao = populacao.size();
+		for (int individuoIndex = 0; individuoIndex < tamanhoPopulacao; individuoIndex++) {
+			Individuo i = populacao.get(individuoIndex);
+			
 			if(Common.RANDOM.nextDouble() > Parametros.TAXA_CRUZAMENTO_MUTACAO){
-				gerarDescendentes(populacao.get(cadaIndividuo), populacao.get(Common.RANDOM.nextInt(Parametros.NUMERO_TOTAL_INDIVIDUO)));
+				gerarDescendentes(i, populacao.get(Common.RANDOM.nextInt(Parametros.NUMERO_TOTAL_INDIVIDUO)));
 			}else{
-				mutarDescendente(cadaIndividuo);
+				//Mutação só ocorre se o individuo não for o melhor, para evitar perda de informações
+				if (i!=melhorIndividuo)
+					mutarDescendente(i);
 			}
 		}
 		calcularFitnessPopulacao();
 		
 	}
 
-	private void mutarDescendente(int indexI) {
-		// COMO VAI TRATAR A MUTACAO?
-		Individuo filho = (Individuo) Common.DeepCopy(populacao.get(indexI));
-		Individuo filha = (Individuo) Common.DeepCopy(new Individuo(EInicializacao.Mutacao));
-		
-		if(filho.noFuncao.size() != 0 && filha.noFuncao.size() != 0){
-			int noMutacaoFilho = Common.RANDOM.nextInt((filho.noFuncao.size()));
-			int noMutacaoFilha = Common.RANDOM.nextInt((filha.noFuncao.size()));
-			
-			Funcao fFilho = filho.noFuncao.get(noMutacaoFilho);
-			Funcao fFilha = filha.noFuncao.get(noMutacaoFilha);
-			
-			fFilho.mutacao(fFilha);
-			
-			populacao.add(filho);
-			populacao.add(filha);
+	private void mutarDescendente(Individuo individuo) {		
+		if(individuo.noFuncao.size() != 0){
+			int noMutacaoFilho = Common.RANDOM.nextInt((individuo.noFuncao.size()));
+			Funcao fFilho = individuo.noFuncao.get(noMutacaoFilho);
+			fFilho.mutacao((new Individuo(EInicializacao.Mutacao)).arvore.no);
 		}
-		
-		
 	}
 
 	private void gerarDescendentes(Individuo pai, Individuo mae){
@@ -133,8 +121,7 @@ public class AlgoritmoGP {
 		}
 	}
 	
-	private void atualizarMelhorIndividuo() {
-		// COMO VAI LIDAR COM OS LIMITES DA MINIMIZACAO OU MAXIMIZACAO?
+	public void atualizarMelhorIndividuo() {
 		if(Parametros.TIPO_DE_OTIMIZACAO == "MINIMIZACAO"){
 			menorIndividuo();
 		}else{
@@ -144,22 +131,22 @@ public class AlgoritmoGP {
 
 	private void menorIndividuo() {
 		// MANTER A MENOR ARVORE
-		double menor = melhorIndividuo.fitness;
+		double menor = Double.MAX_VALUE;
 		for(Individuo i: populacao){
 			if(i.fitness < menor){
 				menor = i.fitness;
-				melhorIndividuo = (Individuo) Common.DeepCopy(i);
+				melhorIndividuo = i;
 			}
 		}
 	}
 	
 	private void maiorIndividuo() {
 		// MANTER A MENOR ARVORE
-		double maior = melhorIndividuo.fitness;
+		double maior = Double.MIN_VALUE;
 		for(Individuo i: populacao){
 			if(i.fitness > maior){
 				maior = i.fitness;
-				melhorIndividuo = (Individuo) Common.DeepCopy(i);
+				melhorIndividuo = i;
 			}
 		}
 		

@@ -3,9 +3,11 @@ package br.poli.gp.arvore;
 import br.poli.gp.Parametros;
 import br.poli.gp.arvore.funcao.Cosseno;
 import br.poli.gp.arvore.funcao.Divisao;
+import br.poli.gp.arvore.funcao.Logaritmo;
 import br.poli.gp.arvore.funcao.Multiplicacao;
 import br.poli.gp.arvore.funcao.Numero;
-import br.poli.gp.arvore.funcao.Power;
+import br.poli.gp.arvore.funcao.Potencia;
+import br.poli.gp.arvore.funcao.RaizQuadrada;
 import br.poli.gp.arvore.funcao.Seno;
 import br.poli.gp.arvore.funcao.Soma;
 import br.poli.gp.arvore.funcao.Subtracao;
@@ -32,18 +34,18 @@ public class Arvore implements Serializable {
 		return no.calcularExpressao(hm);
 	}
 	
+	public void otimizarArvore(){
+		no.otimizarFuncao(this, null, 0);
+	}
+	
 	public static Funcao criarNovaExpressaoAleatoria(int profundidade, int profundidadeMaxima) {
 
 		//fluxo caso atingida a profundidade maxima. Devem-se criar folhas
 		if (profundidade == profundidadeMaxima){
-			int folhaRand = Common.RANDOM.nextInt(Parametros.NUMERO_TOTAL_VARIAVEL+1);
-			switch(folhaRand){
-				case 0:
-					return new Numero();
-				case 1:
-					return new Variavel("x");
-				default:
-					return new Variavel("y");
+			if (Common.RANDOM.nextDouble() > Parametros.CHANCE_CRIACAO_VARIAVEL){
+				return new Numero();
+			} else {
+				return new Variavel("X" + Common.RANDOM.nextInt(Parametros.NUMERO_TOTAL_VARIAVEL));
 			}
 		}
 		
@@ -66,29 +68,23 @@ public class Arvore implements Serializable {
 			expressao = new Cosseno();
 			break;
 		case 4:
-			expressao = new Tangente();
-			break;
-		case 5:
 			expressao = new Multiplicacao();
 			break;
-		case 6:
+		case 5:
 			expressao = new Divisao();
 			break;
-		case 7:
-			expressao = new Power();
+		case 6:
+			expressao = new RaizQuadrada();
 			break;
-			//			case 4:
-			//				return "/";
-			//			case 5:
-			//				return "seno";
-			//			case 6:
-			//				return "cosseno";
-			//			case 7:
-			//				return "tangente";
-			//			case 8:
-			//				return "integral";
-			//			case 9:
-			//				return "derivada";
+		case 7:
+			expressao = new Tangente();
+			break;
+		case 8:
+			expressao = new Potencia();
+			break;
+		case 9:
+			expressao = new Logaritmo();
+			break;
 		}
 		
 		if (expressao!=null){

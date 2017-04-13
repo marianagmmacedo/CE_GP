@@ -37,6 +37,7 @@ public class Individuo implements Serializable {
 		else if (tipoInicializacao == EInicializacao.Mutacao)
 			arvore.no = Arvore.criarNovaExpressaoAleatoria(1, Parametros.TAMANHO_MAXIMO_MUTACAO_PROFUNDIDADE);
 		
+		
 		atualizarReferenciaNosFuncao(noFuncao);
 	}
 	
