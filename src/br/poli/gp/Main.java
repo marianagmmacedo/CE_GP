@@ -11,6 +11,7 @@ public class Main {
 	public static void main(String[] args) throws IOException {
 		
 		HashMap<Double, Double> serieTemporal = Common.lerBase("sunspot");
+		Common.DividirTodos(serieTemporal);
 
 		
 		/*while(true){			

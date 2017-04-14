@@ -9,6 +9,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.nio.file.Path;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Random;
 
 public class Common {
@@ -73,6 +75,12 @@ public class Common {
 			}
 			
 			return base;
+		}
+		
+		//Substituir por nome bonito
+		public static void DividirTodos(HashMap<Double, Double> serieTemporal){
+			Double maximoValor = serieTemporal.values().stream().max((x,y) -> Double.compare(x, y)).get();
+			serieTemporal.entrySet().forEach(x -> x.setValue(x.getValue()/maximoValor));
 		}
 		
 	

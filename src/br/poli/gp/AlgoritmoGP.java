@@ -6,7 +6,9 @@ import java.awt.Graphics2D;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -206,7 +208,7 @@ public class AlgoritmoGP {
 	
 		g2d.dispose();
 		
-		ImageIO.write(awtImage, "png", new File(Parametros.NOME_CAMINHO_SALVAR_FITNESS+"/fitness.png"));
-		
+		File directory = new File(".\\");
+		ImageIO.write(awtImage, "png", new File(directory.getAbsolutePath() + Parametros.NOME_CAMINHO_SALVAR_FITNESS));
 	}
 }
