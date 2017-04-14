@@ -17,4 +17,10 @@ public class Variavel extends Funcao{
 		return hm.get(this.valor);
 	}
 
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return valor;
+	}
+
 }

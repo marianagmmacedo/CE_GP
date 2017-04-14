@@ -10,16 +10,16 @@ public class Tangente extends Funcao{
 
 	public Tangente() {
 		super("Tan");
-		this.numeroMaximoTermo = 1;
+		apenasNoEsquerdo = true;
 	}
 
 	@Override
 	public double calcularExpressao(HashMap<String, Double> hm) {		
-		return Math.tan(nos.get(0).calcularExpressao(hm));
+		return Math.tan(esquerda.calcularExpressao(hm));
 	}
 	
 	public String toString(){
-		return "(" + valor+"[" + nos.get(0).toString() + "]" + ")";
+		return "(" + valor+"[" + esquerda.toString() + "]" + ")";
 	}
 
 }

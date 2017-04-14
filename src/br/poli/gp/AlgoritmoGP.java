@@ -9,6 +9,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,7 +52,9 @@ public class AlgoritmoGP {
 		double[] getFit = new double[Parametros.NUMERO_TOTAL_ITERACAO];
 		
 		for (int iteracao = 0; iteracao < Parametros.NUMERO_TOTAL_ITERACAO; iteracao++) {
-			cruzamentoMutacao();
+			reproduzir();
+			calcularFitnessPopulacao();
+			removerMenosAdaptados();
 			atualizarMelhorIndividuo();
 			getFit[iteracao] = melhorIndividuo.fitness;
 			System.out.println(getFit[iteracao]);
@@ -59,29 +62,35 @@ public class AlgoritmoGP {
 		showFitness(getFit);
 	}
 	
-	private void cruzamentoMutacao() {
+	private void removerMenosAdaptados() {
+		// TODO Auto-generated method stub
+		populacao.sort((i1, i2) -> Double.compare(i1.fitness, i2.fitness));
+		while (populacao.size()>300){
+			populacao.subList((int)(populacao.size()/2), populacao.size()).clear();
+		}
+	}
+
+	private void reproduzir() {
 		// restrigir a arvore resposta
 		int tamanhoPopulacao = populacao.size();
 		for (int individuoIndex = 0; individuoIndex < tamanhoPopulacao; individuoIndex++) {
 			Individuo i = populacao.get(individuoIndex);
 			
 			if(Common.RANDOM.nextDouble() > Parametros.TAXA_CRUZAMENTO_MUTACAO){
-				gerarDescendentes(i, populacao.get(Common.RANDOM.nextInt(Parametros.NUMERO_TOTAL_INDIVIDUO)));
+				gerarDescendentes(i, populacao.get(Common.RANDOM.nextInt(populacao.size())));
 			}else{
 				//Mutação só ocorre se o individuo não for o melhor, para evitar perda de informações
 				if (i!=melhorIndividuo)
 					mutarDescendente(i);
 			}
-		}
-		calcularFitnessPopulacao();
-		
+		}		
 	}
 
 	private void mutarDescendente(Individuo individuo) {		
 		if(individuo.noFuncao.size() != 0){
 			int noMutacaoFilho = Common.RANDOM.nextInt((individuo.noFuncao.size()));
 			Funcao fFilho = individuo.noFuncao.get(noMutacaoFilho);
-			fFilho.mutacao((new Individuo(EInicializacao.Mutacao)).arvore.no);
+			fFilho.crossover((new Individuo(EInicializacao.Mutacao)).arvore.no);
 		}
 	}
 
@@ -95,8 +104,11 @@ public class AlgoritmoGP {
 			
 			Funcao fFilho = filho.noFuncao.get(noCrossOverFilho);
 			Funcao fFilha = filha.noFuncao.get(noCrossOverFilha);
-			
+						
 			fFilho.crossover(fFilha);
+			
+			filho.otimizarArvore();
+			filha.otimizarArvore();
 			
 			populacao.add(filho);
 			populacao.add(filha);
@@ -105,12 +117,12 @@ public class AlgoritmoGP {
 
 	private void calcularFitnessPopulacao() {
 		HashMap<String, Double> hm = new HashMap<String, Double>();
-		hm.put("x", 0d);
+		hm.put("X0", 0d);
 		
 		for(Individuo i : populacao){
 			double fitness = 0.0;
 			for(Map.Entry<Double, Double> entry : serieTemporal.entrySet()){
-				hm.replace("x", entry.getKey());
+				hm.replace("X0", entry.getKey());
 //				System.err.println(entry.getValue());
 //				System.err.println(i.calcularValor(hm));
 				fitness += Math.pow(entry.getValue() - i.calcularValor(hm), 2); //REGRA PARA CALCULAR O FITNESS DEVE SER DISCUTIDA

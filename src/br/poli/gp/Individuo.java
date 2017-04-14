@@ -19,9 +19,10 @@ public class Individuo implements Serializable {
 	public Individuo(int tamanhoProfundidade){
 		arvore = new Arvore();
 		fitness = Parametros.TIPO_DE_OTIMIZACAO == "MINIMIZACAO"? Double.MAX_VALUE: Double.MIN_VALUE;
-		arvore.no = Arvore.criarNovaExpressaoAleatoria(1, tamanhoProfundidade);
+		arvore.no = Arvore.criarNovaExpressaoAleatoria(1, tamanhoProfundidade, arvore);
 		noFuncao = new ArrayList<Funcao>();
-		atualizarReferenciaNosFuncao(noFuncao);
+		
+		otimizarArvore();
 	}
 	
 	public Individuo(EInicializacao tipoInicializacao){
@@ -29,22 +30,21 @@ public class Individuo implements Serializable {
 		noFuncao = new ArrayList<Funcao>();
 		
 		if (tipoInicializacao == EInicializacao.Aleatoria){
-			arvore.no = Arvore.criarNovaExpressaoAleatoria(1, 1 + Common.RANDOM.nextInt(Parametros.TAMANHO_MAXIMO_PROFUNDIDADE_ARVORE-1));
+			arvore.no = Arvore.criarNovaExpressaoAleatoria(1, 1 + Common.RANDOM.nextInt(Parametros.TAMANHO_MAXIMO_PROFUNDIDADE_ARVORE-1), arvore);
 		}else if (tipoInicializacao == EInicializacao.Completa)
-			arvore.no = Arvore.criarNovaExpressaoAleatoria(1, Parametros.TAMANHO_MAXIMO_PROFUNDIDADE_ARVORE);
+			arvore.no = Arvore.criarNovaExpressaoAleatoria(1, Parametros.TAMANHO_MAXIMO_PROFUNDIDADE_ARVORE, arvore);
 		else if (tipoInicializacao == EInicializacao.MetadeProfundidade)
-			arvore.no = Arvore.criarNovaExpressaoAleatoria(1, Parametros.TAMANHO_MAXIMO_PROFUNDIDADE_ARVORE/2);
+			arvore.no = Arvore.criarNovaExpressaoAleatoria(1, Parametros.TAMANHO_MAXIMO_PROFUNDIDADE_ARVORE/2, arvore);
 		else if (tipoInicializacao == EInicializacao.Mutacao)
-			arvore.no = Arvore.criarNovaExpressaoAleatoria(1, Parametros.TAMANHO_MAXIMO_MUTACAO_PROFUNDIDADE);
+			arvore.no = Arvore.criarNovaExpressaoAleatoria(1, Parametros.TAMANHO_MAXIMO_MUTACAO_PROFUNDIDADE, arvore);
 		
-		
-		atualizarReferenciaNosFuncao(noFuncao);
+		otimizarArvore();
 	}
 	
-	public void atualizarReferenciaNosFuncao(List<Funcao> noFuncao){
-		arvore.no.atualizarReferenciaNosFuncao(null, noFuncao);
+	public void otimizarArvore(){
+		arvore.otimizarArvore(noFuncao);
 	}
-	
+		
 	public String toString(){
 		return arvore.toString();
 	}

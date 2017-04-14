@@ -16,6 +16,7 @@ import br.poli.gp.arvore.funcao.Variavel;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.List;
 
 import br.poli.gp.Common;
 
@@ -34,11 +35,13 @@ public class Arvore implements Serializable {
 		return no.calcularExpressao(hm);
 	}
 	
-	public void otimizarArvore(){
-		no.otimizarFuncao(this, null, 0);
+	public void otimizarArvore(List<Funcao> noFuncao){
+		noFuncao.clear();
+		no.otimizarFuncao(null);
+		no.corrigirNos(null, noFuncao, this);
 	}
 	
-	public static Funcao criarNovaExpressaoAleatoria(int profundidade, int profundidadeMaxima) {
+	public static Funcao criarNovaExpressaoAleatoria(int profundidade, int profundidadeMaxima, Arvore arvore) {
 
 		//fluxo caso atingida a profundidade maxima. Devem-se criar folhas
 		if (profundidade == profundidadeMaxima){
@@ -62,22 +65,22 @@ public class Arvore implements Serializable {
 			expressao = new Subtracao();
 			break;
 		case 2:
-			expressao = new Seno();
-			break;
-		case 3:
-			expressao = new Cosseno();
-			break;
-		case 4:
 			expressao = new Multiplicacao();
 			break;
-		case 5:
+		case 3:
 			expressao = new Divisao();
 			break;
+		case 4:
+			expressao = new Seno();
+			break;
+		case 5:
+			expressao = new Cosseno();
+			break;
 		case 6:
-			expressao = new RaizQuadrada();
+			expressao = new Tangente();
 			break;
 		case 7:
-			expressao = new Tangente();
+			expressao = new RaizQuadrada();
 			break;
 		case 8:
 			expressao = new Potencia();
@@ -87,10 +90,12 @@ public class Arvore implements Serializable {
 			break;
 		}
 		
-		if (expressao!=null){
-			for(int i = 0; i < expressao.numeroMaximoTermo; i++){
-				expressao.nos.add(Arvore.criarNovaExpressaoAleatoria(profundidade+1, profundidadeMaxima));
-			}
+		expressao.arvore = arvore;
+		
+		if (expressao != null){
+			expressao.esquerda = Arvore.criarNovaExpressaoAleatoria(profundidade+1, profundidadeMaxima, arvore);
+			if (!expressao.apenasNoEsquerdo)
+				expressao.direita = Arvore.criarNovaExpressaoAleatoria(profundidade+1, profundidadeMaxima, arvore);
 		}
 		
 		return expressao;

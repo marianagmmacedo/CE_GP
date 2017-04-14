@@ -10,16 +10,16 @@ public class Seno extends Funcao{
 
 	public Seno() {
 		super("Sin");
-		this.numeroMaximoTermo = 1;
+		apenasNoEsquerdo = true;
 	}
 
 	@Override
 	public double calcularExpressao(HashMap<String, Double> hm) {		
-		return Math.sin(nos.get(0).calcularExpressao(hm));
+		return Math.sin(esquerda.calcularExpressao(hm));
 	}
 	
 	public String toString(){
-		return "(" + valor+"[" + nos.get(0).toString() + "]" + ")";
+		return "(" + valor+"[" + esquerda.toString() + "]" + ")";
 	}
 
 }

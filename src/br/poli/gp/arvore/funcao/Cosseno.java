@@ -10,16 +10,16 @@ public class Cosseno extends Funcao{
 
 	public Cosseno() {
 		super("Cos");
-		this.numeroMaximoTermo = 1;
+		apenasNoEsquerdo = true;
 	}
 
 	@Override
 	public double calcularExpressao(HashMap<String, Double> hm) {		
-		return Math.cos(nos.get(0).calcularExpressao(hm));
+		return Math.cos(esquerda.calcularExpressao(hm));
 	}
 	
 	public String toString(){
-		return "(" + valor+"[" + nos.get(0).toString() + "]" + ")";
+		return "(" + valor+"[" + esquerda.toString() + "]" + ")";
 	}
 
 }

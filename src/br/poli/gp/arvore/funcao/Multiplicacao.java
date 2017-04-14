@@ -2,7 +2,6 @@ package br.poli.gp.arvore.funcao;
 
 import java.util.HashMap;
 
-import br.poli.gp.Parametros;
 import br.poli.gp.arvore.Funcao;
 
 public class Multiplicacao extends Funcao {
@@ -11,24 +10,15 @@ public class Multiplicacao extends Funcao {
 
 	public Multiplicacao() {
 		super("*");
-		this.numeroMaximoTermo = Parametros.TAMANHO_MAXIMO_LARGURA_ARVORE;
 	}
 
 	@Override
 	public double calcularExpressao(HashMap<String, Double> hm) {
-		double multiplicacao = 1.0;
-		for (Funcao no : this.nos) {
-			multiplicacao *= no.calcularExpressao(hm);
-		}
-		return multiplicacao;
+		return esquerda.calcularExpressao(hm) * direita.calcularExpressao(hm);
 	}
 
 	public String toString(){
-		String s = "(";
-		for(Funcao e : this.nos){
-			s+= s.equals("(")?e.toString():"*" + e.toString();
-		}
-		return s + ")";
+		return "(" + esquerda.toString() + "*" + direita.toString() + ")";
 	}
 	
 }

@@ -10,16 +10,15 @@ public class Potencia extends Funcao{
 
 	public Potencia() {
 		super("Power");
-		this.numeroMaximoTermo = 2;
 	}
 
 	@Override
 	public double calcularExpressao(HashMap<String, Double> hm) {
-		return Math.pow(Math.abs(nos.get(0).calcularExpressao(hm)),nos.get(1).calcularExpressao(hm));
+		return Math.pow(Math.abs(esquerda.calcularExpressao(hm)),direita.calcularExpressao(hm));
 	}
 
 	public String toString(){
-		return "(" + valor+"[Abs[" + nos.get(0).toString() + "]," + nos.get(1).toString() + "]" + ")";
+		return "(" + valor+"[Abs[" + esquerda.toString() + "]," + direita.toString() + "]" + ")";
 	}
 
 }
