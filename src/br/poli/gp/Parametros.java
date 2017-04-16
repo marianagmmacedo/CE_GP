@@ -4,7 +4,7 @@ public class Parametros {
 	public static final int NUMERO_TOTAL_INDIVIDUO = 2;
 	public static final int TAMANHO_MAXIMO_PROFUNDIDADE_ARVORE = 10;
 	public static final int NUMERO_TOTAL_SIMULACAO = 10;
-	public static final int NUMERO_TOTAL_ITERACAO = 100;
+	public static final int NUMERO_TOTAL_ITERACAO = 30;
 	public static final int NUMERO_TOTAL_FUNCAO = 1;
 	public static final int NUMERO_TOTAL_VARIAVEL = 1;
 	public static final double CHANCE_CRIACAO_VARIAVEL = 0.5d; 

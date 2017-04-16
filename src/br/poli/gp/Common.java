@@ -58,8 +58,11 @@ public class Common {
 			HashMap<Double, Double> base = new HashMap<Double, Double>();
 			
 			try{
-				File directory = new File(".\\");
-				BufferedReader in = new BufferedReader(new FileReader(directory.getAbsolutePath() + "\\src\\Bases\\" + nomeBase + ".txt"));
+				File directory = new File("./");
+				String macMari = "/src/Bases/";
+//				File directory = new File(".\\");
+//				String macCarlos = "\\src\\Bases\\";
+				BufferedReader in = new BufferedReader(new FileReader(directory.getAbsolutePath() + macMari + nomeBase + ".txt"));
 				String line;
 				
 				double i = 0;

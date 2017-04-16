@@ -81,7 +81,7 @@ public class AlgoritmoGP {
 			if(Common.RANDOM.nextDouble() > Parametros.TAXA_CRUZAMENTO_MUTACAO){
 				gerarDescendentes(i, populacao.get(Common.RANDOM.nextInt(populacao.size())));
 			}else{
-				//Mutação só ocorre se o individuo não for o melhor, para evitar perda de informações
+				//Mutaï¿½ï¿½o sï¿½ ocorre se o individuo nï¿½o for o melhor, para evitar perda de informaï¿½ï¿½es
 				if (i!=melhorIndividuo)
 					mutarDescendente(i);
 			}
@@ -208,7 +208,8 @@ public class AlgoritmoGP {
 	
 		g2d.dispose();
 		
-		File directory = new File(".\\");
+//		File directory = new File(".\\");
+		File directory = new File("./");
 		ImageIO.write(awtImage, "png", new File(directory.getAbsolutePath() + Parametros.NOME_CAMINHO_SALVAR_FITNESS));
 	}
 }
