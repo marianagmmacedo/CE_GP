@@ -2,6 +2,7 @@ package br.poli.gp;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 import br.poli.gp.arvore.Funcao;
@@ -12,13 +13,14 @@ public class Main {
 		
 		HashMap<Double, Double> serieTemporal = Common.lerBase("sunspot");
 		Common.DividirTodos(serieTemporal);
+		
 
 		
 		/*while(true){			
 			Individuo i = new Individuo(6);
 			System.out.println(i.toString());
 			//double d = i.calcularValor(null);
-			//System.out.println("Solulção: " + i.calcularValor(null));
+			//System.out.println("Solulï¿½ï¿½o: " + i.calcularValor(null));
 			i.otimizarArvore();
 			System.out.println(i.toString());
 			//if ((d+"").contains("NaN")) break;

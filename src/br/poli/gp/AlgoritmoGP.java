@@ -29,7 +29,7 @@ public class AlgoritmoGP {
 	Individuo melhorIndividuo;
 	// OTIMIZAR MELHORINDIVIDUO c resilient backpropagation
 	//     <X     , Y     >
-	HashMap<Double, Double> serieTemporal;
+	Map<Double, Double> serieTemporal;
 	
 	
 	public AlgoritmoGP(EInicializacao tipoInicializacao, HashMap<Double, Double> serieTemporal) throws IOException{
@@ -119,15 +119,18 @@ public class AlgoritmoGP {
 
 	private void calcularFitnessPopulacao() {
 		HashMap<String, Double> hm = new HashMap<String, Double>();
-		hm.put("X0", 0d);
-		
+		for (int numeroJanela = 0; numeroJanela < Parametros.NUMERO_TOTAL_VARIAVEL; numeroJanela++) {
+			hm.put("X"+numeroJanela, 0d);
+		}
 		for(Individuo i : populacao){
 			double fitness = 0.0;
-			for(Map.Entry<Double, Double> entry : serieTemporal.entrySet()){
-				hm.replace("X0", entry.getKey());
-//				System.err.println(entry.getValue());
-//				System.err.println(i.calcularValor(hm));
-				fitness += Math.pow(entry.getValue() - i.calcularValor(hm), 2); //REGRA PARA CALCULAR O FITNESS DEVE SER DISCUTIDA
+			for(Double walk = 0.0; walk < (serieTemporal.size()-Parametros.NUMERO_TOTAL_VARIAVEL); walk++){
+				int aux = 0;
+				for (Double numeroJanela = 0.0; numeroJanela < Parametros.NUMERO_TOTAL_VARIAVEL; numeroJanela++) {
+					hm.replace("X"+numeroJanela.intValue(), serieTemporal.get(walk+aux));
+					aux++;
+				}
+				fitness += Math.pow(serieTemporal.get(walk+Parametros.NUMERO_TOTAL_VARIAVEL) - i.calcularValor(hm), 2); //REGRA PARA CALCULAR O FITNESS DEVE SER DISCUTIDA
 				// COMO VAI TRATAR NAN?
 			}
 			
