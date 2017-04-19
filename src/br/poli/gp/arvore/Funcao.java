@@ -50,7 +50,7 @@ public abstract class Funcao implements Serializable {
 		//Se ela for variavel
 		if (this instanceof Variavel) return false;
 
-		//Se ela for número
+		//Se ela for numero
 		if (this instanceof Numero) return true;
 
 		boolean podeOtimizar = true;

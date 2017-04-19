@@ -18,7 +18,20 @@ import java.util.Map;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
+import org.encog.Encog;
+import org.encog.engine.network.activation.ActivationSigmoid;
+import org.encog.ml.data.MLData;
+import org.encog.ml.data.MLDataPair;
+import org.encog.ml.data.MLDataSet;
+import org.encog.ml.data.basic.BasicMLData;
+import org.encog.ml.data.basic.BasicMLDataSet;
+import org.encog.ml.importance.PerturbationFeatureImportanceCalc;
+import org.encog.neural.networks.BasicNetwork;
+import org.encog.neural.networks.layers.BasicLayer;
+import org.encog.neural.networks.training.propagation.resilient.ResilientPropagation;
+
 import ChartDirector.ChartViewer;
+import br.poli.gp.arvore.Arvore;
 import br.poli.gp.arvore.Funcao;
 import br.poli.gp.util.DemoModule;
 import br.poli.gp.util.LineChart;
@@ -52,7 +65,6 @@ public class AlgoritmoGP {
 	public void runGP() throws IOException {
 		
 		double[] getFit = new double[Parametros.NUMERO_TOTAL_ITERACAO];
-		
 		for (int iteracao = 0; iteracao < Parametros.NUMERO_TOTAL_ITERACAO; iteracao++) {
 			reproduzir();
 			calcularFitnessPopulacao();
@@ -144,6 +156,61 @@ public class AlgoritmoGP {
 		}else{
 			maiorIndividuo();
 		}
+		otimizarMelhorIndividuo();
+		
+	}
+    
+	private void otimizarMelhorIndividuo() {
+		// TODO Auto-generated method stub
+		// EACH EPOCH iS ONE MORE INDIVIDUAL
+		BasicNetwork network = new BasicNetwork();
+        network.addLayer(new BasicLayer(null,true, 2));
+        network.addLayer(new BasicLayer(new ActivationSigmoid(),true, 3));
+        network.addLayer(new BasicLayer(new ActivationSigmoid(),false, 1));
+        network.getStructure().finalizeStructure();
+        network.reset();
+        
+        // cada constante 
+//        melhorIndividuo.noFuncao.
+        //
+        //           +
+        //         /   \
+        //        *     3
+        //      /   \
+        //     11   20
+        // melhor individuo: fitness 
+        //  xor_input = { { 11, 20, 3 } }
+        // XORIDEAL é a resposta final que eu quero chegar da serietemporal, notepad
+//        { {const1, const2, const3, const4 ...} }
+        double XOR_INPUT[][] = { { 0.0, 0.0 }, { 1.0, 0.0 },
+                { 0.0, 1.0 }, { 1.0, 1.0 } }; //= Arvore.getConstantes(); criar um vetor c  numeros
+        double XOR_IDEAL[][] = { { 0.0, 0.0 }, { 1.0, 0.0 },
+                { 0.0, 1.0 }, { 1.0, 1.0 } }; //  serie temporal
+        
+        MLDataSet trainingSet = new BasicMLDataSet(XOR_INPUT, XOR_IDEAL);
+        
+        final ResilientPropagation train = new ResilientPropagation(network, trainingSet);
+        
+        int epoch = 1;
+
+        do {
+            train.iteration();
+            System.out.println("Epoch #" + epoch + " Error:" + train.getError());
+            epoch++;
+        } while(train.getError() > 0.01);
+        train.finishTraining();
+
+        // test the neural network
+        System.out.println("Neural Network Results:");
+        for(MLDataPair pair: trainingSet ) {
+            final MLData output = network.compute(pair.getInput());
+            System.out.println(pair.getInput().getData(0) + "," + pair.getInput().getData(1)
+                    + ", actual=" + output.getData(0) + ",ideal=" + pair.getIdeal().getData(0));
+        }
+
+        PerturbationFeatureImportanceCalc d;
+
+        Encog.getInstance().shutdown();
 	}
 
 	private void menorIndividuo() {

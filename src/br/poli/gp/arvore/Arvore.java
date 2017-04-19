@@ -15,6 +15,7 @@ import br.poli.gp.arvore.funcao.Tangente;
 import br.poli.gp.arvore.funcao.Variavel;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
