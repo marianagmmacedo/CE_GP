@@ -11,18 +11,19 @@ public class Main {
 
 	public static void main(String[] args) throws IOException {
 		
-		HashMap<Double, Double> serieTemporal = Common.lerBase("sunspot");
-		Common.DividirTodos(serieTemporal);
+		HashMap<Integer, Double> serieTemporal = Common.lerBase("sunspot");
+		Common.Normalizar(serieTemporal);
 		
 
 		
 		/*while(true){			
 			Individuo i = new Individuo(6);
-			System.out.println(i.toString());
+			System.out.println("PRE:" + i.toString());
+			//new AlgoritmoGp
 			//double d = i.calcularValor(null);
 			//System.out.println("Solulï¿½ï¿½o: " + i.calcularValor(null));
-			i.otimizarArvore();
-			System.out.println(i.toString());
+			//i.otimizarArvore();
+			//System.out.println("POS:" + i.toString());
 			//if ((d+"").contains("NaN")) break;
 		}*/
 		
@@ -36,4 +37,13 @@ public class Main {
 //			System.out.println("GP:" + gp.populacao.get(0).fitness);
 		}
 	}
+	
+	
+	//TODO
+	/*Otimizações:
+
+		Alternar valor de variávies para calcular fitness
+		Substituir x/1 por x.
+		Substituir Cos/Sin/Log/Sqrt de um número pelo resultado
+		*/
 }

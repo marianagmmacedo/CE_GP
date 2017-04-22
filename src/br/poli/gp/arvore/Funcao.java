@@ -6,6 +6,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.encog.ensemble.training.LevenbergMarquardtFactory;
+
+import br.poli.gp.arvore.funcao.Divisao;
+import br.poli.gp.arvore.funcao.Multiplicacao;
 import br.poli.gp.arvore.funcao.Numero;
 import br.poli.gp.arvore.funcao.Potencia;
 import br.poli.gp.arvore.funcao.RaizQuadrada;
@@ -32,56 +36,89 @@ public abstract class Funcao implements Serializable {
 	public abstract double calcularExpressao(HashMap<String, Double> hm);
 
 	public abstract String toString();
-	
+
 	public void corrigirNos(Funcao pai, List<Funcao> noFuncao, Arvore arvore){
 		noFuncao.add(this);
 		this.arvore = arvore;
-		
+
 		if (esquerda!=null)
 			esquerda.corrigirNos(this, noFuncao, arvore);
-		
+
 		if (direita!=null)
 			direita.corrigirNos(this, noFuncao, arvore);
-		
 	}
 
-	public boolean otimizarFuncao(Funcao pai){
+	public Funcao otimizarFuncao(Funcao pai){
 
-		//Se ela for variavel
-		if (this instanceof Variavel) return false;
+		if (this instanceof Numero || this instanceof Variavel) return this;
 
-		//Se ela for numero
-		if (this instanceof Numero) return true;
-
-		boolean podeOtimizar = true;
-
-		if (direita==null) {
-			podeOtimizar = podeOtimizar && esquerda.otimizarFuncao(this);
-		} else {
-			boolean temp1 = esquerda.otimizarFuncao(this);
-			boolean temp2 = direita.otimizarFuncao(this);
-			podeOtimizar = podeOtimizar && temp1 && temp2;			
+		esquerda = esquerda.otimizarFuncao(this);
+		
+		if (direita!=null){
+			direita = direita.otimizarFuncao(this);
 		}
 
-		if (podeOtimizar){
-			Numero n = new Numero(this.calcularExpressao(null));
-			if (pai!=null){
-				if (pai.esquerda == this){
-					pai.esquerda = n;
-				} else {
-					pai.direita = n;
-				}				
-			} else {
-				arvore.no = n;
+		if (this instanceof Soma){
+			//Replace + x 0 with x.
+			Numero numero = (Numero)((esquerda instanceof Numero)?esquerda:(direita instanceof Numero)?direita:null);
+
+			if (numero!=null && numero.valorNumerico == 0d){
+				return (esquerda != numero)?esquerda:direita;
+			}
+		} else if (this instanceof Subtracao){
+			//Replace - x x with 0.
+			Variavel variavel = (Variavel)((esquerda instanceof Variavel)?esquerda:(direita instanceof Variavel)?direita:null);
+
+			if (variavel!=null){
+				Funcao temp = ((esquerda!=variavel)?esquerda:direita);
+				if (temp instanceof Variavel && temp.valor.equals(variavel.valor)){
+					return new Numero(0d);
+				}
+			}
+		} else if (this instanceof Multiplicacao){
+			//Replace * x 0 with 0.
+			//Replace * x 1 with x.
+			Numero numero = (Numero)((esquerda instanceof Numero)?esquerda:(direita instanceof Numero)?direita:null);
+
+			if (numero!=null){
+				if (numero.valorNumerico == 0d){
+					return numero;
+				} else if (numero.valorNumerico == 1d){
+
+					return  (esquerda != numero)?esquerda:direita;
+				}
+			}
+		} else if (this instanceof Divisao){
+			//Replace / 0 x with 0.
+			//Replace / x x with 1.
+			Numero numero = (Numero)((esquerda instanceof Numero)?esquerda:(direita instanceof Numero)?direita:null);
+			
+			if (numero!=null){
+				if (numero.valorNumerico == 0d){
+					return numero;
+				}
+
+				/* Replace / x 1 with x.
+				if ((numero==direita) && numero.valorNumerico == 1d){
+					return esquerda;
+				}*/
+			} 
+			
+			Variavel variavel = (Variavel)((esquerda instanceof Variavel)?esquerda:(direita instanceof Variavel)?direita:null);
+			
+			if (variavel != null && variavel.valor.equals(((esquerda!=variavel)?esquerda:direita).valor)){
+				return new Numero(1d);
 			}
 		}
 		
-		return podeOtimizar;
+		if (esquerda instanceof Numero && direita != null && direita instanceof Numero){
+			return new Numero(this.calcularExpressao(null));
+		}
+
+		return this;
 	}
 
-
 	public void crossover(Funcao fFilha) {
-
 		Funcao paiFilha = fFilha.pai;
 
 		if (paiFilha==null){
@@ -112,5 +149,22 @@ public abstract class Funcao implements Serializable {
 		this.arvore = fFilha.arvore;
 		fFilha.arvore = temp;
 
+	}
+
+	public void parseToDoubleList(HashMap<String, Double> variableValues, List<Double> doubleList) {
+		if (this instanceof Numero) {
+			doubleList.add(((Numero)this).valorNumerico);	
+			return;
+		}
+		
+		if (this instanceof Variavel) {
+			doubleList.add(variableValues.get(this.valor));
+			return;
+		}
+		
+		esquerda.parseToDoubleList(variableValues, doubleList);
+		
+		if (direita != null)
+			direita.parseToDoubleList(variableValues, doubleList);
 	}
 }

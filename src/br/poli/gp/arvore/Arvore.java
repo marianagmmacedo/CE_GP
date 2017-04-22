@@ -17,6 +17,7 @@ import br.poli.gp.arvore.funcao.Variavel;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 import br.poli.gp.Common;
@@ -38,7 +39,7 @@ public class Arvore implements Serializable {
 	
 	public void otimizarArvore(List<Funcao> noFuncao){
 		noFuncao.clear();
-		no.otimizarFuncao(null);
+		no = no.otimizarFuncao(null);
 		no.corrigirNos(null, noFuncao, this);
 	}
 	
@@ -100,5 +101,11 @@ public class Arvore implements Serializable {
 		}
 		
 		return expressao;
+	}
+	
+	public List<Double> parseToDoubleList(HashMap<String, Double> variableValues) {
+		List<Double> ld = new ArrayList<Double>();
+		no.parseToDoubleList(variableValues, ld);
+		return ld;
 	}
 }

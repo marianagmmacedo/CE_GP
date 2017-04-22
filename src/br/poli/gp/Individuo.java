@@ -15,19 +15,22 @@ public class Individuo implements Serializable {
 	Arvore arvore;
 	double fitness;
 	List<Funcao> noFuncao;
+	boolean fitnessJaCalculado;
 
 	public Individuo(int tamanhoProfundidade){
 		arvore = new Arvore();
 		fitness = Parametros.TIPO_DE_OTIMIZACAO == "MINIMIZACAO"? Double.MAX_VALUE: Double.MIN_VALUE;
 		arvore.no = Arvore.criarNovaExpressaoAleatoria(1, tamanhoProfundidade, arvore);
 		noFuncao = new ArrayList<Funcao>();
-		
+		fitnessJaCalculado = false;
+				
 		otimizarArvore();
 	}
 	
 	public Individuo(EInicializacao tipoInicializacao){
 		arvore = new Arvore();
 		noFuncao = new ArrayList<Funcao>();
+		fitnessJaCalculado = false;
 		
 		if (tipoInicializacao == EInicializacao.Aleatoria){
 			arvore.no = Arvore.criarNovaExpressaoAleatoria(1, 1 + Common.RANDOM.nextInt(Parametros.TAMANHO_MAXIMO_PROFUNDIDADE_ARVORE-1), arvore);
@@ -37,8 +40,12 @@ public class Individuo implements Serializable {
 			arvore.no = Arvore.criarNovaExpressaoAleatoria(1, Parametros.TAMANHO_MAXIMO_PROFUNDIDADE_ARVORE/2, arvore);
 		else if (tipoInicializacao == EInicializacao.Mutacao)
 			arvore.no = Arvore.criarNovaExpressaoAleatoria(1, Parametros.TAMANHO_MAXIMO_MUTACAO_PROFUNDIDADE, arvore);
-		
+				
 		otimizarArvore();
+	}
+	
+	public List<Double> parseToDoubleList(HashMap<String, Double> variableValues){
+		return arvore.parseToDoubleList(variableValues);
 	}
 	
 	public void otimizarArvore(){

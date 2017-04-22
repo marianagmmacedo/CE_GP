@@ -8,10 +8,13 @@ import java.io.FileReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.nio.file.Path;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 public class Common {
 	public static final Random RANDOM = new Random();
@@ -53,9 +56,9 @@ public class Common {
 	        return clone;
 	    }
 		
-		public static HashMap<Double, Double> lerBase(String nomeBase){
+		public static HashMap<Integer, Double> lerBase(String nomeBase){
 			
-			HashMap<Double, Double> base = new HashMap<Double, Double>();
+			LinkedHashMap<Integer, Double> base = new LinkedHashMap<Integer, Double>();
 			
 			try{
 				File directory = new File("./");
@@ -65,7 +68,7 @@ public class Common {
 				BufferedReader in = new BufferedReader(new FileReader(directory.getAbsolutePath() + macMari + nomeBase + ".txt"));
 				String line;
 				
-				double i = 0;
+				Integer i = 0;
 				
 				while((line = in.readLine())!= null){
 					base.put(i++, Double.parseDouble(line));
@@ -75,15 +78,18 @@ public class Common {
 				
 			} catch (Exception e){
 				System.out.println(e);
-			}
-			
+			}			
 			return base;
 		}
 		
 		//Substituir por nome bonito
-		public static void DividirTodos(HashMap<Double, Double> serieTemporal){
+		public static void Normalizar(HashMap<Integer, Double> serieTemporal){
 			Double maximoValor = serieTemporal.values().stream().max((x,y) -> Double.compare(x, y)).get();
 			serieTemporal.entrySet().forEach(x -> x.setValue(x.getValue()/maximoValor));
+		}
+		
+		public static void Ordenar(HashMap<Double, Double> serieTemporal){
+			
 		}
 		
 	
