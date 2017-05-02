@@ -1,5 +1,6 @@
 package br.poli.gp.arvore.funcao;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import br.poli.gp.arvore.Funcao;
@@ -19,8 +20,16 @@ public class Variavel extends Funcao{
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
 		return valor;
 	}
+	
+	@Override
+	public ArrayList<Double> atualizarConstantes(ArrayList<Double> constantes) {
+		return constantes;
+	}
 
+	@Override
+	public ArrayList<Double> getConstantes(ArrayList<Double> constantes) {
+		return constantes;
+	}
 }

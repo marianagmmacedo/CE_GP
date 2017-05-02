@@ -1,5 +1,6 @@
 package br.poli.gp.arvore.funcao;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import br.poli.gp.arvore.Funcao;
@@ -21,5 +22,14 @@ public class Seno extends Funcao{
 	public String toString(){
 		return "(" + valor+"[" + esquerda.toString() + "]" + ")";
 	}
-
+	
+	@Override
+	public ArrayList<Double> atualizarConstantes(ArrayList<Double> constantes) {
+		return esquerda.atualizarConstantes(constantes);
+	}
+	
+	@Override
+	public ArrayList<Double> getConstantes(ArrayList<Double> constantes) {
+		return esquerda.getConstantes(constantes);
+	}
 }

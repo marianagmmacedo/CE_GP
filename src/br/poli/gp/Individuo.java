@@ -55,8 +55,20 @@ public class Individuo implements Serializable {
 	public String toString(){
 		return arvore.toString();
 	}
+	
+	public ArrayList<Double>  getConstantes(ArrayList<Double> constantes){
+		return arvore.getConstantes(constantes);
+	}
 
 	public double calcularValor(HashMap<String, Double> hm) {
 		return arvore.calcularValor(hm);
+	}
+
+	public ArrayList<Double> atualizarConstantes(double[] novasConstantes){
+		ArrayList<Double> constantesX = new ArrayList<Double>();			
+		for (int ci = 0; ci < novasConstantes.length; ci++) {
+			constantesX.add(novasConstantes[ci]);
+		}
+		return arvore.atualizarConstantes(constantesX);
 	}
 }

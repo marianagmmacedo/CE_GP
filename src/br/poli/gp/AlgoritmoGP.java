@@ -19,6 +19,7 @@ import java.util.Map;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
+import javax.swing.plaf.SliderUI;
 
 import org.encog.Encog;
 import org.encog.engine.network.activation.ActivationSigmoid;
@@ -50,7 +51,7 @@ public class AlgoritmoGP {
 	public AlgoritmoGP(EInicializacao tipoInicializacao, HashMap<Integer, Double> serieTemporal) throws IOException{
 		populacao = new ArrayList<Individuo>();
 		this.serieTemporal = serieTemporal;
-		for (int cadaIndividuo = 0; cadaIndividuo < Parametros.NUMERO_TOTAL_INDIVIDUO; cadaIndividuo++) {
+		for (int cadaIndividuo = 0; cadaIndividuo < Parametros.NUMERO_MAXIMO_POLPULACAO; cadaIndividuo++) {
 			populacao.add(new Individuo(tipoInicializacao));
 		}
 	}
@@ -59,13 +60,13 @@ public class AlgoritmoGP {
 		populacao = new ArrayList<Individuo>();
 		this.serieTemporal = serieTemporal;
 
-		for (int cadaIndividuo = 0; cadaIndividuo < Parametros.NUMERO_TOTAL_INDIVIDUO; cadaIndividuo++) {
+		for (int cadaIndividuo = 0; cadaIndividuo < Parametros.NUMERO_MAXIMO_POLPULACAO; cadaIndividuo++) {
 			populacao.add(new Individuo(profundidadeIndividuo));
 		}
 	}
 
 	public void runGP() throws IOException {
-
+		atualizarMelhorIndividuo();
 		double[] getFit = new double[Parametros.NUMERO_TOTAL_ITERACAO];
 		for (int iteracao = 0; iteracao < Parametros.NUMERO_TOTAL_ITERACAO; iteracao++) {
 			reproduzir();
@@ -75,12 +76,12 @@ public class AlgoritmoGP {
 			Individuo melhorIndividuo = this.melhorIndividuo;
 			atualizarMelhorIndividuo();
 			
-			//Caso o indivúduo tenha sido alterado
+			//Caso o indivï¿½duo tenha sido alterado
 			if (melhorIndividuo != this.melhorIndividuo){
 				otimizarMelhorIndividuo();				
 			}
 			getFit[iteracao] = melhorIndividuo.fitness;
-			System.out.println(getFit[iteracao]);
+//			System.out.println(getFit[iteracao]);
 		}
 		showFitness(getFit);
 	}
@@ -97,13 +98,13 @@ public class AlgoritmoGP {
 		int tamanhoPopulacao = populacao.size();
 		for (int individuoIndex = 0; individuoIndex < tamanhoPopulacao; individuoIndex++) {
 			Individuo i = populacao.get(individuoIndex);
-
 			if(Common.RANDOM.nextDouble() > Parametros.TAXA_CRUZAMENTO_MUTACAO){
 				gerarDescendentes(i, populacao.get(Common.RANDOM.nextInt(populacao.size())));
 			}else{
-				//Mutaï¿½ï¿½o sï¿½ ocorre se o individuo nï¿½o for o melhor, para evitar perda de informaï¿½ï¿½es
-				if (i!=melhorIndividuo)
+				//Mutacao so ocorre se o individuo nao for o melhor, para evitar perda de informacoes
+				if (i!=melhorIndividuo){
 					mutarDescendente(i);
+				}					
 			}
 		}		
 	}
@@ -222,59 +223,104 @@ public class AlgoritmoGP {
 		return XOR_IDEAL;
 	}
 
+	
 	private void otimizarMelhorIndividuo() {
-		// TODO Auto-generated method stub
-		// EACH EPOCH iS ONE MORE INDIVIDUAL
-		BasicNetwork network = new BasicNetwork();
-		network.addLayer(new BasicLayer(null,true, 2));
-		network.addLayer(new BasicLayer(new ActivationSigmoid(),true, 3));
-		network.addLayer(new BasicLayer(new ActivationSigmoid(),false, 1));
-		network.getStructure().finalizeStructure();
-		network.reset();
-
-		// cada constante 
-		// melhorIndividuo.noFuncao.
-		//
-		//           +
-		//         /   \
-		//        *     3
-		//      /   \
-		//     11   20
-		// melhor individuo: fitness 
-		//  xor_input = { { 11, 20, 3 } }
-		// XORIDEAL Ã© a resposta final que eu quero chegar da serietemporal, notepad
-		// { {const1, const2, const3, const4 ...} }
-
-		// 1, 2, 3, 4, 5, 6, 7, 8, 9 Som alô
-		//Alô, som som som, alô som ;-(
-
-		double XOR_INPUT[][] = prepareXOR_INPUT(melhorIndividuo); //= Arvore.getConstantes(); criar um vetor c  numeros
-		double XOR_IDEAL[][] = prepareXOR_IDEAL(); //  serie temporal
-
-		MLDataSet trainingSet = new BasicMLDataSet(XOR_INPUT, XOR_IDEAL);
-
-		final ResilientPropagation train = new ResilientPropagation(network, trainingSet);
-
-		int epoch = 1;
-
-		do {
-			train.iteration();
-			System.out.println("Epoch #" + epoch + " Error:" + train.getError());
-			epoch++;
-		} while(train.getError() > 0.01);
-		train.finishTraining();
-
-		// test the neural network
-		System.out.println("Neural Network Results:");
-		for(MLDataPair pair: trainingSet ) {
-			final MLData output = network.compute(pair.getInput());
-			System.out.println(pair.getInput().getData(0) + "," + pair.getInput().getData(1)
-					+ ", actual=" + output.getData(0) + ",ideal=" + pair.getIdeal().getData(0));
+		
+		double temperatura = Parametros.TEMPERATURA_INICIAL_SIM_ANN;
+		double[] position = getConstantes();
+		if(position.length>0){
+			double[] newPosition = new double[position.length];
+			while (temperatura > Parametros.TEMPERATURA_FINAL_SIM_ANN) {	
+				for (int each = 0; each < position.length; each++) {
+					newPosition[each] = position[each]+Common.RANDOM.nextDouble();
+				}
+				double delta = 0.0;
+				for (int each = 0; each < position.length; each++) {
+					delta += position[each]-newPosition[each];
+				}
+				if(delta > 0){
+					position = newPosition;
+				}else{
+					double rand = Common.RANDOM.nextDouble();
+					if(rand < Math.pow(Math.E, (-(delta)/temperatura)) ){
+						position = newPosition;
+					}
+				}
+				temperatura = temperatura*Parametros.ALFA_SIM_ANN;
+			}
+			melhorIndividuo.toString();
+			atualizarConstantes(position);
+			melhorIndividuo.toString();
+			System.out.println();
 		}
 
-		PerturbationFeatureImportanceCalc d;
+//		// TODO Auto-generated method stub
+//		// EACH EPOCH iS ONE MORE INDIVIDUAL
+//		BasicNetwork network = new BasicNetwork();
+//		network.addLayer(new BasicLayer(null,true, 2));
+//		network.addLayer(new BasicLayer(new ActivationSigmoid(),true, 3));
+//		network.addLayer(new BasicLayer(new ActivationSigmoid(),false, 1));
+//		network.getStructure().finalizeStructure();
+//		network.reset();
+//
+//		// cada constante 
+//		// melhorIndividuo.noFuncao.
+//		//
+//		//           +
+//		//         /   \
+//		//        *     3
+//		//      /   \
+//		//     11   20
+//		// melhor individuo: fitness 
+//		//  xor_input = { { 11, 20, 3 } }
+//		// XORIDEAL Ã© a resposta final que eu quero chegar da serietemporal, notepad
+//		// { {const1, const2, const3, const4 ...} }
+//
+//		// 1, 2, 3, 4, 5, 6, 7, 8, 9 Som alï¿½
+//		//Alï¿½, som som som, alï¿½ som ;-(
+//
+//		double XOR_INPUT[][] = prepareXOR_INPUT(melhorIndividuo); //= Arvore.getConstantes(); criar um vetor c  numeros
+//		double XOR_IDEAL[][] = prepareXOR_IDEAL(); //  serie temporal
+//
+//		MLDataSet trainingSet = new BasicMLDataSet(XOR_INPUT, XOR_IDEAL);
+//
+//		final ResilientPropagation train = new ResilientPropagation(network, trainingSet);
+//
+//		int epoch = 1;
+//
+//		do {
+//			train.iteration();
+//			System.out.println("Epoch #" + epoch + " Error:" + train.getError());
+//			epoch++;
+//		} while(train.getError() > 0.01);
+//		train.finishTraining();
+//
+//		// test the neural network
+//		System.out.println("Neural Network Results:");
+//		for(MLDataPair pair: trainingSet ) {
+//			final MLData output = network.compute(pair.getInput());
+//			System.out.println(pair.getInput().getData(0) + "," + pair.getInput().getData(1)
+//					+ ", actual=" + output.getData(0) + ",ideal=" + pair.getIdeal().getData(0));
+//		}
+//
+//		PerturbationFeatureImportanceCalc d;
+//
+//		Encog.getInstance().shutdown();
+	}
 
-		Encog.getInstance().shutdown();
+
+	private double[] getConstantes() {
+		ArrayList<Double> constantesX = new ArrayList<Double>();
+		constantesX = melhorIndividuo.getConstantes(constantesX);
+		double []constantes = new double[constantesX.size()];				
+		for (int ci = 0; ci < constantesX.size(); ci++) {
+			constantes[ci] = (double) constantesX.get(ci);
+		}
+		return constantes;
+	}
+	
+	private ArrayList<Double> atualizarConstantes(double[] novas) {
+		return melhorIndividuo.atualizarConstantes(novas);
 	}
 
 	public String toString(){

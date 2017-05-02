@@ -32,6 +32,15 @@ public class Arvore implements Serializable {
 	public String toString(){
 		return ("Expressao: (" + no.toString() + ")");
 	}
+	
+	public ArrayList<Double> getConstantes(ArrayList<Double> constantes){
+		System.out.println("Arvore");
+		return no.getConstantes(constantes);
+	}
+	
+	public ArrayList<Double> atualizarConstantes(ArrayList<Double> constantes){
+		return no.atualizarConstantes(constantes);
+	}
 
 	public double calcularValor(HashMap<String, Double> hm) {
 		return no.calcularExpressao(hm);
@@ -108,4 +117,6 @@ public class Arvore implements Serializable {
 		no.parseToDoubleList(variableValues, ld);
 		return ld;
 	}
+
+	
 }

@@ -11,7 +11,9 @@ public class Main {
 
 	public static void main(String[] args) throws IOException {
 		
-		HashMap<Integer, Double> serieTemporal = Common.lerBase("sunspot");
+//		sunspot
+		//stock
+		HashMap<Integer, Double> serieTemporal = Common.lerBase("redwine");
 		Common.Normalizar(serieTemporal);
 		
 
@@ -40,10 +42,10 @@ public class Main {
 	
 	
 	//TODO
-	/*Otimizações:
+	/*Otimizaï¿½ï¿½es:
 
-		Alternar valor de variávies para calcular fitness
+		Alternar valor de variï¿½vies para calcular fitness
 		Substituir x/1 por x.
-		Substituir Cos/Sin/Log/Sqrt de um número pelo resultado
+		Substituir Cos/Sin/Log/Sqrt de um nï¿½mero pelo resultado
 		*/
 }

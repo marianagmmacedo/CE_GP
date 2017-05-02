@@ -167,4 +167,8 @@ public abstract class Funcao implements Serializable {
 		if (direita != null)
 			direita.parseToDoubleList(variableValues, doubleList);
 	}
+	
+	public abstract ArrayList<Double> getConstantes(ArrayList<Double> constantes);
+	public abstract ArrayList<Double> atualizarConstantes(ArrayList<Double> constantes);
+	
 }

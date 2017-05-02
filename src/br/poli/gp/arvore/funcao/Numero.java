@@ -1,5 +1,6 @@
 package br.poli.gp.arvore.funcao;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import br.poli.gp.Common;
@@ -28,7 +29,20 @@ public class Numero extends Funcao{
 	public double calcularExpressao(HashMap<String, Double> hm) {
 		return valorNumerico;
 	}
+	
+	@Override
+	public ArrayList<Double> atualizarConstantes(ArrayList<Double> constantes) {
+		this.valorNumerico = constantes.get(0);
+		constantes.remove(0);
+		return constantes;
+	}
 
+	@Override
+	public ArrayList<Double> getConstantes(ArrayList<Double> constantes) {
+		constantes.add(valorNumerico);
+		return constantes;
+	}
+	
 	
 
 }
