@@ -44,6 +44,7 @@ public class AlgoritmoGP {
 	ArrayList<Individuo> populacao;
 	Individuo melhorIndividuo;
 	Individuo otimizadoIndividuo;
+	int tamanhoJanela;
 	// OTIMIZAR MELHORINDIVIDUO c resilient backpropagation
 	//     <X     , Y     >
 	Map<Integer, Double> serieTemporal;
@@ -60,13 +61,13 @@ public class AlgoritmoGP {
 	public AlgoritmoGP(int profundidadeIndividuo, HashMap<Integer, Double> serieTemporal) throws IOException{
 		populacao = new ArrayList<Individuo>();
 		this.serieTemporal = serieTemporal;
-
 		for (int cadaIndividuo = 0; cadaIndividuo < Parametros.NUMERO_MAXIMO_POLPULACAO; cadaIndividuo++) {
 			populacao.add(new Individuo(profundidadeIndividuo));
 		}
 	}
 
 	public void runGP() throws IOException {
+		this.tamanhoJanela = Parametros.NUMERO_TOTAL_VARIAVEL;
 		atualizarMelhorIndividuo();
 		double[] getFit = new double[Parametros.NUMERO_TOTAL_ITERACAO/Parametros.ITERACAO_BREAK];
 		int size = 0;
@@ -152,22 +153,22 @@ public class AlgoritmoGP {
 		}
 	}
 
-	private void calcularFitnessIndividuo(Individuo i) {
-		
+	private void calcularFitnessIndividuo(Individuo i, int janela) {
 		HashMap<String, Double> hm = new HashMap<String, Double>();
 		
-		for (int numeroJanela = 0; numeroJanela < Parametros.NUMERO_TOTAL_VARIAVEL; numeroJanela++) {
+		for (int numeroJanela = 0; numeroJanela < janela; numeroJanela++) {
 			hm.put("X"+numeroJanela, 0d);
 		}
 		double fitness = 0.0;
 
-		for(int walk = 0; walk < (serieTemporal.size()-Parametros.NUMERO_TOTAL_VARIAVEL); walk++){
+		for(int walk = 0; walk < (serieTemporal.size()-(janela)); walk++){
 			int aux = 0;
-			for (Double numeroJanela = 0.0; numeroJanela < Parametros.NUMERO_TOTAL_VARIAVEL; numeroJanela++) {
-				hm.replace("X"+numeroJanela.intValue(), serieTemporal.get(walk+aux));
+			for (int numeroJanela = 0; numeroJanela < janela; numeroJanela++) {
+				hm.replace("X"+numeroJanela, serieTemporal.get(walk+aux));
 				aux++;
 			}
-			fitness += Math.pow(serieTemporal.get(walk+Parametros.NUMERO_TOTAL_VARIAVEL) - i.calcularValor(hm), 2);
+			
+			fitness += Math.pow(serieTemporal.get(walk+janela) - i.calcularValor(hm), 2);
 		}
 
 		i.fitness = fitness/serieTemporal.size();
@@ -178,7 +179,7 @@ public class AlgoritmoGP {
 		
 		for(Individuo i : populacao){
 			if (!i.fitnessJaCalculado){
-				calcularFitnessIndividuo(i);
+				calcularFitnessIndividuo(i, this.tamanhoJanela);
 			}
 		}
 	}
@@ -197,13 +198,13 @@ public class AlgoritmoGP {
 		List<List<Double>> xorList = new ArrayList<List<Double>>();
 		HashMap<String, Double> hm = new HashMap<String, Double>();
 		
-		for (int numeroJanela = 0; numeroJanela < Parametros.NUMERO_TOTAL_VARIAVEL; numeroJanela++) {
+		for (int numeroJanela = 0; numeroJanela < tamanhoJanela; numeroJanela++) {
 			hm.put("X"+numeroJanela, 0d);
 		}
 		
-		for(int walk = 0; walk < (serieTemporal.size()-Parametros.NUMERO_TOTAL_VARIAVEL); walk++){
+		for(int walk = 0; walk < (serieTemporal.size()-tamanhoJanela); walk++){
 			int aux = 0;
-			for (int numeroJanela = 0; numeroJanela < Parametros.NUMERO_TOTAL_VARIAVEL; numeroJanela++) {
+			for (int numeroJanela = 0; numeroJanela < tamanhoJanela; numeroJanela++) {
 				hm.replace("X"+numeroJanela, serieTemporal.get(walk+aux));
 				aux++;
 			}
@@ -222,12 +223,12 @@ public class AlgoritmoGP {
 	
 	public double[][] prepareXOR_IDEAL(){
 		
-		double[][] XOR_IDEAL = new double[serieTemporal.size()-Parametros.NUMERO_TOTAL_VARIAVEL][Parametros.NUMERO_TOTAL_VARIAVEL]; 
+		double[][] XOR_IDEAL = new double[serieTemporal.size()-tamanhoJanela][tamanhoJanela]; 
 		
-		for(int walk = 0; walk < (serieTemporal.size()-Parametros.NUMERO_TOTAL_VARIAVEL); walk++){
+		for(int walk = 0; walk < (serieTemporal.size()-tamanhoJanela); walk++){
 			int aux = 0;
 			
-			for (int numeroJanela = 0; numeroJanela < Parametros.NUMERO_TOTAL_VARIAVEL; numeroJanela++) {
+			for (int numeroJanela = 0; numeroJanela < tamanhoJanela; numeroJanela++) {
 				XOR_IDEAL[walk][numeroJanela] = serieTemporal.get(numeroJanela + aux);
 				aux++;
 			}
@@ -239,36 +240,71 @@ public class AlgoritmoGP {
 	
 	private void otimizarMelhorIndividuo() {
 		
-		double temperatura = Parametros.TEMPERATURA_INICIAL_SIM_ANN;
-		double[] position = getConstantes();
-		if(position.length>0){
-			double[] newPosition = new double[position.length];
-			while (temperatura > Parametros.TEMPERATURA_FINAL_SIM_ANN) {	
-				for (int each = 0; each < position.length; each++) {
-//					System.out.print(position[each]);
-					newPosition[each] = position[each]+(Math.random() *temperatura* (Math.random() > 0.5 ? 1 : -1));
-				}
-//				System.out.println("/");
-				double delta = atualizarConstantes(position) - atualizarConstantes(newPosition);
-				if(delta > 0){
-					position = newPosition;
-				}else{
-					double rand = Common.RANDOM.nextDouble();
-					if(rand < Math.pow(Math.E, (-(delta)/temperatura)) ){
-						position = newPosition;
+		if(Parametros.SIMULATED_ANNEALING){
+			double temperatura = Parametros.TEMPERATURA_INICIAL_SIM_ANN;
+			double[] position = getConstantes();
+			if(position.length>0){
+				double[] newPosition = new double[position.length];
+				while (temperatura > Parametros.TEMPERATURA_FINAL_SIM_ANN) {	
+					for (int each = 0; each < position.length; each++) {
+//						System.out.print(position[each]);
+						newPosition[each] = position[each]+(Math.random() *temperatura* (Math.random() > 0.5 ? 1 : -1));
 					}
+//					System.out.println("/");
+					double delta = atualizarConstantes(position) - atualizarConstantes(newPosition);
+					if(delta > 0){
+						position = newPosition;
+					}else{
+						double rand = Common.RANDOM.nextDouble();
+						if(rand < Math.pow(Math.E, (-(delta)/temperatura)) ){
+							position = newPosition;
+						}
+					}
+					temperatura *= (1-Parametros.ALFA_SIM_ANN);
+					
 				}
-				temperatura *= (1-Parametros.ALFA_SIM_ANN);
+//				System.out.println(otimizadoIndividuo.fitness);
+//				System.out.println(melhorIndividuo.fitness);
+				if(otimizadoIndividuo.fitness < melhorIndividuo.fitness){
+					melhorIndividuo = (Individuo) Common.DeepCopy(otimizadoIndividuo);
+					System.out.println("melhor");
+				}
 				
 			}
-//			System.out.println(otimizadoIndividuo.fitness);
-//			System.out.println(melhorIndividuo.fitness);
-			if(otimizadoIndividuo.fitness < melhorIndividuo.fitness){
-				melhorIndividuo = (Individuo) Common.DeepCopy(otimizadoIndividuo);
-				System.out.println("melhor");
+		}else if(Parametros.HILL_CLIMBING){
+			double[] position = getConstantes();
+			if(position.length>0){
+				double[] newPosition = new double[position.length];
+				for (int i = 0; i < Parametros.HILL_CLIMBING_MAX_ITERACAO; i++) {
+					for (int each = 0; each < position.length; each++) {
+						newPosition[each] = position[each] + (Math.random()*1*(Math.random() > 0.5 ? 1 : -1));
+					}
+					double delta = atualizarConstantes(position) - atualizarConstantes(newPosition);
+					if(delta > 0){
+						position = newPosition;
+					}
+					
+				}
+				if(otimizadoIndividuo.fitness < melhorIndividuo.fitness){
+					melhorIndividuo = (Individuo) Common.DeepCopy(otimizadoIndividuo);
+					System.out.println("melhor");
+				}
+				
 			}
-			
+		}else if(Parametros.VARIAR_JANELA){
+			System.out.println("Parametros.VARIAR_JANELA");
+			for (int i = 2; i < Parametros.NUMERO_MAXIMO_VARIAVEL; i++) {
+//				System.out.println(i);
+				otimizadoIndividuo = (Individuo) Common.DeepCopy(melhorIndividuo);
+				calcularFitnessIndividuo(otimizadoIndividuo, i);
+				if(otimizadoIndividuo.fitness < melhorIndividuo.fitness){
+					tamanhoJanela = i;
+					System.out.println("MUDEI JANELA     " + i);
+					melhorIndividuo = (Individuo) Common.DeepCopy(otimizadoIndividuo);
+				}
+			}
 		}
+		
 
 //		// TODO Auto-generated method stub
 //		// EACH EPOCH iS ONE MORE INDIVIDUAL
@@ -338,7 +374,7 @@ public class AlgoritmoGP {
 	private double atualizarConstantes(double[] novas) {
 		otimizadoIndividuo = (Individuo) Common.DeepCopy(melhorIndividuo);
 		otimizadoIndividuo.atualizarConstantes(novas);
-		calcularFitnessIndividuo(otimizadoIndividuo);
+		calcularFitnessIndividuo(otimizadoIndividuo, tamanhoJanela);
 		return otimizadoIndividuo.fitness;
 	}
 

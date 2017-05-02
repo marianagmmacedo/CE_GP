@@ -14,9 +14,7 @@ public class Main {
 		
 		HashMap<Integer, Double> serieTemporal = Common.lerBase(Parametros.Base);
 		Common.Normalizar(serieTemporal);
-		
-
-		
+	
 		/*while(true){			
 			Individuo i = new Individuo(6);
 			System.out.println("PRE:" + i.toString());
@@ -41,10 +39,12 @@ public class Main {
 	
 	
 	//TODO
-	/*Otimiza��es:
+	/*Otimizacoes:
 
-		Alternar valor de vari�vies para calcular fitness
+		Alternar valor de variaveis para calcular fitness
 		Substituir x/1 por x.
-		Substituir Cos/Sin/Log/Sqrt de um n�mero pelo resultado
-		*/
+		Substituir Cos/Sin/Log/Sqrt de um numero pelo resultado
+	
+	
+	*/
 }

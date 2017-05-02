@@ -21,7 +21,6 @@ public class Parametros {
 	
 	
 	// Configuracao Simulated Annealing
-	public static final boolean OTIMIZAR = true;
 	public static final double TEMPERATURA_FINAL_SIM_ANN = 0.1;
 	public static final double TEMPERATURA_INICIAL_SIM_ANN = 0.9;
 	public static final double ALFA_SIM_ANN = 0.001;
@@ -40,8 +39,14 @@ public class Parametros {
 	// lynx
 	// nsw
 	// pollution
-	public static final String Base = "lynx";
+	public static final String Base = "redwine";
 	
+	public static final boolean OTIMIZAR = true;
+	public static final boolean SIMULATED_ANNEALING = false;
+	public static final boolean HILL_CLIMBING = false;
+	public static final boolean VARIAR_JANELA = true;
 	
+	public static final int HILL_CLIMBING_MAX_ITERACAO = 10;
+	public static final int NUMERO_MAXIMO_VARIAVEL = 10;
 	
 }
