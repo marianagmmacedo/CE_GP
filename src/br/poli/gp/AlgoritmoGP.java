@@ -43,6 +43,7 @@ public class AlgoritmoGP {
 	//jmathplot
 	ArrayList<Individuo> populacao;
 	Individuo melhorIndividuo;
+	Individuo otimizadoIndividuo;
 	// OTIMIZAR MELHORINDIVIDUO c resilient backpropagation
 	//     <X     , Y     >
 	Map<Integer, Double> serieTemporal;
@@ -67,7 +68,8 @@ public class AlgoritmoGP {
 
 	public void runGP() throws IOException {
 		atualizarMelhorIndividuo();
-		double[] getFit = new double[Parametros.NUMERO_TOTAL_ITERACAO];
+		double[] getFit = new double[Parametros.NUMERO_TOTAL_ITERACAO/Parametros.ITERACAO_BREAK];
+		int size = 0;
 		for (int iteracao = 0; iteracao < Parametros.NUMERO_TOTAL_ITERACAO; iteracao++) {
 			reproduzir();
 			calcularFitnessPopulacao();
@@ -76,13 +78,24 @@ public class AlgoritmoGP {
 			Individuo melhorIndividuo = this.melhorIndividuo;
 			atualizarMelhorIndividuo();
 			
-			//Caso o indiv�duo tenha sido alterado
-			if (melhorIndividuo != this.melhorIndividuo){
-				otimizarMelhorIndividuo();				
+			//Caso o individuo tenha sido alterado
+			if(Parametros.OTIMIZAR){
+				if (melhorIndividuo != this.melhorIndividuo){
+					otimizarMelhorIndividuo();				
+				}
 			}
-			getFit[iteracao] = melhorIndividuo.fitness;
+			if(iteracao==Parametros.NUMERO_TOTAL_ITERACAO-1){
+				otimizarMelhorIndividuo();	
+			}
+			if(iteracao%Parametros.ITERACAO_BREAK==0){
+				getFit[size] = melhorIndividuo.fitness;
+				size++;
+			}
+			
 //			System.out.println(getFit[iteracao]);
 		}
+		System.out.println(Parametros.NUMERO_TOTAL_ITERACAO/Parametros.ITERACAO_BREAK);
+		System.out.println(size);
 		showFitness(getFit);
 	}
 
@@ -139,8 +152,13 @@ public class AlgoritmoGP {
 		}
 	}
 
-	private void calcularFitnessIndividuo(HashMap<String, Double> hm, Individuo i) {
-
+	private void calcularFitnessIndividuo(Individuo i) {
+		
+		HashMap<String, Double> hm = new HashMap<String, Double>();
+		
+		for (int numeroJanela = 0; numeroJanela < Parametros.NUMERO_TOTAL_VARIAVEL; numeroJanela++) {
+			hm.put("X"+numeroJanela, 0d);
+		}
 		double fitness = 0.0;
 
 		for(int walk = 0; walk < (serieTemporal.size()-Parametros.NUMERO_TOTAL_VARIAVEL); walk++){
@@ -157,15 +175,10 @@ public class AlgoritmoGP {
 	}
 
 	private void calcularFitnessPopulacao() {
-		HashMap<String, Double> hm = new HashMap<String, Double>();
-		
-		for (int numeroJanela = 0; numeroJanela < Parametros.NUMERO_TOTAL_VARIAVEL; numeroJanela++) {
-			hm.put("X"+numeroJanela, 0d);
-		}
 		
 		for(Individuo i : populacao){
 			if (!i.fitnessJaCalculado){
-				calcularFitnessIndividuo(hm, i);
+				calcularFitnessIndividuo(i);
 			}
 		}
 	}
@@ -232,12 +245,11 @@ public class AlgoritmoGP {
 			double[] newPosition = new double[position.length];
 			while (temperatura > Parametros.TEMPERATURA_FINAL_SIM_ANN) {	
 				for (int each = 0; each < position.length; each++) {
-					newPosition[each] = position[each]+Common.RANDOM.nextDouble();
+//					System.out.print(position[each]);
+					newPosition[each] = position[each]+(Math.random() *temperatura* (Math.random() > 0.5 ? 1 : -1));
 				}
-				double delta = 0.0;
-				for (int each = 0; each < position.length; each++) {
-					delta += position[each]-newPosition[each];
-				}
+//				System.out.println("/");
+				double delta = atualizarConstantes(position) - atualizarConstantes(newPosition);
 				if(delta > 0){
 					position = newPosition;
 				}else{
@@ -246,12 +258,16 @@ public class AlgoritmoGP {
 						position = newPosition;
 					}
 				}
-				temperatura = temperatura*Parametros.ALFA_SIM_ANN;
+				temperatura *= (1-Parametros.ALFA_SIM_ANN);
+				
 			}
-			melhorIndividuo.toString();
-			atualizarConstantes(position);
-			melhorIndividuo.toString();
-			System.out.println();
+//			System.out.println(otimizadoIndividuo.fitness);
+//			System.out.println(melhorIndividuo.fitness);
+			if(otimizadoIndividuo.fitness < melhorIndividuo.fitness){
+				melhorIndividuo = (Individuo) Common.DeepCopy(otimizadoIndividuo);
+				System.out.println("melhor");
+			}
+			
 		}
 
 //		// TODO Auto-generated method stub
@@ -319,8 +335,11 @@ public class AlgoritmoGP {
 		return constantes;
 	}
 	
-	private ArrayList<Double> atualizarConstantes(double[] novas) {
-		return melhorIndividuo.atualizarConstantes(novas);
+	private double atualizarConstantes(double[] novas) {
+		otimizadoIndividuo = (Individuo) Common.DeepCopy(melhorIndividuo);
+		otimizadoIndividuo.atualizarConstantes(novas);
+		calcularFitnessIndividuo(otimizadoIndividuo);
+		return otimizadoIndividuo.fitness;
 	}
 
 	public String toString(){

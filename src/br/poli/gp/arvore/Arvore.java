@@ -34,7 +34,7 @@ public class Arvore implements Serializable {
 	}
 	
 	public ArrayList<Double> getConstantes(ArrayList<Double> constantes){
-		System.out.println("Arvore");
+//		System.out.println("Arvore");
 		return no.getConstantes(constantes);
 	}
 	

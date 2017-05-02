@@ -25,7 +25,7 @@ public class Cosseno extends Funcao{
 
 	@Override
 	public ArrayList<Double> getConstantes(ArrayList<Double> constantes) {
-		System.out.println("Cosseno");
+//		System.out.println("Cosseno");
 		return esquerda.getConstantes(constantes);
 	}
 

@@ -1,0 +1,84 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Simmulated_Annealing
+{
+    class Program
+    {
+        static double DOMAIN_MIN = -10d;
+        static double DOMAIN_MAX = 10d;
+        static double STEP_SIZE = 50d;
+
+        static int MAX_IMPROVEMENT_TRIES = 3;
+        
+        static void Main(string[] args)
+        {
+            double tempPosition = 0d;
+            double position = DOMAIN_MIN;
+            double step = STEP_SIZE;
+
+            int notImproved = 0;
+            Boolean notImproving = true;
+            
+            double actualFitness = calculateFitness(position + step);
+            double oldFitness = actualFitness;
+
+
+            double bestPosition = position + step;
+            double bestFitness = actualFitness;
+
+            int ittCount = 0;
+
+            while (ittCount < 1000)//notImproved < 30 && actualFitness != 0)
+            {
+                position += step;
+
+                actualFitness = calculateFitness(position);
+
+                //salvar best fitness/position
+                if (bestFitness > actualFitness)
+                {
+                    bestFitness = actualFitness;
+                    bestPosition = position;
+                }
+
+                //Não Houve Melhora
+                //Caso não haja melhora, salvar o ponto onde começou a piorar para voltar para ele caso haja MAX_IMPROVEMENT_TRIES pioras seguidas
+                if (actualFitness > oldFitness)
+                {
+                    notImproved++;
+
+                    if (notImproving) {
+                        tempPosition = position;
+                        notImproving = false;
+                    }
+                }
+
+                //Caso haja MAX_IMPROVEMENT_TRIES pioras seguidas, voltar para o ponto previamente salvo,
+                //dividir o step por 2 e começar a busca no sentido oposto
+                if (notImproved == MAX_IMPROVEMENT_TRIES)
+                {
+                    step = -step / 2;
+                    notImproving = true;
+                    position = tempPosition;
+                    notImproved = 0;
+                }
+
+                oldFitness = actualFitness;
+
+                Console.WriteLine("Itt {0} - Fitness: {1}, NotImproved: {2}, Position: {3}", ++ittCount, actualFitness, notImproved, position);
+            }
+            Console.WriteLine("BestPosition: {0}, BestFitness: {1}", bestPosition, bestFitness);
+
+            Console.ReadKey();
+        }
+
+        static double calculateFitness(double position)
+        {
+            return Math.Pow(position, 2);
+        }
+    }
+}

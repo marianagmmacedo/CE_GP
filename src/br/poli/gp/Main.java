@@ -11,9 +11,8 @@ public class Main {
 
 	public static void main(String[] args) throws IOException {
 		
-//		sunspot
-		//stock
-		HashMap<Integer, Double> serieTemporal = Common.lerBase("redwine");
+		
+		HashMap<Integer, Double> serieTemporal = Common.lerBase(Parametros.Base);
 		Common.Normalizar(serieTemporal);
 		
 
