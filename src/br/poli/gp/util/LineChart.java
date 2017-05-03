@@ -38,12 +38,12 @@ public class LineChart implements DemoModule
 
         // Create a XYChart object of size 600 x 300 pixels, with a pale red (ffdddd) background,
         // black border, 1 pixel 3D border effect and rounded corners.
-        XYChart c = new XYChart(1200, 600, 0xffffff, 0x000000, 1);
+        XYChart c = new XYChart(1250, 650, 0xffffff, 0x000000, 1);
         c.setRoundedFrame();
 
         // Set the plotarea at (55, 58) and of size 520 x 195 pixels, with white (ffffff)
         // background. Set horizontal and vertical grid lines to grey (cccccc).
-        c.setPlotArea(55, 58, 1100, 400, 0xffffff, -1, -1, 0x000000, 0x000000);
+        c.setPlotArea(55, 58, 1100, 400, 0xffffff, -1, -1, 0xffffff, 0xffffff);
 
         // Add a legend box at (55, 32) (top of the chart) with horizontal layout. Use 9pt Arial
         // Bold font. Set the background and border color to Transparent.
@@ -71,8 +71,8 @@ public class LineChart implements DemoModule
         c.xAxis().setTitle(textX);
 
         // Set the axes width to 2 pixels
-        c.xAxis().setWidth(2);
-        c.yAxis().setWidth(2);
+        c.xAxis().setWidth(1);
+        c.yAxis().setWidth(1);
 
         // Add a spline layer to the chart
         SplineLayer layer = c.addSplineLayer();

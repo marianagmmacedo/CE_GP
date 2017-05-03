@@ -1,0 +1,6 @@
+﻿SEPARAR TESTE E VALIDACAO
+COMPARAR CANONICA COM ESTRATEGIA DE EVOLUCAO
+Alternar valor de variaveis para calcular fitness ???? mudar de x0 para x1
+Substituir x/1 por x.
+Substituir Cos/Sin/Log/Sqrt de um numero pelo resultado
+

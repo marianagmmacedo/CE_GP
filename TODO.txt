@@ -1,0 +1,26 @@
+﻿SEPARAR TESTE E VALIDACAO (FIZ)
+
+===========================================================================
+
+CARLOS:
+Substituir x/1 por x.
+Substituir Cos/Sin/Log/Sqrt de um numero pelo resultado
+REVISAR O PLOT DAS PREVISOES
+DESCOBRIR O QUE TA DANDO MERDA (EXCEPTION)
+ADAPTACAO => TAXAS (MUTACAO E CRUZAMENTO) ----> GP : DECAIMENTO DAS TAXAS
+ADICIONAR INDIVIDUOS ZERADOS?
+MELHORAR O PIOR??
+PODE OTIMIZAR SE QUISER
+CORRIGIR MIN E MAX (NORMALIZACAO)
+
+===========================================================================
+
+MARIANA:
+
+
+===========================================================================
+LYNX LOG_10(VALORES)
+===========================================================================
+Alternar valor de variaveis para calcular fitness ???? mudar de x0 para x1
+COMPARAR CANONICA COM ESTRATEGIA DE EVOLUCAO 
+MELHORAR A POPULACAO?

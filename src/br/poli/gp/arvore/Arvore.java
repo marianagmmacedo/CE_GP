@@ -65,40 +65,40 @@ public class Arvore implements Serializable {
 		
 		//Fluxo caso seja n� de fun��o.
 		Funcao expressao = null;
-		
+//		System.out.println(Parametros.NUMERO_TOTAL_FUNCAO);
 		int numRand = Common.RANDOM.nextInt(Parametros.NUMERO_TOTAL_FUNCAO);
 		
 		switch (numRand) {
-		case 0:
-			expressao = new Soma();
-			break;
-		case 1:
-			expressao = new Subtracao();
-			break;
-		case 2:
-			expressao = new Multiplicacao();
-			break;
-		case 3:
-			expressao = new Divisao();
-			break;
-		case 4:
-			expressao = new Seno();
-			break;
-		case 5:
-			expressao = new Cosseno();
-			break;
-		case 6:
-			expressao = new Tangente();
-			break;
-		case 7:
-			expressao = new RaizQuadrada();
-			break;
-		case 8:
-			expressao = new Potencia();
-			break;
-		case 9:
-			expressao = new Logaritmo();
-			break;
+			case 0:
+				expressao = new Soma();
+				break;
+			case 1:
+				expressao = new Cosseno();
+				break;
+			case 2:
+				expressao = new Seno();
+				break;
+			case 3:
+				expressao = new Multiplicacao();
+				break;
+			case 4:
+				expressao = new Divisao();
+				break;
+			case 5:
+				expressao = new Subtracao();
+				break;
+			case 6:
+				expressao = new Potencia();
+				break;
+			case 7:
+				expressao = new RaizQuadrada();
+				break;
+			case 8:
+				expressao = new Tangente();
+				break;
+			case 9:
+				expressao = new Logaritmo();
+				break;
 		}
 		
 		expressao.arvore = arvore;
