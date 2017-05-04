@@ -116,8 +116,8 @@ public class AlgoritmoGP {
 
 	private void showBothExpression() throws IOException {
 		// The labels for the chart
-		String[] labels = new String[serieTemporal.size()-(this.tamanhoJanela)];
-		for (int i = 0; i < serieTemporal.size()-(this.tamanhoJanela); i++) {
+		String[] labels = new String[validarBase];
+		for (int i = 0; i < labels.length; i++) {
 			labels[i] = Integer.toString((i));
 		}
 
@@ -156,14 +156,14 @@ public class AlgoritmoGP {
 
 	private void calcularFitnessIndividuoFinal(Individuo i) {
 		HashMap<String, Double> hm = new HashMap<String, Double>();
-		this.serie = new double[serieTemporal.size()-(this.tamanhoJanela)];
-		this.previsto = new double[serieTemporal.size()-(this.tamanhoJanela)];
+		this.serie = new double[validarBase];
+		this.previsto = new double[validarBase];
 		for (int numeroJanela = 0; numeroJanela < this.tamanhoJanela; numeroJanela++) {
 			hm.put("X"+numeroJanela, 0d);
 		}
 		double fitness = 0.0;
 		int all = 0;
-		for(int walk = 0; walk < (serieTemporal.size()-(this.tamanhoJanela)); walk++){
+		for(int walk = serieTemporal.size()-(this.tamanhoJanela)-validarBase; walk < (serieTemporal.size()-(this.tamanhoJanela)); walk++){
 			int aux = 0;
 			for (int numeroJanela = 0; numeroJanela < this.tamanhoJanela; numeroJanela++) {
 				hm.replace("X"+numeroJanela, serieTemporal.get(walk+aux));

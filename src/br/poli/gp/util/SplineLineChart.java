@@ -107,12 +107,10 @@ public class SplineLineChart implements DemoModule
     	layer.setLineWidth(2);
     	//Add a data set to the spline layer, using blue (0000c0) as the line color, with yellow (ffff00)
     	//circle symbols.
-    	layer.addDataSet(dataY1, 0x0000c0, "Target Group");
-    	//.setDataSymbol(Chart.LinePointer, 10,0xffff00);
+    	layer.addDataSet(dataY1, 0x0000c0, "Target Group").setDataSymbol(Chart.TriangleSymbol, 10,0xffff00);
     	//Add a data set to the spline layer, using brown (982810) as the line color, with pink (f040f0)
     	//diamond symbols.
-    	layer.addDataSet(dataY0, 0x982810, "Calculated Group");
-    	//.setDataSymbol(Chart.LinePointer, 11, 0xf040f0);
+    	layer.addDataSet(dataY0, 0x982810, "Calculated Group").setDataSymbol(Chart.CircleSymbol, 11, 0xf040f0);
         
     	// Output the chart
         viewer.setChart(c);

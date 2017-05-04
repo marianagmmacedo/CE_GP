@@ -1,4 +1,4 @@
-﻿SEPARAR TESTE E VALIDACAO (FIZ)
+SEPARAR TESTE E VALIDACAO (FIZ)
 
 ===========================================================================
 
@@ -16,6 +16,9 @@ CORRIGIR MIN E MAX (NORMALIZACAO)
 ===========================================================================
 
 MARIANA:
+SERIE TEMPORAL TEM QUE SER VISUALIZADO NO RESULTADO REAL
+NORMALIZACAO DE (X-MEDIA)/ DESVIO
+FAZER FINE TUNE
 
 
 ===========================================================================
