@@ -27,18 +27,22 @@ public class Main {
 		
 		
 		HashMap<Integer, Double> serieTemporal = Common.lerBase(Parametros.Base);
-		Common.Normalizar(serieTemporal);
+		Common.Normalizar2(serieTemporal);
 	
-		/*while(true){			
+		/*
+		while(true){			
 			Individuo i = new Individuo(6);
 			System.out.println("PRE:" + i.toString());
+			System.out.println("P: " + i.calcularValor(null));
 			//new AlgoritmoGp
 			//double d = i.calcularValor(null);
 			//System.out.println("Solul��o: " + i.calcularValor(null));
-			//i.otimizarArvore();
-			//System.out.println("POS:" + i.toString());
+			i.otimizarArvore();
+			System.out.println("POS:" + i.toString());
+			System.out.println("P: " + i.calcularValor(null));
 			//if ((d+"").contains("NaN")) break;
 		}*/
+		
 		
 		// TRANSFORMACAO LINEAR ENTRE 0 E 1
 		double[] meanSimulacao = new double[Parametros.NUMERO_TOTAL_ITERACAO/Parametros.ITERACAO_BREAK];

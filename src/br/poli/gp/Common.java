@@ -12,9 +12,12 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.stream.Collectors;
+
+import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 
 public class Common {
 	public static final Random RANDOM = new Random();
@@ -82,14 +85,43 @@ public class Common {
 			return base;
 		}
 		
-		//Substituir por nome bonito
-		public static void Normalizar(HashMap<Integer, Double> serieTemporal){
+		/*
+		 * Divide todos pelo maior valor.
+		 */
+		public static void Normalizar1(HashMap<Integer, Double> serieTemporal){
 			Double maximoValor = serieTemporal.values().stream().max((x,y) -> Double.compare(x, y)).get();
 			serieTemporal.entrySet().forEach(x -> x.setValue(x.getValue()/maximoValor));
 		}
 		
-		public static void Ordenar(HashMap<Double, Double> serieTemporal){
+		/*
+		 * Método de normalização do professor de Mariana
+		 * (Dado - media)/(desvio padrao)
+		 */
+		public static void Normalizar2(HashMap<Integer, Double> serieTemporal){
+			Double media = CalcularMedia(serieTemporal);
+			Double desvioPadrao = CalcularDesvioPadrao(serieTemporal);
 			
+			serieTemporal.entrySet().forEach(x -> x.setValue((x.getValue() - media)/desvioPadrao));
+		}
+		
+		public static double CalcularDesvioPadrao(HashMap<Integer, Double> serieTemporal){
+			DescriptiveStatistics estatistica = new DescriptiveStatistics();
+			
+			for (Map.Entry<Integer, Double> set : serieTemporal.entrySet()){
+				estatistica.addValue(set.getValue());
+			}
+			
+			return estatistica.getStandardDeviation();
+		}
+
+		public static double CalcularMedia(HashMap<Integer, Double> serieTemporal){
+			DescriptiveStatistics estatistica = new DescriptiveStatistics();
+			
+			for (Map.Entry<Integer, Double> set : serieTemporal.entrySet()){
+				estatistica.addValue(set.getValue());
+			}
+			
+			return estatistica.getMean();
 		}
 		
 	

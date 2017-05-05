@@ -8,13 +8,17 @@ import java.util.List;
 
 import org.encog.ensemble.training.LevenbergMarquardtFactory;
 
+import br.poli.gp.arvore.funcao.Cosseno;
 import br.poli.gp.arvore.funcao.Divisao;
+import br.poli.gp.arvore.funcao.Logaritmo;
 import br.poli.gp.arvore.funcao.Multiplicacao;
 import br.poli.gp.arvore.funcao.Numero;
 import br.poli.gp.arvore.funcao.Potencia;
 import br.poli.gp.arvore.funcao.RaizQuadrada;
+import br.poli.gp.arvore.funcao.Seno;
 import br.poli.gp.arvore.funcao.Soma;
 import br.poli.gp.arvore.funcao.Subtracao;
+import br.poli.gp.arvore.funcao.Tangente;
 import br.poli.gp.arvore.funcao.Variavel;
 
 public abstract class Funcao implements Serializable {
@@ -98,10 +102,10 @@ public abstract class Funcao implements Serializable {
 					return numero;
 				}
 
-				/* Replace / x 1 with x.
+				// Replace / x 1 with x.
 				if ((numero==direita) && numero.valorNumerico == 1d){
 					return esquerda;
-				}*/
+				}
 			} 
 			
 			Variavel variavel = (Variavel)((esquerda instanceof Variavel)?esquerda:(direita instanceof Variavel)?direita:null);
@@ -109,6 +113,26 @@ public abstract class Funcao implements Serializable {
 			if (variavel != null && variavel.valor.equals(((esquerda!=variavel)?esquerda:direita).valor)){
 				return new Numero(1d);
 			}
+			//Replace Cos/Sin/Tan/Log/Sqrt/Pow with result of that expr.
+		} else if (this instanceof Cosseno || this instanceof Seno || this instanceof Tangente
+				|| this instanceof RaizQuadrada || this instanceof Logaritmo){
+		
+			Numero numero = (Numero)((esquerda instanceof Numero)?esquerda:null);
+			
+			if (numero != null){
+				return new Numero(this.calcularExpressao(null));
+			}
+			
+		} else if (this instanceof Potencia){
+			
+			Numero numeroEsq = (Numero)((esquerda instanceof Numero)?esquerda:null);
+			
+			Numero numeroDir = (Numero)((direita instanceof Numero)?direita:null);
+			
+			if (numeroEsq != null && numeroDir != null){
+				return new Numero(this.calcularExpressao(null));
+			}
+			
 		}
 		
 		if (esquerda instanceof Numero && direita != null && direita instanceof Numero){

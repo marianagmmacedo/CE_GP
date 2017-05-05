@@ -103,7 +103,12 @@ public class AlgoritmoGP {
 				getFit[size] = this.melhorIndividuo.fitness;
 				size++;
 			}
-			this.taxaMutacaoCruzamento -= Parametros.TAXA_CRUZAMENTO_MUTACAO/Parametros.NUMERO_TOTAL_ITERACAO;
+			
+			if (Parametros.TAXA_CRUZAMENTO_MUTACAO_DECRESCENTE.equals("LINEAR")){
+				this.taxaMutacaoCruzamento -= Parametros.TAXA_CRUZAMENTO_MUTACAO/Parametros.NUMERO_TOTAL_ITERACAO;
+			} else if (Parametros.TAXA_CRUZAMENTO_MUTACAO_DECRESCENTE.equals("EXPONENCIAL")){
+				this.taxaMutacaoCruzamento =  Parametros.TAXA_CRUZAMENTO_MUTACAO * Math.pow(Math.E, (-iteracao/Parametros.NUMERO_TOTAL_ITERACAO * Parametros.TAXA_CRUZAMENTO_MUTACAO_DECAIMENTO_EXPONENCIAL)); 
+			}
 			//			System.out.println(getFit[iteracao]);
 		}
 		//		System.out.println(Parametros.NUMERO_TOTAL_ITERACAO/Parametros.ITERACAO_BREAK);
@@ -176,13 +181,6 @@ public class AlgoritmoGP {
 //			System.out.println("serie"+this.serie[all]);
 //			System.out.println("previsto"+this.previsto[all]);
 			
-			if(this.serie[all]>1.0){
-				System.out.println("TA ERRADOO!!!!---------");
-			}else if(this.previsto[all]>1.0){
-				System.out.println("CORRETO MAS CARLOS NAO GOSTA");
-			}
-
-
 			all++;
 
 		}	
@@ -255,7 +253,8 @@ public class AlgoritmoGP {
 			}
 			Double x = i.calcularValor(hm);
 			if(x.isNaN() || x.isInfinite()){ 
-				System.out.println("diga NAN / Infinito       "+i.toString());
+				System.out.println("NAN / Infinito: " + i.toString());
+				i.calcularValor(hm);
 				fitness += Double.MAX_VALUE;
 			}else{
 				fitness += Math.pow(serieTemporal.get(walk+janela) - x, 2);

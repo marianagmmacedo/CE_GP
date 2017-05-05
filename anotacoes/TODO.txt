@@ -1,6 +1,43 @@
-ï»¿SEPARAR TESTE E VALIDACAO
-COMPARAR CANONICA COM ESTRATEGIA DE EVOLUCAO
-Alternar valor de variaveis para calcular fitness ???? mudar de x0 para x1
-Substituir x/1 por x.
-Substituir Cos/Sin/Log/Sqrt de um numero pelo resultado
+SEPARAR TESTE E VALIDACAO (FIZ)
 
+===========================================================================
+
+CARLOS:
+Substituir x/1 por x. (Check)
+Substituir Cos/Sin/Log/Sqrt de um numero pelo resultado (Check)
+Nova Normalização (Check)
+
+ADICIONAR INDIVIDUOS ZERADOS?
+MELHORAR O PIOR??
+PODE OTIMIZAR SE QUISER
+
+ADAPTACAO => TAXAS (MUTACAO E CRUZAMENTO) ----> GP : DECAIMENTO DAS TAXAS (Check)
+Parte da adaptação já havia sido implementada (decaimento linear)
+Eu apenas implementei o decaimento exponencial
+
+REVISAR O PLOT DAS PREVISOES (Ferramenta aparentemente funciona, mas está sendo imprimido apenas os últimos valores da série)
+CORRIGIR MIN E MAX (NORMALIZACAO) (Como o processo de normalização mudou, vou desconsiderar esse campo)
+
+DESCOBRIR O QUE TA DANDO MERDA (EXCEPTION) (Check)
+Erro está nas variáveis que vêm da série temporal, falta verificar se isso é algo natural de PG)
+Ex: ((Sin[((Sin[((((Sqrt[Abs[X0]])+(-141.2088662461724+-131.52171169728362))-((Log[Abs[X1]])+(Log[Abs[-35.702567083480886]])))*(Tan[((Power[Abs[X1],-253.21857795531002])+(-32.658072809031246-X0))]))])/((Log[Abs[(Log[Abs[(Log[Abs[(-70.10343944351077*X0)]])]])]])+(Tan[(((Cos[X1])+(35.846046788863305+-69.19957163653488))-((Sqrt[Abs[-6.792053112738913]])*(Sin[-92.48890561459548])))])))]))
+Para X0 = -0.6217620379044421
+Para X1 = 0.053588159201628204
+Erro Neste termo: Tan[((Power[Abs[X1], -253.21857795531002]) + (-32.658072809031246 - X0))]
+Pois: Tan[6.65*^321] dá ComplexInfinity.
+Solução: Usar BigNumbers e uma biblioteca matemática que suporte eles.
+
+===========================================================================
+
+MARIANA:
+SERIE TEMPORAL TEM QUE SER VISUALIZADO NO RESULTADO REAL
+NORMALIZACAO DE (X-MEDIA)/ DESVIO
+FAZER FINE TUNE
+
+
+===========================================================================
+LYNX LOG_10(VALORES)
+===========================================================================
+Alternar valor de variaveis para calcular fitness ???? mudar de x0 para x1
+COMPARAR CANONICA COM ESTRATEGIA DE EVOLUCAO 
+MELHORAR A POPULACAO?
