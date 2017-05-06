@@ -4,8 +4,8 @@ public class Parametros {
 	
 	// Configuracao experimento
 	public static final int NUMERO_TOTAL_SIMULACAO = 1;
-	public static final int NUMERO_TOTAL_ITERACAO = 6000;
-	public static final int ITERACAO_BREAK = 500;
+	public static final int NUMERO_TOTAL_ITERACAO = 5000;
+	public static final int ITERACAO_BREAK = 250;
 	public static final String TIPO_DE_OTIMIZACAO = "MINIMIZACAO";
 	
 	// Bases
@@ -27,11 +27,11 @@ public class Parametros {
 	public static final int TAMANHO_MAXIMO_PROFUNDIDADE_ARVORE = 8;
 	public static final int NUMERO_TOTAL_FUNCAO = 10;
 	public static final int NUMERO_TOTAL_VARIAVEL = 2; //(TAMANHO DA JANELA)
-	public static final int NUMERO_MAXIMO_POLPULACAO = 100;
-	public static final int TAMANHO_MAXIMO_MUTACAO_PROFUNDIDADE = 4;
+	public static final int NUMERO_MAXIMO_POLPULACAO = 20;
+	public static final int TAMANHO_MAXIMO_MUTACAO_PROFUNDIDADE = 2;
 	
 	public static final double CHANCE_CRIACAO_VARIAVEL = 0.5d; 
-	public static final double TAXA_CRUZAMENTO_MUTACAO = 0.7;
+	public static final double TAXA_CRUZAMENTO_MUTACAO = 1.00;
 	public static final String TAXA_CRUZAMENTO_MUTACAO_DECRESCENTE = "EXPONENCIAL"; //"LINEAR", "EXPONENCIAL" ou "Nenhuma"
 	public static final double TAXA_CRUZAMENTO_MUTACAO_DECAIMENTO_EXPONENCIAL = 2.0d;
 	
@@ -41,8 +41,10 @@ public class Parametros {
 	public static final String SERIES = "/resultados/"+Base+"/"+Base;
 	public static final String CONVERGENCIA = "/resultados/"+Base+"/"+Base+"_convergencia_";
 
-	//Otimização
-	public static final boolean OTIMIZAR = true;
+	//Otimizacao
+	public static final boolean OTIMIZAR = false;
+	public static final boolean OTIMIZAR_SEMPRE = true;
+	public static final boolean ESTRATEGIA_EVOLUCAO_WORST = false;
 	public static final boolean SIMULATED_ANNEALING = false;
 	public static final boolean HILL_CLIMBING = false;
 	public static final boolean VARIAR_JANELA = false;
@@ -54,19 +56,19 @@ public class Parametros {
 	public static final double ALFA_SIM_ANN = 0.001;
 	public static final int NUMERO_MAXIMO_GERACAO_SIMULATEDANNEALING = 10;
 	
-	//Configuração Hill Climbing
+	//Configuracao Hill Climbing
 	public static final int HILL_CLIMBING_MAX_ITERACAO = 10;
 	public static final int NUMERO_MAXIMO_VARIAVEL = 10;
 	
-	//Configuração Estratégia Evolucionaria
-	public static final int ESTRATEGIA_EVOLUCAO_ITERACAO = 400;
-	public static final double TAXA_VALIDACAO = 0.30;
-	public static final boolean ESTRATEGIA_EVOLUCAO_TODOS = false;
+	//Configuracao Estrategia Evolucionaria
+	public static final int ESTRATEGIA_EVOLUCAO_ITERACAO = 200;
+	public static final double TAXA_VALIDACAO = 0.20;
+	public static final boolean ESTRATEGIA_EVOLUCAO_TODOS = true;
 	
-	//Adicionar Novos Individuos enquanto roda o código
+	//Adicionar Novos Individuos enquanto roda o codigo
 	public static final int TAMANHO_NOVOS_INDIVIDUOS = 10;
 	public static final int NUMERO_NOVOS_INDIVIDUOS = 100;
-	public static final boolean GERAR_NOVOS_INDIVIDUOS = true;
+	public static final boolean GERAR_NOVOS_INDIVIDUOS = false;
 	
 	
 	

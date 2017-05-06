@@ -43,12 +43,12 @@ import br.poli.gp.util.SplineLineChart;
 
 public class AlgoritmoGP {
 	//jmathplot
+	// OTIMIZAR MELHORINDIVIDUO c resilient backpropagation
+	//     <X     , Y     >
 	ArrayList<Individuo> populacao;
 	Individuo melhorIndividuo;
 	Individuo otimizadoIndividuo;
 	int tamanhoJanela;
-	// OTIMIZAR MELHORINDIVIDUO c resilient backpropagation
-	//     <X     , Y     >
 	Map<Integer, Double> serieTemporal;
 	public double[] serie;
 	public double[] previsto;
@@ -88,10 +88,12 @@ public class AlgoritmoGP {
 			calcularFitnessPopulacao();
 			removerMenosAdaptados();
 			
-			//Gerar novos indivíduos durante as iterações
-			if (Parametros.GERAR_NOVOS_INDIVIDUOS)
+			//Gerar novos individuos durante as iteracoes
+			if (Parametros.GERAR_NOVOS_INDIVIDUOS){
 				criarNovosIndividuos(Parametros.NUMERO_NOVOS_INDIVIDUOS, Parametros.TAMANHO_NOVOS_INDIVIDUOS);
-
+			}
+			
+			// Atualizar melhor individuo
 			Individuo _melhorIndi = this.melhorIndividuo;
 			atualizarMelhorIndividuo();
 
@@ -101,6 +103,8 @@ public class AlgoritmoGP {
 					System.out.println(this.melhorIndividuo.toString());
 					otimizarMelhorIndividuo();			
 				}
+			}else if(Parametros.OTIMIZAR_SEMPRE){
+				otimizarMelhorIndividuo();
 			}
 			
 			
@@ -116,13 +120,12 @@ public class AlgoritmoGP {
 				this.taxaMutacaoCruzamento =  Parametros.TAXA_CRUZAMENTO_MUTACAO * Math.pow(Math.E, (-iteracao/Parametros.NUMERO_TOTAL_ITERACAO * Parametros.TAXA_CRUZAMENTO_MUTACAO_DECAIMENTO_EXPONENCIAL)); 
 			}
 			
-			System.out.println("IT: " + iteracao + "/" + Parametros.NUMERO_TOTAL_ITERACAO);
-			//			System.out.println(getFit[iteracao]);
+			System.out.println("IT: " + iteracao + "/" + Parametros.NUMERO_TOTAL_ITERACAO + "  /  " + this.melhorIndividuo.fitness);
 		}
 		
 		calcularFitnessIndividuoFinal(this.melhorIndividuo);
 
-		//Imprimir gráficos do fitness
+		//Imprimir graficos do fitness
 		showFitness(getFit);		
 		showBothExpression();
 		
@@ -265,7 +268,7 @@ public class AlgoritmoGP {
 		HashMap<String, Double> hm = new HashMap<String, Double>();
 
 		for (int numeroJanela = 0; numeroJanela < janela; numeroJanela++) {
-			hm.put("X"+numeroJanela, 0d);
+			hm.put("X"+numeroJanela, 0.0);
 		}
 		double fitness = 0.0;
 
@@ -278,7 +281,7 @@ public class AlgoritmoGP {
 			Double x = i.calcularValor(hm);
 			
 			if(x.isNaN() || x.isInfinite()){ 
-				//System.out.println("NAN / Infinito: " + i.toString());
+				System.out.println("NAN / Infinito: " + i.toString());
 				i.calcularValor(hm);
 				fitness += Double.MAX_VALUE;
 				break;
@@ -289,6 +292,7 @@ public class AlgoritmoGP {
 		}
 
 		i.fitness = fitness/(serieTemporal.size()-janela-validarBase);
+//		System.out.println("i.fitnesssssss  "+ i.fitness);
 		i.fitnessJaCalculado = true;
 	}
 
@@ -453,7 +457,7 @@ public class AlgoritmoGP {
 		}else if(Parametros.ESTRATEGIA_EVOLUCAO){ 
 			double[] position = getConstantes(this.melhorIndividuo);
 			double o = 1.0;
-			double T = 1/Math.sqrt(position.length);
+			double T = (1/Math.sqrt(position.length));
 			if(position.length>0){
 				double[] newPosition = new double[position.length];
 				for (int i = 0; i < Parametros.ESTRATEGIA_EVOLUCAO_ITERACAO; i++) {
@@ -477,6 +481,36 @@ public class AlgoritmoGP {
 				if(otimizadoIndividuo.fitness < this.melhorIndividuo.fitness){
 					this.melhorIndividuo = (Individuo) Common.DeepCopy(otimizadoIndividuo);
 					System.out.println("melhor");
+				}
+
+			}
+		}else if(Parametros.ESTRATEGIA_EVOLUCAO_WORST){
+			double[] position = getConstantes(this.populacao.get(this.populacao.size()-1));
+			double o = 1.0;
+			double T = (1/Math.sqrt(position.length));
+			if(position.length>0){
+				double[] newPosition = new double[position.length];
+				for (int i = 0; i < Parametros.ESTRATEGIA_EVOLUCAO_ITERACAO; i++) {
+					for (int each = 0; each < position.length; each++) {
+						//							if(Common.RANDOM.nextDouble()>0.5){
+						//								newPosition[each] = position[each] + o * getGaussian(0, 1.0);
+						//							}else{
+						newPosition[each] = position[each] - o * getGaussian(0, 1.0);
+						//							}
+						if(newPosition[each]<=0.0){
+							newPosition[each] += Common.RANDOM.nextDouble();
+						}
+					}
+					double delta = atualizarConstantes(position) - atualizarConstantes(newPosition);
+					if(delta > 0){
+						position = newPosition;
+					}
+					o *= Math.pow(Math.E, T*getGaussian(0, 1.0));
+
+				}
+				if(otimizadoIndividuo.fitness < this.populacao.get(this.populacao.size()-1).fitness){
+					this.populacao.set(this.populacao.size()-1, (Individuo) Common.DeepCopy(otimizadoIndividuo));
+					System.out.println("melhor WORST");
 				}
 
 			}

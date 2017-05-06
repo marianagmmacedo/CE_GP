@@ -94,7 +94,7 @@ public class Common {
 		}
 		
 		/*
-		 * Método de normalização do professor de Mariana
+		 * Mï¿½todo de normalizaï¿½ï¿½o do professor de Mariana
 		 * (Dado - media)/(desvio padrao)
 		 */
 		public static void Normalizar2(HashMap<Integer, Double> serieTemporal){

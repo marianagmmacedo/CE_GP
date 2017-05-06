@@ -3,19 +3,10 @@ SEPARAR TESTE E VALIDACAO (FIZ)
 ===========================================================================
 
 CARLOS:
-Substituir x/1 por x. (Check)
-Substituir Cos/Sin/Log/Sqrt de um numero pelo resultado (Check)
-Nova Normalização (Check)
-
-
-MELHORAR O PIOR??
-PODE OTIMIZAR SE QUISER
 
 ADICIONAR INDIVIDUOS ZERADOS? (Check, na database Lynx houve uma melhora QUASE considerável, de um fitness 0.4 para 0.25..)
 
-ADAPTACAO => TAXAS (MUTACAO E CRUZAMENTO) ----> GP : DECAIMENTO DAS TAXAS (Check)
-Parte da adaptação já havia sido implementada (decaimento linear)
-Eu apenas implementei o decaimento exponencial
+ADAPTACAO => TAXAS (MUTACAO E CRUZAMENTO) 
 
 REVISAR O PLOT DAS PREVISOES (Ferramenta aparentemente funciona, mas está sendo imprimido apenas os últimos valores da série)
 CORRIGIR MIN E MAX (NORMALIZACAO) (Como o processo de normalização mudou, vou desconsiderar esse campo)
@@ -28,12 +19,11 @@ Para X1 = 0.053588159201628204
 Erro Neste termo: Tan[((Power[Abs[X1], -253.21857795531002]) + (-32.658072809031246 - X0))]
 Pois: Tan[6.65*^321] dá ComplexInfinity.
 Solução: Usar BigNumbers e uma biblioteca matemática que suporte eles.
-
+SERIE TEMPORAL TEM QUE SER VISUALIZADO NO RESULTADO REAL
+NORMALIZACAO DE (X-MEDIA)/ DESVIO
 ===========================================================================
 
 MARIANA:
-SERIE TEMPORAL TEM QUE SER VISUALIZADO NO RESULTADO REAL
-NORMALIZACAO DE (X-MEDIA)/ DESVIO
 FAZER FINE TUNE
 
 
