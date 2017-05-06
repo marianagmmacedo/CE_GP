@@ -15,7 +15,9 @@ public class Divisao extends Funcao {
 
 	@Override
 	public double calcularExpressao(HashMap<String, Double> hm) {
-		return esquerda.calcularExpressao(hm) / direita.calcularExpressao(hm);
+		double dir = direita.calcularExpressao(hm);
+		if (dir == 0) return 1;
+		return esquerda.calcularExpressao(hm) / dir;
 	}
 
 	public String toString(){
