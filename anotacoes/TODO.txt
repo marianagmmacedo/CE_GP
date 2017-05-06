@@ -7,9 +7,11 @@ Substituir x/1 por x. (Check)
 Substituir Cos/Sin/Log/Sqrt de um numero pelo resultado (Check)
 Nova Normalização (Check)
 
-ADICIONAR INDIVIDUOS ZERADOS?
+
 MELHORAR O PIOR??
 PODE OTIMIZAR SE QUISER
+
+ADICIONAR INDIVIDUOS ZERADOS? (Check, na database Lynx houve uma melhora QUASE considerável, de um fitness 0.4 para 0.25..)
 
 ADAPTACAO => TAXAS (MUTACAO E CRUZAMENTO) ----> GP : DECAIMENTO DAS TAXAS (Check)
 Parte da adaptação já havia sido implementada (decaimento linear)

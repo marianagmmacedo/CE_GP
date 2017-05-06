@@ -27,7 +27,7 @@ public class Parametros {
 	public static final int TAMANHO_MAXIMO_PROFUNDIDADE_ARVORE = 8;
 	public static final int NUMERO_TOTAL_FUNCAO = 10;
 	public static final int NUMERO_TOTAL_VARIAVEL = 2; //(TAMANHO DA JANELA)
-	public static final int NUMERO_MAXIMO_POLPULACAO = 5;
+	public static final int NUMERO_MAXIMO_POLPULACAO = 100;
 	public static final int TAMANHO_MAXIMO_MUTACAO_PROFUNDIDADE = 4;
 	
 	public static final double CHANCE_CRIACAO_VARIAVEL = 0.5d; 
@@ -62,6 +62,12 @@ public class Parametros {
 	public static final int ESTRATEGIA_EVOLUCAO_ITERACAO = 400;
 	public static final double TAXA_VALIDACAO = 0.30;
 	public static final boolean ESTRATEGIA_EVOLUCAO_TODOS = false;
+	
+	//Adicionar Novos Individuos enquanto roda o código
+	public static final int TAMANHO_NOVOS_INDIVIDUOS = 10;
+	public static final int NUMERO_NOVOS_INDIVIDUOS = 100;
+	public static final boolean GERAR_NOVOS_INDIVIDUOS = true;
+	
 	
 	
 }

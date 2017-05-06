@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.spi.TimeZoneNameProvider;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
@@ -54,17 +55,14 @@ public class AlgoritmoGP {
 	public int simulacao;
 	public int validarBase;
 	double taxaMutacaoCruzamento;
-
-
+	
 	public AlgoritmoGP(EInicializacao tipoInicializacao, HashMap<Integer, Double> serieTemporal) throws IOException{
 		populacao = new ArrayList<Individuo>();
 		this.serieTemporal = serieTemporal;
 		this.taxaMutacaoCruzamento = Parametros.TAXA_CRUZAMENTO_MUTACAO;
 		this.validarBase = (int) Math.floor(serieTemporal.size()*Parametros.TAXA_VALIDACAO);
-		//		System.out.println(this.validarBase);
-		for (int cadaIndividuo = 0; cadaIndividuo < Parametros.NUMERO_MAXIMO_POLPULACAO; cadaIndividuo++) {
-			populacao.add(new Individuo(tipoInicializacao));
-		}
+		
+		criarNovosIndividuos(Parametros.NUMERO_MAXIMO_POLPULACAO, tipoInicializacao);
 	}
 
 	public AlgoritmoGP(int profundidadeIndividuo, HashMap<Integer, Double> serieTemporal) throws IOException{
@@ -72,21 +70,27 @@ public class AlgoritmoGP {
 		this.serieTemporal = serieTemporal;
 		this.taxaMutacaoCruzamento = Parametros.TAXA_CRUZAMENTO_MUTACAO;
 		this.validarBase = (int) Math.floor(serieTemporal.size()*Parametros.TAXA_VALIDACAO);
-		for (int cadaIndividuo = 0; cadaIndividuo < Parametros.NUMERO_MAXIMO_POLPULACAO; cadaIndividuo++) {
-			populacao.add(new Individuo(profundidadeIndividuo));
-		}
+		
+		criarNovosIndividuos(Parametros.NUMERO_MAXIMO_POLPULACAO, profundidadeIndividuo);	
 	}
 
 	public double[] runGP(int sim) throws IOException {
 		this.simulacao = sim;
 		this.tamanhoJanela = Parametros.NUMERO_TOTAL_VARIAVEL;
+		
 		atualizarMelhorIndividuo();
 		double[] getFit = new double[Parametros.NUMERO_TOTAL_ITERACAO/Parametros.ITERACAO_BREAK];
+		
 		int size = 0;
+		
 		for (int iteracao = 0; iteracao < Parametros.NUMERO_TOTAL_ITERACAO; iteracao++) {
 			reproduzir();
 			calcularFitnessPopulacao();
 			removerMenosAdaptados();
+			
+			//Gerar novos indivíduos durante as iterações
+			if (Parametros.GERAR_NOVOS_INDIVIDUOS)
+				criarNovosIndividuos(Parametros.NUMERO_NOVOS_INDIVIDUOS, Parametros.TAMANHO_NOVOS_INDIVIDUOS);
 
 			Individuo _melhorIndi = this.melhorIndividuo;
 			atualizarMelhorIndividuo();
@@ -98,6 +102,8 @@ public class AlgoritmoGP {
 					otimizarMelhorIndividuo();			
 				}
 			}
+			
+			
 			if(iteracao%Parametros.ITERACAO_BREAK==0){
 //				otimizarMelhorIndividuo();
 				getFit[size] = this.melhorIndividuo.fitness;
@@ -109,14 +115,30 @@ public class AlgoritmoGP {
 			} else if (Parametros.TAXA_CRUZAMENTO_MUTACAO_DECRESCENTE.equals("EXPONENCIAL")){
 				this.taxaMutacaoCruzamento =  Parametros.TAXA_CRUZAMENTO_MUTACAO * Math.pow(Math.E, (-iteracao/Parametros.NUMERO_TOTAL_ITERACAO * Parametros.TAXA_CRUZAMENTO_MUTACAO_DECAIMENTO_EXPONENCIAL)); 
 			}
+			
+			System.out.println("IT: " + iteracao + "/" + Parametros.NUMERO_TOTAL_ITERACAO);
 			//			System.out.println(getFit[iteracao]);
 		}
-		//		System.out.println(Parametros.NUMERO_TOTAL_ITERACAO/Parametros.ITERACAO_BREAK);
-		//		System.out.println(size);
-		showFitness(getFit);
+		
 		calcularFitnessIndividuoFinal(this.melhorIndividuo);
+
+		//Imprimir gráficos do fitness
+		showFitness(getFit);		
 		showBothExpression();
+		
 		return getFit;
+	}
+	
+	private void criarNovosIndividuos(int numeroIndividuos, int profundidadeIndividuo){
+		for (int i = 0; i < numeroIndividuos; i++){
+			populacao.add(new Individuo(profundidadeIndividuo));
+		}
+	}
+	
+	private void criarNovosIndividuos(int numeroIndividuos, EInicializacao tipoInicializacao){
+		for (int i = 0; i < numeroIndividuos; i++){
+			populacao.add(new Individuo(tipoInicializacao));
+		}
 	}
 
 	private void showBothExpression() throws IOException {
@@ -187,9 +209,9 @@ public class AlgoritmoGP {
 	}
 
 	private void removerMenosAdaptados() {
-		populacao.sort((i1, i2) -> Double.compare(i1.fitness, i2.fitness));
-		while (populacao.size() > Parametros.NUMERO_MAXIMO_POLPULACAO){
-			populacao.subList((int)(populacao.size()/2), populacao.size()).clear();
+		if (populacao.size() > Parametros.NUMERO_MAXIMO_POLPULACAO){
+			populacao.sort((i1, i2) -> Double.compare(i1.fitness, i2.fitness));
+			populacao.subList(Parametros.NUMERO_MAXIMO_POLPULACAO, populacao.size()).clear();
 		}
 	}
 
@@ -248,17 +270,20 @@ public class AlgoritmoGP {
 		double fitness = 0.0;
 
 		for(int walk = 0; walk < (serieTemporal.size()-janela-validarBase); walk++){
+			
 			for (int numeroJanela = 0; numeroJanela < janela; numeroJanela++) {
 				hm.replace("X"+numeroJanela, serieTemporal.get(walk+numeroJanela));
 			}
+			
 			Double x = i.calcularValor(hm);
+			
 			if(x.isNaN() || x.isInfinite()){ 
-				System.out.println("NAN / Infinito: " + i.toString());
+				//System.out.println("NAN / Infinito: " + i.toString());
 				i.calcularValor(hm);
 				fitness += Double.MAX_VALUE;
+				break;
 			}else{
 				fitness += Math.pow(serieTemporal.get(walk+janela) - x, 2);
-				
 			}
 			
 		}
