@@ -118,5 +118,9 @@ public class Arvore implements Serializable {
 		return ld;
 	}
 
+	public void expandirArvore(Arvore a) {
+		no.expandirExpressao(a.no);
+	}
+
 	
 }

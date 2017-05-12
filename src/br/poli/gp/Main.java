@@ -62,6 +62,7 @@ public class Main {
 		for (int simulacao = 0; simulacao < Parametros.NUMERO_TOTAL_SIMULACAO; simulacao++) {
 			System.out.println(simulacao);
 			AlgoritmoGP gp = new AlgoritmoGP(EInicializacao.Completa, serieTemporal, taxaMutacao, Parametros.NUMERO_TOTAL_FUNCAO, tamanhaMaximoArvore, simulacao, taxaMutacao, taxaMutacao);
+			
 			//double[] each = gp.runGP(simulacao);
 			
 			dataXH[simulacao] = taxaMutacao;

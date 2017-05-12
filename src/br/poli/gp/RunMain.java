@@ -20,6 +20,7 @@ import javax.swing.JFrame;
 
 import org.encog.util.file.Directory;
 
+import br.poli.gp.arvore.Arvore;
 import br.poli.gp.util.ContourChart;
 import br.poli.gp.util.DemoModule;
 import br.poli.gp.util.LineChart;
@@ -41,7 +42,26 @@ public class RunMain {
 	
 	
 	static void mainCarlos() throws Exception{
-	
+
+		Individuo i = new Individuo(3, 9);
+		System.out.println(i);
+		i.expandirIndividuo();
+		System.out.println(i);
+		
+		/*
+		HashMap<Integer, Double> serieTemporal = Common.lerBase(Parametros.Base);
+		AlgoritmoGP gp = new AlgoritmoGP(EInicializacao.Completa, serieTemporal, 1
+				, Parametros.NUMERO_TOTAL_FUNCAO, 4
+				, 2, 1, 1);
+		
+		gp.runGP(0);
+		
+	double[] mediaDesvio = {Common.CalcularMedia(serieTemporal), Common.CalcularDesvioPadrao(serieTemporal)};
+
+		double[] respostas = new double[30];
+*/
+		
+	/*
 		Thread[] tList = new Thread[4];
 		int threadLength = Parametros.Bases.length;
 		int startingIndex = 0;
@@ -57,7 +77,7 @@ public class RunMain {
 			
 			startingIndex += indexFactor;
 		}
-		
+		*/
 	}
 
 	static void mainMariana() throws Exception{

@@ -194,5 +194,27 @@ public abstract class Funcao implements Serializable {
 	
 	public abstract ArrayList<Double> getConstantes(ArrayList<Double> constantes);
 	public abstract ArrayList<Double> atualizarConstantes(ArrayList<Double> constantes);
+
+	public void expandirExpressao(Funcao no) {
+		// TODO Auto-generated method stub
+		if (no!=null){
+			
+			expandirExpressao(no.esquerda);
+			expandirExpressao(no.direita);
+			
+			if (no.esquerda instanceof Variavel){
+				Funcao mult = new Multiplicacao();
+				mult.esquerda = new Numero(1);
+				mult.direita = no.esquerda;
+				no.esquerda = mult;
+			}
+			if (no.direita instanceof Variavel){
+				Funcao mult = new Multiplicacao();
+				mult.esquerda = new Numero(1);
+				mult.direita = no.direita;
+				no.direita = mult;
+			}
+		}
+	}
 	
 }

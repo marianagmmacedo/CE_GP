@@ -35,7 +35,7 @@ public class Parametros {
 	public static final int TAMANHO_MAXIMO_MUTACAO_PROFUNDIDADE = 3;
 	// 3
 	
-	public static final double CHANCE_CRIACAO_VARIAVEL = 0.5d; 
+	public static final double CHANCE_CRIACAO_VARIAVEL = 1d; 
 	public static final double TAXA_CRUZAMENTO_MUTACAO = 1.00;
 	public static final String TAXA_CRUZAMENTO_MUTACAO_DECRESCENTE = "EXPONENCIAL"; //"LINEAR", "EXPONENCIAL" ou "Nenhuma"
 	public static final double TAXA_CRUZAMENTO_MUTACAO_DECAIMENTO_EXPONENCIAL = 2.0d;
@@ -75,6 +75,7 @@ public class Parametros {
 	public static final int NUMERO_NOVOS_INDIVIDUOS = 5;
 	public static final boolean GERAR_NOVOS_INDIVIDUOS = false;
 	
-	
+	//Mutação de Descendente
+	public static final boolean MUTACAO_CLASSIFICADA = false;
 	
 }

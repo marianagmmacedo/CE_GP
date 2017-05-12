@@ -342,7 +342,7 @@ public class AlgoritmoGP {
 		}
 	}
 
-	private void reproduzir() {
+	public void reproduzir() {
 		// restrigir a arvore resposta
 		int tamanhoPopulacao = populacao.size();
 		for (int individuoIndex = 0; individuoIndex < tamanhoPopulacao; individuoIndex++) {
@@ -364,6 +364,7 @@ public class AlgoritmoGP {
 			int noMutacaoFilho = Common.RANDOM.nextInt((individuo.noFuncao.size()));
 			Funcao fFilho = individuo.noFuncao.get(noMutacaoFilho);
 			fFilho.crossover((new Individuo(EInicializacao.Mutacao, numeroFuncao, tamanhaMaximoArvore)).arvore.no);
+			individuo.otimizarArvore();
 		}
 	}
 
