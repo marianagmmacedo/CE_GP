@@ -31,7 +31,7 @@ public class Parametros {
 	public static final int TAMANHO_MAXIMO_PROFUNDIDADE_ARVORE = 6;
 	public static final int NUMERO_TOTAL_FUNCAO = 9;
 	public static final int NUMERO_TOTAL_VARIAVEL = 2; //(TAMANHO DA JANELA)
-	public static final int NUMERO_MAXIMO_POLPULACAO = 40; //20
+	public static final int NUMERO_MAXIMO_POLPULACAO = 20; //20
 	public static final int TAMANHO_MAXIMO_MUTACAO_PROFUNDIDADE = 3;
 	// 3
 	
