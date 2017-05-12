@@ -97,16 +97,14 @@ public class Common {
 		 * M�todo de normaliza��o do professor de Mariana
 		 * (Dado - media)/(desvio padrao)
 		 */
-		public static double[] Normalizar2(HashMap<Integer, Double> serieTemporal){
+		public static void Normalizar2(HashMap<Integer, Double> serieTemporal){
 			Double media = CalcularMedia(serieTemporal);
 			Double desvioPadrao = CalcularDesvioPadrao(serieTemporal);
-			double [] r = {media, desvioPadrao};
 			serieTemporal.entrySet().forEach(x -> x.setValue((x.getValue() - media)/desvioPadrao));
 //			for (Map.Entry<Integer, Double> set : serieTemporal.entrySet()){
 //				System.out.println(set.getKey());
 //				System.out.println(set.getValue());
 //			}
-			return r;
 		}
 		
 		public static void NormalizarLN(HashMap<Integer, Double> serieTemporal){
@@ -116,6 +114,16 @@ public class Common {
 //				System.out.println(set.getValue());
 //			}
 			//return r;
+		}
+		
+		public static double CalcularDesvioPadrao(double[] respostas){
+			DescriptiveStatistics estatistica = new DescriptiveStatistics();
+			
+			for (Double valor : respostas){
+				estatistica.addValue(valor);
+			}
+			
+			return estatistica.getStandardDeviation();
 		}
 		
 		public static double CalcularDesvioPadrao(HashMap<Integer, Double> serieTemporal){
@@ -128,6 +136,15 @@ public class Common {
 			return estatistica.getStandardDeviation();
 		}
 
+		public static double CalcularMedia(double[] respostas){
+			DescriptiveStatistics estatistica = new DescriptiveStatistics();
+			
+			for (Double valor : respostas) {
+				estatistica.addValue(valor);
+			}
+			
+			return estatistica.getMean();
+		}
 		public static double CalcularMedia(HashMap<Integer, Double> serieTemporal){
 			DescriptiveStatistics estatistica = new DescriptiveStatistics();
 			

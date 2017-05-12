@@ -13,7 +13,8 @@ import br.poli.gp.Parametros;
 public class Functions {
 	
 	public static Random random = new Random();
-		
+	public static int iteration = 0;
+	
 	public static double createRandomNumberInRange(double max, double min){
 		return min + ( max - min) * random.nextDouble();
 	}
@@ -44,18 +45,19 @@ public class Functions {
 	}
 
 	private static double calculatePG(ArrayList<Double> position) throws IOException {
-		
+		//System.out.println(Parametros.Base);
 		HashMap<Integer, Double> serieTemporal = Common.lerBase(Parametros.Base);
-		double[] mediaDesvio = Common.Normalizar2(serieTemporal);
-		
+		Common.Normalizar2(serieTemporal);
+		double media = Common.CalcularMedia(serieTemporal);
+		double desvio = Common.CalcularDesvioPadrao(serieTemporal);
 		AlgoritmoGP gp = new AlgoritmoGP(EInicializacao.Completa, serieTemporal, Math.abs(position.get(0)),
 				(int) Math.abs(Math.floor(position.get(1)*Parametros.NUMERO_TOTAL_FUNCAO)), 
 				(int) Math.abs(position.get(2)*Parametros.TAMANHO_MAXIMO_PROFUNDIDADE_ARVORE), 
 				(int) Math.abs(Math.floor(position.get(3)*Parametros.NUMERO_MAXIMO_POPULACAO)), 
-				mediaDesvio[0], mediaDesvio[1]);
+				media, desvio);
 				
-	
-		return gp.runGP(0);
+		iteration++;
+		return gp.runGP(iteration);
 	}
 
 	private static double calculateSphere(ArrayList<Double> x) {

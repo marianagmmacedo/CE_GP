@@ -4,11 +4,15 @@ public class Parametros {
 	
 	// Configuracao experimento
 	public static final int NUMERO_TOTAL_SIMULACAO = 30;
-	public static final int NUMERO_TOTAL_ITERACAO = 100;
+	public static final int NUMERO_TOTAL_ITERACAO = 200;
 	public static final int ITERACAO_BREAK = 20;
 	public static final String TIPO_DE_OTIMIZACAO = "MINIMIZACAO";
 	
 	// Bases
+	public static final String[] Bases = {"sunspot", "lynx", "stock", "redwine", "accidentalDeathUSA", "airlines",
+										  "coloradoRiver", "dowJones", "electricity", "lakeerie", "ibm", "nsw",
+										  "pollution"};
+	
 	//public static final String Base = "ibm"; 
 	//public static final String Base = "sunspot"; 
 	//public static final String Base = "stock"; 
@@ -17,8 +21,11 @@ public class Parametros {
 	//public static final String Base = "airlines"; 
 	//public static final String Base = "coloradoRiver"; 
 	//public static final String Base = "dowJones"; 
-	//public static final String Base = "electricity"; 
-	public static final String Base = "lakeerie"; 
+	//public static final String Base = "airlines"; 
+	//public static final String Base = "coloradoRiver"; OK
+	//public static final String Base = "dowJones"; OK
+	public static final String Base = "electricity"; 
+	//public static final String Base = "lakeerie"; 
 	//public static final String Base = "lynx"; 
 	//public static final String Base = "nsw"; 
 	//public static final String Base = "pollution";
@@ -31,7 +38,7 @@ public class Parametros {
 	public static final int TAMANHO_MAXIMO_MUTACAO_PROFUNDIDADE = 3;
 	// 3
 	
-	public static final double CHANCE_CRIACAO_VARIAVEL = 0.5d; 
+	public static final double CHANCE_CRIACAO_VARIAVEL = 1d; 
 	public static final double TAXA_CRUZAMENTO_MUTACAO = 1.00;
 	public static final String TAXA_CRUZAMENTO_MUTACAO_DECRESCENTE = "EXPONENCIAL"; //"LINEAR", "EXPONENCIAL" ou "Nenhuma"
 	public static final double TAXA_CRUZAMENTO_MUTACAO_DECAIMENTO_EXPONENCIAL = 2.0d;
@@ -69,8 +76,9 @@ public class Parametros {
 	//Adicionar Novos Individuos enquanto roda o codigo
 	public static final int TAMANHO_NOVOS_INDIVIDUOS = 4;
 	public static final int NUMERO_NOVOS_INDIVIDUOS = 5;
-	public static final boolean GERAR_NOVOS_INDIVIDUOS = true;
+	public static final boolean GERAR_NOVOS_INDIVIDUOS = false;
 	
-	
+	//Muta��o de Descendente
+	public static final boolean MUTACAO_CLASSIFICADA = false;
 	
 }

@@ -18,7 +18,7 @@ public class FishSchoolSearch {
 		initializeParameters();
 		this.bestFish = this.population.get(0);
 		updateBestFish();
-		for (int simulation = 0; simulation < Parameters.numberMaximumSimulation; simulation++) {
+		for (int simulation = 0; simulation < 30; simulation++) {
 			for (int iteration = 0; iteration < Parameters.numberMaximumIteration; iteration++) {
 				individualMovement();
 				feeding();
@@ -26,9 +26,11 @@ public class FishSchoolSearch {
 				volitiveCollectiveMovement();
 				updateSteps();
 				updateBestFish();
-				System.out.println(this.bestFish.getFitness());
+				//System.out.println(this.bestFish.getFitness());
 			}
+			System.out.println(this.bestFish.getFitness());
 		}
+		
 	}
 
 	private void updateSteps() {

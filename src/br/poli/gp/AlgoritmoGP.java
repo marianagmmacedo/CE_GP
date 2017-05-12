@@ -117,6 +117,8 @@ public class AlgoritmoGP {
 			calcularFitnessPopulacao();
 			removerMenosAdaptados();
 			
+			//System.out.println("IT: " + iteracao);
+			
 			//Gerar novos individuos durante as iteracoes
 			if (Common.RANDOM.nextDouble() > 0.5 && Parametros.GERAR_NOVOS_INDIVIDUOS){
 				criarNovosIndividuos(Parametros.NUMERO_NOVOS_INDIVIDUOS, Parametros.TAMANHO_NOVOS_INDIVIDUOS);
@@ -161,8 +163,10 @@ public class AlgoritmoGP {
 		//showFitness(getFit);	
 		//showBothExpressionTreinamento();
 		//showBothExpression();
-		//System.out.println(this.melhorIndividuo.toString());
+//		System.out.println("ANSWER");
+//		System.out.println(this.melhorIndividuo.toString());
 		//return getFit;
+		
 		return fitnessValidacao;
 	}
 	
@@ -347,7 +351,7 @@ public class AlgoritmoGP {
 		}
 	}
 
-	private void reproduzir() {
+	public void reproduzir() {
 		// restrigir a arvore resposta
 		int tamanhoPopulacao = populacao.size();
 		for (int individuoIndex = 0; individuoIndex < tamanhoPopulacao; individuoIndex++) {
@@ -534,7 +538,7 @@ public class AlgoritmoGP {
 
 
 	private void otimizarMelhorIndividuo() {
-
+		
 		if(Parametros.SIMULATED_ANNEALING){
 			double temperatura = Parametros.TEMPERATURA_INICIAL_SIM_ANN;
 			double[] position = getConstantes(this.melhorIndividuo);
@@ -629,7 +633,8 @@ public class AlgoritmoGP {
 			}
 
 		}else if(Parametros.ESTRATEGIA_EVOLUCAO){ 
-//			System.out.println("ESTRATEGIA_EVOLUCAO");
+			//System.out.println("ESTRATEGIA_EVOLUCAO");
+			this.melhorIndividuo.expandirIndividuo();
 			double[] position = getConstantes(this.melhorIndividuo);
 			double o = 0.5;
 			double T = (1/Math.sqrt(position.length));
@@ -655,13 +660,17 @@ public class AlgoritmoGP {
 				}
 				if(otimizadoIndividuo.fitness < this.melhorIndividuo.fitness){
 					this.melhorIndividuo = (Individuo) Common.DeepCopy(otimizadoIndividuo);
-					System.out.println("melhor");
+//					System.out.println("OTIMIZADO");
+//					System.out.println(this.melhorIndividuo.toString());
+					//System.out.println("melhor");
 				}
 
 			}
 		} 
 			
 	    if(Parametros.ESTRATEGIA_EVOLUCAO_WORST){
+	    	//System.out.println("ESTRATEGIA_EVOLUCAO_WORST");
+	    	this.populacao.get(this.populacao.size()-1).expandirIndividuo();
 			double[] position = getConstantes(this.populacao.get(this.populacao.size()-1));
 			double o = 1.0;
 			double T = (1/Math.sqrt(position.length));
@@ -687,7 +696,7 @@ public class AlgoritmoGP {
 				}
 				if(otimizadoIndividuo.fitness < this.melhorIndividuo.fitness){
 					this.populacao.set(this.populacao.size()-1, (Individuo) Common.DeepCopy(otimizadoIndividuo));
-					System.out.println("melhor WORST");
+					//System.out.println("melhor WORST");
 				}
 
 			}

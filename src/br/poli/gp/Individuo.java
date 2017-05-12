@@ -44,6 +44,11 @@ public class Individuo implements Serializable {
 		otimizarArvore();
 	}
 	
+	public void expandirIndividuo()
+	{
+		arvore.expandirArvore(arvore);
+	}
+	
 	public List<Double> parseToDoubleList(HashMap<String, Double> variableValues){
 		return arvore.parseToDoubleList(variableValues);
 	}

@@ -12,7 +12,10 @@ public class RunMain {
 
 	public static void main(String[] args) throws IOException {
 		
-		FishSchoolSearch fss = new FishSchoolSearch();
+		for (int i = 0; i < 1; i++) {
+			FishSchoolSearch fss = new FishSchoolSearch();
+		}
+		
 	}
 
 }
