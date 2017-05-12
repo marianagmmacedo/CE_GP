@@ -4,8 +4,8 @@ public class Parametros {
 	
 	// Configuracao experimento
 	public static final int NUMERO_TOTAL_SIMULACAO = 30;
-	public static final int NUMERO_TOTAL_ITERACAO = 6000;
-	public static final int ITERACAO_BREAK = 600;
+	public static final int NUMERO_TOTAL_ITERACAO = 100;
+	public static final int ITERACAO_BREAK = 20;
 	public static final String TIPO_DE_OTIMIZACAO = "MINIMIZACAO";
 	
 	// Bases
@@ -13,21 +13,21 @@ public class Parametros {
 	//public static final String Base = "sunspot"; 
 	//public static final String Base = "stock"; 
 	//public static final String Base = "redwine"; 
-	public static final String Base = "accidentalDeathUSA"; 
-	//public static final String Base = "airlines"; OK
-	//public static final String Base = "coloradoRiver"; OK
-	//public static final String Base = "dowJones"; OK
+	//public static final String Base = "accidentalDeathUSA"; 
+	//public static final String Base = "airlines"; 
+	//public static final String Base = "coloradoRiver"; 
+	//public static final String Base = "dowJones"; 
 	//public static final String Base = "electricity"; 
-	//public static final String Base = "lakeerie"; OK
+	public static final String Base = "lakeerie"; 
 	//public static final String Base = "lynx"; 
-	//public static final String Base = "nsw"; OK
+	//public static final String Base = "nsw"; 
 	//public static final String Base = "pollution";
 		
 	// Configuracao arvore
 	public static final int TAMANHO_MAXIMO_PROFUNDIDADE_ARVORE = 6;
 	public static final int NUMERO_TOTAL_FUNCAO = 9;
 	public static final int NUMERO_TOTAL_VARIAVEL = 2; //(TAMANHO DA JANELA)
-	public static final int NUMERO_MAXIMO_POLPULACAO = 40; //20
+	public static final int NUMERO_MAXIMO_POPULACAO = 20; //20
 	public static final int TAMANHO_MAXIMO_MUTACAO_PROFUNDIDADE = 3;
 	// 3
 	
@@ -62,7 +62,7 @@ public class Parametros {
 	public static final int NUMERO_MAXIMO_VARIAVEL = 10;
 	
 	//Configuracao Estrategia Evolucionaria
-	public static final int ESTRATEGIA_EVOLUCAO_ITERACAO = 200;
+	public static final int ESTRATEGIA_EVOLUCAO_ITERACAO = 20;
 	public static final double TAXA_VALIDACAO = 0.20;
 	public static final boolean ESTRATEGIA_EVOLUCAO_TODOS = false;
 	

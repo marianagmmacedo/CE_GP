@@ -1,7 +1,14 @@
 package br.poli.fineTuning;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
+
+import br.poli.gp.AlgoritmoGP;
+import br.poli.gp.Common;
+import br.poli.gp.EInicializacao;
+import br.poli.gp.Parametros;
 
 public class Functions {
 	
@@ -19,7 +26,7 @@ public class Functions {
 		return sum;
 	}
 	
-	public static double calculateFitness(ArrayList<Double> position) {
+	public static double calculateFitness(ArrayList<Double> position) throws IOException {
 		switch (Parameters.function) {
 			case "sphere":
 				return calculateSphere(position);
@@ -27,11 +34,28 @@ public class Functions {
 				return calculateRotatedRastrigin(position);
 			case "rosenbrock":
 				return calculateRosenbrock(position);
+			case "AG":
+				return calculatePG(position);
 			default:
 				break;
 		}
 		
 		return 0.0;
+	}
+
+	private static double calculatePG(ArrayList<Double> position) throws IOException {
+		
+		HashMap<Integer, Double> serieTemporal = Common.lerBase(Parametros.Base);
+		double[] mediaDesvio = Common.Normalizar2(serieTemporal);
+		
+		AlgoritmoGP gp = new AlgoritmoGP(EInicializacao.Completa, serieTemporal, Math.abs(position.get(0)),
+				(int) Math.abs(Math.floor(position.get(1)*Parametros.NUMERO_TOTAL_FUNCAO)), 
+				(int) Math.abs(position.get(2)*Parametros.TAMANHO_MAXIMO_PROFUNDIDADE_ARVORE), 
+				(int) Math.abs(Math.floor(position.get(3)*Parametros.NUMERO_MAXIMO_POPULACAO)), 
+				mediaDesvio[0], mediaDesvio[1]);
+				
+	
+		return gp.runGP(0);
 	}
 
 	private static double calculateSphere(ArrayList<Double> x) {

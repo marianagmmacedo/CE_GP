@@ -1,6 +1,8 @@
 package br.poli.fineTuning;
 
+import java.io.IOException;
 import java.util.ArrayList;
+
 import br.poli.fineTuning.*;
 
 public class Fish {
@@ -12,7 +14,7 @@ public class Fish {
 	private double deltaFitness;
 	private boolean gotBetter;
 	
-	public Fish(){
+	public Fish() throws IOException{
 		this.position = new ArrayList<Double>();
 		this.setWeight(Parameters.weightInitial);
 		for (int dimensions = 0; dimensions < Parameters.numberMaximumDimension; dimensions++) {

@@ -1,5 +1,6 @@
 package br.poli.fineTuning;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class FishSchoolSearch {
@@ -11,7 +12,7 @@ public class FishSchoolSearch {
 	double weightSchool;
 	double oldWeightSchool;
 	
-	public FishSchoolSearch(){
+	public FishSchoolSearch() throws IOException{
 		this.stepIndividual = Parameters.stepIndividual;
 		this.stepVolitive = Parameters.stepVolitive;
 		initializeParameters();
@@ -45,7 +46,7 @@ public class FishSchoolSearch {
 		}	
 	}
 
-	private void volitiveCollectiveMovement() {
+	private void volitiveCollectiveMovement() throws IOException {
 		updateWeightSchool();
 		ArrayList<Double> barycenter = calculateBarycenter();
 		for (int eachFish = 0; eachFish < Parameters.numberMaximumPopulation; eachFish++) {
@@ -160,7 +161,7 @@ public class FishSchoolSearch {
 		return maximum;
 	}
 
-	private void individualMovement() {
+	private void individualMovement() throws IOException {
 		for (int eachFish = 0; eachFish < Parameters.numberMaximumPopulation; eachFish++) {
 			this.population.get(eachFish).setGotBetter(false);
 			ArrayList<Double> newPosition = new ArrayList<Double>();
@@ -189,7 +190,7 @@ public class FishSchoolSearch {
 		}
 	}
 
-	private void initializeParameters() {
+	private void initializeParameters() throws IOException {
 		this.population = new ArrayList<Fish>();
 		this.weightSchool = 0.0;
 		for (int eachFish = 0; eachFish < Parameters.numberMaximumPopulation; eachFish++) {

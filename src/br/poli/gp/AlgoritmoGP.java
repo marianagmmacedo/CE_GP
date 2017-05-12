@@ -68,13 +68,20 @@ public class AlgoritmoGP {
 			double taxaMutacaoCruzamento_, int numeroFuncao_, int tamanhaMaximoArvore_, int numeroPopulacao_, double media, double desvioPadrao) throws IOException{
 		populacao = new ArrayList<Individuo>();
 		this.serieTemporal = serieTemporal;
-		this.taxaMutacaoCruzamento = taxaMutacaoCruzamento_;
-		this.numeroFuncao = numeroFuncao_;
-		this.tamanhaMaximoArvore = tamanhaMaximoArvore_;
-		this.validarBase = (int) Math.ceil(serieTemporal.size()*Parametros.TAXA_VALIDACAO);
-		this.numeroPopulacao = numeroPopulacao_;
-		this.mediaSerieTemporal = media;
-		this.desvioPadraoSerieTemporal = desvioPadrao;
+		taxaMutacaoCruzamento = taxaMutacaoCruzamento_;
+//		System.out.println(this.taxaMutacaoCruzamento);
+		numeroFuncao = numeroFuncao_;
+//		System.out.println(numeroFuncao);
+		tamanhaMaximoArvore = tamanhaMaximoArvore_;
+//		System.out.println(tamanhaMaximoArvore);
+		validarBase = (int) Math.ceil(serieTemporal.size()*Parametros.TAXA_VALIDACAO);
+//		System.out.println(validarBase);
+		numeroPopulacao = numeroPopulacao_;
+//		System.out.println(numeroPopulacao);
+		mediaSerieTemporal = media;
+//		System.out.println(mediaSerieTemporal);
+		desvioPadraoSerieTemporal = desvioPadrao;
+//		System.out.println(desvioPadraoSerieTemporal);
 		criarNovosIndividuos(numeroPopulacao_, tipoInicializacao);
 	}
 	
@@ -83,7 +90,7 @@ public class AlgoritmoGP {
 		this.serieTemporal = serieTemporal;
 		this.taxaMutacaoCruzamento = Parametros.TAXA_CRUZAMENTO_MUTACAO;
 		this.validarBase = (int) Math.ceil(serieTemporal.size()*Parametros.TAXA_VALIDACAO);
-		this.numeroPopulacao = Parametros.NUMERO_MAXIMO_POLPULACAO;
+		this.numeroPopulacao = Parametros.NUMERO_MAXIMO_POPULACAO;
 		criarNovosIndividuos(this.numeroPopulacao, tipoInicializacao);
 	}
 
@@ -92,13 +99,13 @@ public class AlgoritmoGP {
 		this.serieTemporal = serieTemporal;
 		this.taxaMutacaoCruzamento = Parametros.TAXA_CRUZAMENTO_MUTACAO;
 		this.validarBase = (int) Math.floor(serieTemporal.size()*Parametros.TAXA_VALIDACAO);
-		this.numeroPopulacao = Parametros.NUMERO_MAXIMO_POLPULACAO;
+		this.numeroPopulacao = Parametros.NUMERO_MAXIMO_POPULACAO;
 		criarNovosIndividuos(this.numeroPopulacao, profundidadeIndividuo);	
 	}
 
 	public double runGP(int sim) throws IOException {
-		this.simulacao = sim;
-		this.tamanhoJanela = Parametros.NUMERO_TOTAL_VARIAVEL;
+		simulacao = sim;
+		tamanhoJanela = Parametros.NUMERO_TOTAL_VARIAVEL;
 		
 		atualizarMelhorIndividuo();
 		double[] getFit = new double[Parametros.NUMERO_TOTAL_ITERACAO/Parametros.ITERACAO_BREAK];
@@ -297,8 +304,8 @@ public class AlgoritmoGP {
 			all++;
 
 		}	
-		System.out.println("validacao");
-		System.out.println(Math.sqrt(fitness/(validarBase)));
+		//System.out.println("validacao");
+		//System.out.println(Math.sqrt(fitness/(validarBase)));
 		fitnessValidacao = Math.sqrt(fitness/(validarBase));
 		
 		hm = new HashMap<String, Double>();
@@ -326,8 +333,8 @@ public class AlgoritmoGP {
 			all2++;
 
 		}	
-		System.out.println("treinamento");
-		System.out.println(Math.sqrt(fitness2/(serieTemporal.size()-this.tamanhoJanela-validarBase)));
+		//System.out.println("treinamento");
+		//System.out.println(Math.sqrt(fitness2/(serieTemporal.size()-this.tamanhoJanela-validarBase)));
 		
 		
 		
@@ -362,6 +369,7 @@ public class AlgoritmoGP {
 			int noMutacaoFilho = Common.RANDOM.nextInt((individuo.noFuncao.size()));
 			Funcao fFilho = individuo.noFuncao.get(noMutacaoFilho);
 			fFilho.crossover((new Individuo(EInicializacao.Mutacao, numeroFuncao, tamanhaMaximoArvore)).arvore.no);
+			individuo.otimizarArvore();
 		}
 	}
 
