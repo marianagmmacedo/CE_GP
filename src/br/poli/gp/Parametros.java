@@ -9,12 +9,16 @@ public class Parametros {
 	public static final String TIPO_DE_OTIMIZACAO = "MINIMIZACAO";
 	
 	// Bases
+	public static final String[] Bases = {"sunspot", "lynx", "stock", "redwine", "accidentalDeathUSA", "airlines",
+										  "coloradoRiver", "dowJones", "electricity", "lakeerie", "ibm", "nsw",
+										  "pollution"};
+	
 	//public static final String Base = "ibm"; 
 	//public static final String Base = "sunspot"; 
 	//public static final String Base = "stock"; 
 	//public static final String Base = "redwine"; 
-	public static final String Base = "accidentalDeathUSA"; 
-	//public static final String Base = "airlines"; OK
+	//public static final String Base = "accidentalDeathUSA"; 
+	public static final String Base = "airlines"; 
 	//public static final String Base = "coloradoRiver"; OK
 	//public static final String Base = "dowJones"; OK
 	//public static final String Base = "electricity"; 
@@ -43,9 +47,9 @@ public class Parametros {
 	public static final String CONVERGENCIA = "/resultados/"+Base+"/"+Base+"_convergencia_";
 
 	//Otimizacao
-	public static final boolean OTIMIZAR = true;
+	public static final boolean OTIMIZAR = false;
 	public static final boolean OTIMIZAR_SEMPRE = false;
-	public static final boolean ESTRATEGIA_EVOLUCAO_WORST = true;
+	public static final boolean ESTRATEGIA_EVOLUCAO_WORST = false;
 	public static final boolean SIMULATED_ANNEALING = false;
 	public static final boolean HILL_CLIMBING = false;
 	public static final boolean VARIAR_JANELA = false;
@@ -69,7 +73,7 @@ public class Parametros {
 	//Adicionar Novos Individuos enquanto roda o codigo
 	public static final int TAMANHO_NOVOS_INDIVIDUOS = 4;
 	public static final int NUMERO_NOVOS_INDIVIDUOS = 5;
-	public static final boolean GERAR_NOVOS_INDIVIDUOS = true;
+	public static final boolean GERAR_NOVOS_INDIVIDUOS = false;
 	
 	
 	

@@ -62,11 +62,11 @@ public class Main {
 		for (int simulacao = 0; simulacao < Parametros.NUMERO_TOTAL_SIMULACAO; simulacao++) {
 			System.out.println(simulacao);
 			AlgoritmoGP gp = new AlgoritmoGP(EInicializacao.Completa, serieTemporal, taxaMutacao, Parametros.NUMERO_TOTAL_FUNCAO, tamanhaMaximoArvore, simulacao, taxaMutacao, taxaMutacao);
-			double[] each = gp.runGP(simulacao);
+			//double[] each = gp.runGP(simulacao);
 			
 			dataXH[simulacao] = taxaMutacao;
 			dataYH1[simulacao] = tamanhaMaximoArvore;
-			dataZH[simulacao] = each[each.length-1];
+			//dataZH[simulacao] = each[each.length-1];
 			System.out.println(dataXH[simulacao]);
 			System.out.println(dataYH1[simulacao]);
 			System.out.println(dataZH[simulacao]);

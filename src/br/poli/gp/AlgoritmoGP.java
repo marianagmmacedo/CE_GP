@@ -110,6 +110,8 @@ public class AlgoritmoGP {
 			calcularFitnessPopulacao();
 			removerMenosAdaptados();
 			
+			System.out.println("IT: " + iteracao);
+			
 			//Gerar novos individuos durante as iteracoes
 			if (Common.RANDOM.nextDouble() > 0.5 && Parametros.GERAR_NOVOS_INDIVIDUOS){
 				criarNovosIndividuos(Parametros.NUMERO_NOVOS_INDIVIDUOS, Parametros.TAMANHO_NOVOS_INDIVIDUOS);
