@@ -52,7 +52,7 @@ public class Arvore implements Serializable {
 		no.corrigirNos(null, noFuncao, this);
 	}
 	
-	public static Funcao criarNovaExpressaoAleatoria(int profundidade, int profundidadeMaxima, Arvore arvore) {
+	public static Funcao criarNovaExpressaoAleatoria(int profundidade, int profundidadeMaxima, Arvore arvore, int NUMERO_TOTAL_FUNCAO) {
 
 		//fluxo caso atingida a profundidade maxima. Devem-se criar folhas
 		if (profundidade == profundidadeMaxima){
@@ -66,7 +66,7 @@ public class Arvore implements Serializable {
 		//Fluxo caso seja n� de fun��o.
 		Funcao expressao = null;
 //		System.out.println(Parametros.NUMERO_TOTAL_FUNCAO);
-		int numRand = Common.RANDOM.nextInt(Parametros.NUMERO_TOTAL_FUNCAO);
+		int numRand = Common.RANDOM.nextInt(NUMERO_TOTAL_FUNCAO);
 		
 		switch (numRand) {
 			case 0:
@@ -104,9 +104,9 @@ public class Arvore implements Serializable {
 		expressao.arvore = arvore;
 		
 		if (expressao != null){
-			expressao.esquerda = Arvore.criarNovaExpressaoAleatoria(profundidade+1, profundidadeMaxima, arvore);
+			expressao.esquerda = Arvore.criarNovaExpressaoAleatoria(profundidade+1, profundidadeMaxima, arvore, NUMERO_TOTAL_FUNCAO);
 			if (!expressao.apenasNoEsquerdo)
-				expressao.direita = Arvore.criarNovaExpressaoAleatoria(profundidade+1, profundidadeMaxima, arvore);
+				expressao.direita = Arvore.criarNovaExpressaoAleatoria(profundidade+1, profundidadeMaxima, arvore, NUMERO_TOTAL_FUNCAO);
 		}
 		
 		return expressao;

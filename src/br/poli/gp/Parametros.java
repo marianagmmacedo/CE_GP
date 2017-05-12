@@ -3,9 +3,9 @@ package br.poli.gp;
 public class Parametros {
 	
 	// Configuracao experimento
-	public static final int NUMERO_TOTAL_SIMULACAO = 1;
-	public static final int NUMERO_TOTAL_ITERACAO = 5000;
-	public static final int ITERACAO_BREAK = 250;
+	public static final int NUMERO_TOTAL_SIMULACAO = 30;
+	public static final int NUMERO_TOTAL_ITERACAO = 6000;
+	public static final int ITERACAO_BREAK = 600;
 	public static final String TIPO_DE_OTIMIZACAO = "MINIMIZACAO";
 	
 	// Bases
@@ -13,22 +13,23 @@ public class Parametros {
 	//public static final String Base = "sunspot"; 
 	//public static final String Base = "stock"; 
 	//public static final String Base = "redwine"; 
-	//public static final String Base = "accidentalDeathUSA"; OK
+	public static final String Base = "accidentalDeathUSA"; 
 	//public static final String Base = "airlines"; OK
 	//public static final String Base = "coloradoRiver"; OK
 	//public static final String Base = "dowJones"; OK
 	//public static final String Base = "electricity"; 
 	//public static final String Base = "lakeerie"; OK
-	public static final String Base = "lynx"; 
+	//public static final String Base = "lynx"; 
 	//public static final String Base = "nsw"; OK
 	//public static final String Base = "pollution";
 		
 	// Configuracao arvore
-	public static final int TAMANHO_MAXIMO_PROFUNDIDADE_ARVORE = 8;
-	public static final int NUMERO_TOTAL_FUNCAO = 10;
+	public static final int TAMANHO_MAXIMO_PROFUNDIDADE_ARVORE = 6;
+	public static final int NUMERO_TOTAL_FUNCAO = 9;
 	public static final int NUMERO_TOTAL_VARIAVEL = 2; //(TAMANHO DA JANELA)
-	public static final int NUMERO_MAXIMO_POLPULACAO = 20;
-	public static final int TAMANHO_MAXIMO_MUTACAO_PROFUNDIDADE = 2;
+	public static final int NUMERO_MAXIMO_POLPULACAO = 40; //20
+	public static final int TAMANHO_MAXIMO_MUTACAO_PROFUNDIDADE = 3;
+	// 3
 	
 	public static final double CHANCE_CRIACAO_VARIAVEL = 0.5d; 
 	public static final double TAXA_CRUZAMENTO_MUTACAO = 1.00;
@@ -42,9 +43,9 @@ public class Parametros {
 	public static final String CONVERGENCIA = "/resultados/"+Base+"/"+Base+"_convergencia_";
 
 	//Otimizacao
-	public static final boolean OTIMIZAR = false;
-	public static final boolean OTIMIZAR_SEMPRE = true;
-	public static final boolean ESTRATEGIA_EVOLUCAO_WORST = false;
+	public static final boolean OTIMIZAR = true;
+	public static final boolean OTIMIZAR_SEMPRE = false;
+	public static final boolean ESTRATEGIA_EVOLUCAO_WORST = true;
 	public static final boolean SIMULATED_ANNEALING = false;
 	public static final boolean HILL_CLIMBING = false;
 	public static final boolean VARIAR_JANELA = false;
@@ -63,12 +64,12 @@ public class Parametros {
 	//Configuracao Estrategia Evolucionaria
 	public static final int ESTRATEGIA_EVOLUCAO_ITERACAO = 200;
 	public static final double TAXA_VALIDACAO = 0.20;
-	public static final boolean ESTRATEGIA_EVOLUCAO_TODOS = true;
+	public static final boolean ESTRATEGIA_EVOLUCAO_TODOS = false;
 	
 	//Adicionar Novos Individuos enquanto roda o codigo
-	public static final int TAMANHO_NOVOS_INDIVIDUOS = 10;
-	public static final int NUMERO_NOVOS_INDIVIDUOS = 100;
-	public static final boolean GERAR_NOVOS_INDIVIDUOS = false;
+	public static final int TAMANHO_NOVOS_INDIVIDUOS = 4;
+	public static final int NUMERO_NOVOS_INDIVIDUOS = 5;
+	public static final boolean GERAR_NOVOS_INDIVIDUOS = true;
 	
 	
 	

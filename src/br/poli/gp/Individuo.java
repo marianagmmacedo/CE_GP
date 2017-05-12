@@ -17,29 +17,29 @@ public class Individuo implements Serializable {
 	List<Funcao> noFuncao;
 	boolean fitnessJaCalculado;
 
-	public Individuo(int tamanhoProfundidade){
+	public Individuo(int tamanhoProfundidade, int numeroFuncao){
 		arvore = new Arvore();
 		fitness = Parametros.TIPO_DE_OTIMIZACAO == "MINIMIZACAO"? Double.MAX_VALUE: Double.MIN_VALUE;
-		arvore.no = Arvore.criarNovaExpressaoAleatoria(1, tamanhoProfundidade, arvore);
+		arvore.no = Arvore.criarNovaExpressaoAleatoria(1, tamanhoProfundidade, arvore, numeroFuncao);
 		noFuncao = new ArrayList<Funcao>();
 		fitnessJaCalculado = false;
 				
 		otimizarArvore();
 	}
 	
-	public Individuo(EInicializacao tipoInicializacao){
+	public Individuo(EInicializacao tipoInicializacao, int numeroFuncao, int TAMANHO_MAXIMO_PROFUNDIDADE_ARVORE){
 		arvore = new Arvore();
 		noFuncao = new ArrayList<Funcao>();
 		fitnessJaCalculado = false;
 		
 		if (tipoInicializacao == EInicializacao.Aleatoria){
-			arvore.no = Arvore.criarNovaExpressaoAleatoria(1, 1 + Common.RANDOM.nextInt(Parametros.TAMANHO_MAXIMO_PROFUNDIDADE_ARVORE-1), arvore);
+			arvore.no = Arvore.criarNovaExpressaoAleatoria(1, 1 + Common.RANDOM.nextInt(TAMANHO_MAXIMO_PROFUNDIDADE_ARVORE-1), arvore, numeroFuncao);
 		}else if (tipoInicializacao == EInicializacao.Completa)
-			arvore.no = Arvore.criarNovaExpressaoAleatoria(1, Parametros.TAMANHO_MAXIMO_PROFUNDIDADE_ARVORE, arvore);
+			arvore.no = Arvore.criarNovaExpressaoAleatoria(1, TAMANHO_MAXIMO_PROFUNDIDADE_ARVORE, arvore, numeroFuncao);
 		else if (tipoInicializacao == EInicializacao.MetadeProfundidade)
-			arvore.no = Arvore.criarNovaExpressaoAleatoria(1, Parametros.TAMANHO_MAXIMO_PROFUNDIDADE_ARVORE/2, arvore);
+			arvore.no = Arvore.criarNovaExpressaoAleatoria(1, TAMANHO_MAXIMO_PROFUNDIDADE_ARVORE/2, arvore, numeroFuncao);
 		else if (tipoInicializacao == EInicializacao.Mutacao)
-			arvore.no = Arvore.criarNovaExpressaoAleatoria(1, Parametros.TAMANHO_MAXIMO_MUTACAO_PROFUNDIDADE, arvore);
+			arvore.no = Arvore.criarNovaExpressaoAleatoria(1, Parametros.TAMANHO_MAXIMO_MUTACAO_PROFUNDIDADE, arvore, numeroFuncao);
 				
 		otimizarArvore();
 	}

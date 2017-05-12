@@ -133,11 +133,6 @@ public class FishSchoolSearch {
 			    	}
 			    	
 			}
-		 	double fit = Functions.calculateFitness(newPosition);
-			if(fit < this.population.get(eachFish).getFitness()){
-				this.population.get(eachFish).setFitness(fit);
-				this.population.get(eachFish).setPosition(newPosition);
-			}
 		}
 	}
 
