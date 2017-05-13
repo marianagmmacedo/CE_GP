@@ -4,7 +4,7 @@ public class Parametros {
 	
 	// Configuracao experimento
 	public static final int NUMERO_TOTAL_SIMULACAO = 30;
-	public static final int NUMERO_TOTAL_ITERACAO = 200;
+	public static final int NUMERO_TOTAL_ITERACAO = 6000;
 	public static final int ITERACAO_BREAK = 20;
 	public static final String TIPO_DE_OTIMIZACAO = "MINIMIZACAO";
 	
@@ -38,9 +38,9 @@ public class Parametros {
 	public static final int TAMANHO_MAXIMO_MUTACAO_PROFUNDIDADE = 3;
 	// 3
 	
-	public static final double CHANCE_CRIACAO_VARIAVEL = 1d; 
-	public static final double TAXA_CRUZAMENTO_MUTACAO = 1.00;
-	public static final String TAXA_CRUZAMENTO_MUTACAO_DECRESCENTE = "EXPONENCIAL"; //"LINEAR", "EXPONENCIAL" ou "Nenhuma"
+	public static final double CHANCE_CRIACAO_VARIAVEL = 0.5d; 
+	public static final double TAXA_CRUZAMENTO_MUTACAO = 0.05d;
+	public static final String TAXA_CRUZAMENTO_MUTACAO_DECRESCENTE = "Nenhuma"; //"LINEAR", "EXPONENCIAL" ou "Nenhuma"
 	public static final double TAXA_CRUZAMENTO_MUTACAO_DECAIMENTO_EXPONENCIAL = 2.0d;
 	
 	
@@ -50,13 +50,13 @@ public class Parametros {
 	public static final String CONVERGENCIA = "/resultados/"+Base+"/"+Base+"_convergencia_";
 
 	//Otimizacao
-	public static final boolean OTIMIZAR = true;
+	public static final boolean OTIMIZAR = false;
 	public static final boolean OTIMIZAR_SEMPRE = false;
-	public static final boolean ESTRATEGIA_EVOLUCAO_WORST = true;
+	public static final boolean ESTRATEGIA_EVOLUCAO_WORST = false;
 	public static final boolean SIMULATED_ANNEALING = false;
 	public static final boolean HILL_CLIMBING = false;
 	public static final boolean VARIAR_JANELA = false;
-	public static final boolean ESTRATEGIA_EVOLUCAO = true;
+	public static final boolean ESTRATEGIA_EVOLUCAO = false;
 	
 	//Configuracao Simulated Annealing
 	public static final double TEMPERATURA_FINAL_SIM_ANN = 0.1;
@@ -80,5 +80,8 @@ public class Parametros {
 	
 	//Muta��o de Descendente
 	public static final boolean MUTACAO_CLASSIFICADA = false;
+	
+	//
+	public static final boolean GP_CANONICA = true;
 	
 }

@@ -86,7 +86,7 @@ public class Common {
 		}
 		
 		/*
-		 * Divide todos pelo maior valor.
+		 * Divide todos pelo maior valor. (não é uma boa forma para normalizar)
 		 */
 		public static void Normalizar1(HashMap<Integer, Double> serieTemporal){
 			Double maximoValor = serieTemporal.values().stream().max((x,y) -> Double.compare(x, y)).get();

@@ -27,20 +27,25 @@ public class ThreadMain extends Thread {
 			}
 
 			for (String base : stringList){
+				HashMap<Integer, Double> serieTemporal = Common.lerBase(base);
+				if (base.equals("lynx"))
+					Common.NormalizarLN(serieTemporal);
+				else
+					Common.Normalizar2(serieTemporal);
 				
-				
-				HashMap<Integer, Double> serieTemporal = Common.lerBase(Parametros.Base);
 				double[] mediaDesvio = {Common.CalcularMedia(serieTemporal), Common.CalcularDesvioPadrao(serieTemporal)};
 
 				double[] respostas = new double[30];
 
-				System.out.println("Base: " + base);
+				//System.out.println("Base: " + base);
 
 				for (int i = 0; i < 30;){
 
+					System.out.println(base + ", Sim: " + (i + 1));
+					
 					AlgoritmoGP gp = new AlgoritmoGP(EInicializacao.Completa, serieTemporal, Parametros.TAXA_CRUZAMENTO_MUTACAO
 							, Parametros.NUMERO_TOTAL_FUNCAO, Parametros.TAMANHO_MAXIMO_PROFUNDIDADE_ARVORE
-							, Parametros.NUMERO_MAXIMO_POLPULACAO, mediaDesvio[0], mediaDesvio[1]);
+							, Parametros.NUMERO_MAXIMO_POPULACAO, mediaDesvio[0], mediaDesvio[1]);
 
 					double d = gp.runGP(i);
 

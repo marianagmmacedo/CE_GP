@@ -43,25 +43,47 @@ public class RunMain {
 	
 	static void mainCarlos() throws Exception{
 
-		Individuo i = new Individuo(3, 9);
+		/*Individuo i = new Individuo(3, 9);
 		System.out.println(i);
 		i.expandirIndividuo();
 		System.out.println(i);
+		*/
+		/*
+		int j = 6;
+		HashMap<Integer, Double> serieTemporal = Common.lerBase(Parametros.Bases[j]);
+		double[] mediaDesvio = {Common.CalcularMedia(serieTemporal), Common.CalcularDesvioPadrao(serieTemporal)};
+		double[] respostas = new double[30];
+		
+		System.out.println("Base: " + Parametros.Bases[j]);
+		
+		for (int i = 0; i < 30;){
+			System.out.print("Sim: " + i + " ");
+			AlgoritmoGP gp = new AlgoritmoGP(EInicializacao.Completa, serieTemporal, Parametros.TAXA_CRUZAMENTO_MUTACAO
+					, Parametros.NUMERO_TOTAL_FUNCAO, Parametros.TAMANHO_MAXIMO_PROFUNDIDADE_ARVORE
+					, Parametros.NUMERO_MAXIMO_POPULACAO, mediaDesvio[0], mediaDesvio[1]);
+
+			double d = gp.runGP(i);
+
+			if (!(Double.isInfinite(d) || Double.isNaN(d))){
+				respostas[i]=d;
+				i++;
+			}
+			
+			System.out.println("Res: " + d);
+			
+		}*/
 		
 		/*
-		HashMap<Integer, Double> serieTemporal = Common.lerBase(Parametros.Base);
 		AlgoritmoGP gp = new AlgoritmoGP(EInicializacao.Completa, serieTemporal, 1
 				, Parametros.NUMERO_TOTAL_FUNCAO, 4
 				, 2, 1, 1);
 		
 		gp.runGP(0);
 		
-	double[] mediaDesvio = {Common.CalcularMedia(serieTemporal), Common.CalcularDesvioPadrao(serieTemporal)};
+		double[] mediaDesvio = {Common.CalcularMedia(serieTemporal), Common.CalcularDesvioPadrao(serieTemporal)};
 
 		double[] respostas = new double[30];
-*/
-		
-	/*
+		*/
 		Thread[] tList = new Thread[4];
 		int threadLength = Parametros.Bases.length;
 		int startingIndex = 0;
@@ -77,7 +99,7 @@ public class RunMain {
 			
 			startingIndex += indexFactor;
 		}
-		*/
+		
 	}
 
 	static void mainMariana() throws Exception{

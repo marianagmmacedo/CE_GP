@@ -58,33 +58,33 @@ public class AlgoritmoGP {
 	public int validarBase;
 	double taxaMutacaoCruzamento;
 	int numeroFuncao;
-    int tamanhaMaximoArvore;
-    int numeroPopulacao;
-    double mediaSerieTemporal;
-    double desvioPadraoSerieTemporal;
-    double fitnessValidacao;
-	
+	int tamanhaMaximoArvore;
+	int numeroPopulacao;
+	double mediaSerieTemporal;
+	double desvioPadraoSerieTemporal;
+	double fitnessValidacao;
+
 	public AlgoritmoGP(EInicializacao tipoInicializacao, HashMap<Integer, Double> serieTemporal, 
 			double taxaMutacaoCruzamento_, int numeroFuncao_, int tamanhaMaximoArvore_, int numeroPopulacao_, double media, double desvioPadrao) throws IOException{
 		populacao = new ArrayList<Individuo>();
 		this.serieTemporal = serieTemporal;
 		taxaMutacaoCruzamento = taxaMutacaoCruzamento_;
-//		System.out.println(this.taxaMutacaoCruzamento);
+		//		System.out.println(this.taxaMutacaoCruzamento);
 		numeroFuncao = numeroFuncao_;
-//		System.out.println(numeroFuncao);
+		//		System.out.println(numeroFuncao);
 		tamanhaMaximoArvore = tamanhaMaximoArvore_;
-//		System.out.println(tamanhaMaximoArvore);
+		//		System.out.println(tamanhaMaximoArvore);
 		validarBase = (int) Math.ceil(serieTemporal.size()*Parametros.TAXA_VALIDACAO);
-//		System.out.println(validarBase);
+		//		System.out.println(validarBase);
 		numeroPopulacao = numeroPopulacao_;
-//		System.out.println(numeroPopulacao);
+		//		System.out.println(numeroPopulacao);
 		mediaSerieTemporal = media;
-//		System.out.println(mediaSerieTemporal);
+		//		System.out.println(mediaSerieTemporal);
 		desvioPadraoSerieTemporal = desvioPadrao;
-//		System.out.println(desvioPadraoSerieTemporal);
+		//		System.out.println(desvioPadraoSerieTemporal);
 		criarNovosIndividuos(numeroPopulacao_, tipoInicializacao);
 	}
-	
+
 	public AlgoritmoGP(EInicializacao tipoInicializacao, HashMap<Integer, Double> serieTemporal) throws IOException{
 		populacao = new ArrayList<Individuo>();
 		this.serieTemporal = serieTemporal;
@@ -106,31 +106,31 @@ public class AlgoritmoGP {
 	public double runGP(int sim) throws IOException {
 		simulacao = sim;
 		tamanhoJanela = Parametros.NUMERO_TOTAL_VARIAVEL;
-		
+
 		atualizarMelhorIndividuo();
 		double[] getFit = new double[Parametros.NUMERO_TOTAL_ITERACAO/Parametros.ITERACAO_BREAK];
-		
+
 		int size = 0;
-		
+
 		for (int iteracao = 0; iteracao < Parametros.NUMERO_TOTAL_ITERACAO; iteracao++) {
 			reproduzir();
 			calcularFitnessPopulacao();
 			removerMenosAdaptados();
-			
+
 			//System.out.println("IT: " + iteracao);
-			
+
 			//Gerar novos individuos durante as iteracoes
 			if (Common.RANDOM.nextDouble() > 0.5 && Parametros.GERAR_NOVOS_INDIVIDUOS){
 				criarNovosIndividuos(Parametros.NUMERO_NOVOS_INDIVIDUOS, Parametros.TAMANHO_NOVOS_INDIVIDUOS);
 			}
-			
+
 			// Atualizar melhor individuo
 			Individuo _melhorIndi = this.melhorIndividuo;
 			atualizarMelhorIndividuo();
 
 			//Caso o individuo tenha sido alterado
 			if(Common.RANDOM.nextDouble() > 0.5 && Parametros.OTIMIZAR){
-				
+
 				if (_melhorIndi != this.melhorIndividuo || (iteracao==Parametros.NUMERO_TOTAL_ITERACAO-1)){
 					//System.out.println(this.melhorIndividuo.toString());
 					otimizarMelhorIndividuo();			
@@ -138,14 +138,14 @@ public class AlgoritmoGP {
 			}else if(Parametros.OTIMIZAR_SEMPRE){
 				otimizarMelhorIndividuo();
 			}
-			
-			
+
+
 			if(iteracao%Parametros.ITERACAO_BREAK==0){
-//				otimizarMelhorIndividuo();
+				//				otimizarMelhorIndividuo();
 				getFit[size] = this.melhorIndividuo.fitness;
 				size++;
 			}
-			
+
 			if (Parametros.TAXA_CRUZAMENTO_MUTACAO_DECRESCENTE.equals("LINEAR")){
 				this.taxaMutacaoCruzamento -= Parametros.TAXA_CRUZAMENTO_MUTACAO/Parametros.NUMERO_TOTAL_ITERACAO;
 			} else if (Parametros.TAXA_CRUZAMENTO_MUTACAO_DECRESCENTE.equals("EXPONENCIAL")){
@@ -153,29 +153,29 @@ public class AlgoritmoGP {
 			}else if (Parametros.TAXA_CRUZAMENTO_MUTACAO_DECRESCENTE.equals("MENOS")){
 				this.taxaMutacaoCruzamento -= 0.01;
 			}
-			
+
 			//System.out.println("IT: " + iteracao + "/" + Parametros.NUMERO_TOTAL_ITERACAO + "  /  " + this.melhorIndividuo.fitness);
 		}
-		
+
 		calcularFitnessIndividuoFinal(this.melhorIndividuo);
 
 		//Imprimir graficos do fitness
 		//showFitness(getFit);	
 		//showBothExpressionTreinamento();
 		//showBothExpression();
-//		System.out.println("ANSWER");
-//		System.out.println(this.melhorIndividuo.toString());
+		//		System.out.println("ANSWER");
+		//		System.out.println(this.melhorIndividuo.toString());
 		//return getFit;
-		
+
 		return fitnessValidacao;
 	}
-	
+
 	private void criarNovosIndividuos(int numeroIndividuos, int profundidadeIndividuo){
 		for (int i = 0; i < numeroIndividuos; i++){
 			populacao.add(new Individuo(profundidadeIndividuo, numeroFuncao));
 		}
 	}
-	
+
 	private void criarNovosIndividuos(int numeroIndividuos, EInicializacao tipoInicializacao){
 		for (int i = 0; i < numeroIndividuos; i++){
 			populacao.add(new Individuo(tipoInicializacao, numeroFuncao, tamanhaMaximoArvore));
@@ -188,7 +188,7 @@ public class AlgoritmoGP {
 		for (int i = 0; i < labels.length; i++) {
 			labels[i] = Integer.toString((i));
 		}
-		
+
 		//System.out.println("FINAL-----------");
 		for (int i = 0; i < this.serieTreinamento.length; i++) {
 			//this.serieTreinamento[i] = (this.serieTreinamento[i]*this.desvioPadraoSerieTemporal) + mediaSerieTemporal;
@@ -231,14 +231,14 @@ public class AlgoritmoGP {
 		ImageIO.write(awtImage, "png", new File(directory.getAbsolutePath() + Parametros.SERIES+this.simulacao+"_bothSeries_Treinamento.png"));
 
 	}
-	
+
 	private void showBothExpression() throws IOException {
 		// The labels for the chart
 		String[] labels = new String[validarBase];
 		for (int i = 0; i < labels.length; i++) {
 			labels[i] = Integer.toString((i));
 		}
-		
+
 		//System.out.println("FINAL-----------");
 		for (int i = 0; i < this.serie.length; i++) {
 			//this.serie[i] = (this.serie[i]*this.desvioPadraoSerieTemporal) + mediaSerieTemporal;
@@ -303,15 +303,15 @@ public class AlgoritmoGP {
 			fitness += Math.pow( ( ((this.serie[all]*this.desvioPadraoSerieTemporal) + mediaSerieTemporal)  - ((this.previsto[all]*this.desvioPadraoSerieTemporal) + mediaSerieTemporal) ) , 2);
 			//fitness += Math.pow(Math.pow(Math.E, this.serie[all]) - Math.pow(Math.E, this.previsto[all]), 2);
 			//System.out.println("serie"+this.serie[all]);
-//			System.out.println("previsto"+this.previsto[all]);
-			
+			//			System.out.println("previsto"+this.previsto[all]);
+
 			all++;
 
 		}	
 		//System.out.println("validacao");
 		//System.out.println(Math.sqrt(fitness/(validarBase)));
 		fitnessValidacao = Math.sqrt(fitness/(validarBase));
-		
+
 		hm = new HashMap<String, Double>();
 		this.serieTreinamento = new double[(serieTemporal.size()-this.tamanhoJanela-validarBase)];
 		this.previstoTreinamento = new double[(serieTemporal.size()-this.tamanhoJanela-validarBase)];
@@ -332,16 +332,16 @@ public class AlgoritmoGP {
 			fitness2 += Math.pow( ( ((this.serieTreinamento[all2]*this.desvioPadraoSerieTemporal) + mediaSerieTemporal)  - ((this.previstoTreinamento[all2]*this.desvioPadraoSerieTemporal) + mediaSerieTemporal) ) , 2);
 			//fitness2 += Math.pow(Math.pow(Math.E, this.serieTreinamento[all2]) - Math.pow(Math.E, this.previstoTreinamento[all2]), 2);
 			//System.out.println("serie"+this.serie[all]);
-//			System.out.println("previsto"+this.previsto[all]);
-			
+			//			System.out.println("previsto"+this.previsto[all]);
+
 			all2++;
 
 		}	
 		//System.out.println("treinamento");
 		//System.out.println(Math.sqrt(fitness2/(serieTemporal.size()-this.tamanhoJanela-validarBase)));
-		
-		
-		
+
+
+
 	}
 
 	private void removerMenosAdaptados() {
@@ -407,19 +407,20 @@ public class AlgoritmoGP {
 		double fitness = 0.0;
 
 		for(int walk = 0; walk < (serieTemporal.size()-janela-validarBase); walk++){
-			
+
 			for (int numeroJanela = 0; numeroJanela < janela; numeroJanela++) {
 				hm.replace("X"+numeroJanela, serieTemporal.get(walk+numeroJanela));
 			}
-			
+
 			Double x = i.calcularValor(hm);
-			
+
 			if(x.isNaN() || x.isInfinite()){ 
+				i.fitness = Double.MAX_VALUE;
 				return x;
 			}else{
 				fitness += Math.pow(serieTemporal.get(walk+janela) - x, 2);
 			}
-			
+
 		}
 
 		i.fitness = Math.sqrt(fitness/(serieTemporal.size()-janela-validarBase));
@@ -432,22 +433,26 @@ public class AlgoritmoGP {
 
 		for(Individuo i : populacao){
 			if (!i.fitnessJaCalculado){
-				Double fitness = calcularFitnessIndividuo(i, this.tamanhoJanela);
-//				System.out.println(fitness);
-				int times = 0;
-				while( fitness.isNaN() || fitness.isInfinite() ){
-					//System.out.println("while");
-					if(times > 5){
-						i = new Individuo(EInicializacao.Completa, numeroFuncao, tamanhaMaximoArvore);
+				if (Parametros.GP_CANONICA){
+					calcularFitnessIndividuo(i, this.tamanhoJanela);
+				} else {
+					Double fitness = calcularFitnessIndividuo(i, this.tamanhoJanela);
+					//				System.out.println(fitness);
+					int times = 0;
+					while( fitness.isNaN() || fitness.isInfinite() ){
+						//System.out.println("while");
+						if(times > 5){
+							i = new Individuo(EInicializacao.Completa, numeroFuncao, tamanhaMaximoArvore);
+						}
+						fitness = calcularFitnessIndividuo(i, this.tamanhoJanela);
+						otimizarMelhorIndividuo(i);
+						times++;
 					}
-					fitness = calcularFitnessIndividuo(i, this.tamanhoJanela);
-					otimizarMelhorIndividuo(i);
-					times++;
 				}
 			}
 		}
 	}
-	
+
 	private void otimizarMelhorIndividuo(Individuo individuo) {
 
 		double[] position = getConstantes(individuo);
@@ -479,10 +484,10 @@ public class AlgoritmoGP {
 			}
 
 		}
-		
+
 
 	}
-	
+
 	public void atualizarMelhorIndividuo() {
 		//Collections.sort(populacao, (Individuo x, Individuo y) -> Double.compare(x.fitness, y.fitness));
 		if(Parametros.TIPO_DE_OTIMIZACAO == "MINIMIZACAO"){
@@ -538,7 +543,7 @@ public class AlgoritmoGP {
 
 
 	private void otimizarMelhorIndividuo() {
-		
+
 		if(Parametros.SIMULATED_ANNEALING){
 			double temperatura = Parametros.TEMPERATURA_INICIAL_SIM_ANN;
 			double[] position = getConstantes(this.melhorIndividuo);
@@ -613,9 +618,9 @@ public class AlgoritmoGP {
 					for (int i = 0; i < Parametros.ESTRATEGIA_EVOLUCAO_ITERACAO; i++) {
 						for (int each = 0; each < position.length; each++) {
 							newPosition[each] = position[each] + o * getGaussian(0, 1.0)* (Math.random()*1*(Math.random() > 0.5 ? 1 : -1));
-//							if(newPosition[each]<=0.0){
-//								newPosition[each] += Common.RANDOM.nextDouble();
-//							}
+							//							if(newPosition[each]<=0.0){
+							//								newPosition[each] += Common.RANDOM.nextDouble();
+							//							}
 						}
 						double delta = atualizarConstantes(position, this.populacao.get(eachPOP)) - atualizarConstantes(newPosition, this.populacao.get(eachPOP));
 						if(delta > 0){
@@ -660,17 +665,17 @@ public class AlgoritmoGP {
 				}
 				if(otimizadoIndividuo.fitness < this.melhorIndividuo.fitness){
 					this.melhorIndividuo = (Individuo) Common.DeepCopy(otimizadoIndividuo);
-//					System.out.println("OTIMIZADO");
-//					System.out.println(this.melhorIndividuo.toString());
+					//					System.out.println("OTIMIZADO");
+					//					System.out.println(this.melhorIndividuo.toString());
 					//System.out.println("melhor");
 				}
 
 			}
 		} 
-			
-	    if(Parametros.ESTRATEGIA_EVOLUCAO_WORST){
-	    	//System.out.println("ESTRATEGIA_EVOLUCAO_WORST");
-	    	this.populacao.get(this.populacao.size()-1).expandirIndividuo();
+
+		if(Parametros.ESTRATEGIA_EVOLUCAO_WORST){
+			//System.out.println("ESTRATEGIA_EVOLUCAO_WORST");
+			this.populacao.get(this.populacao.size()-1).expandirIndividuo();
 			double[] position = getConstantes(this.populacao.get(this.populacao.size()-1));
 			double o = 1.0;
 			double T = (1/Math.sqrt(position.length));
