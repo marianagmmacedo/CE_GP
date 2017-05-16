@@ -57,7 +57,7 @@ public abstract class Funcao implements Serializable {
 		if (this instanceof Numero || this instanceof Variavel) return this;
 
 		esquerda = esquerda.otimizarFuncao(this);
-		
+
 		if (direita!=null){
 			direita = direita.otimizarFuncao(this);
 		}
@@ -96,7 +96,7 @@ public abstract class Funcao implements Serializable {
 			//Replace / 0 x with 0.
 			//Replace / x x with 1.
 			Numero numero = (Numero)((esquerda instanceof Numero)?esquerda:(direita instanceof Numero)?direita:null);
-			
+
 			if (numero!=null){
 				if (numero.valorNumerico == 0d){
 					return numero;
@@ -107,34 +107,34 @@ public abstract class Funcao implements Serializable {
 					return esquerda;
 				}
 			} 
-			
+
 			Variavel variavel = (Variavel)((esquerda instanceof Variavel)?esquerda:(direita instanceof Variavel)?direita:null);
-			
+
 			if (variavel != null && variavel.valor.equals(((esquerda!=variavel)?esquerda:direita).valor)){
 				return new Numero(1d);
 			}
 			//Replace Cos/Sin/Tan/Log/Sqrt/Pow with result of that expr.
 		} else if (this instanceof Cosseno || this instanceof Seno || this instanceof Tangente
 				|| this instanceof RaizQuadrada || this instanceof Logaritmo){
-		
+
 			Numero numero = (Numero)((esquerda instanceof Numero)?esquerda:null);
-			
+
 			if (numero != null){
 				return new Numero(this.calcularExpressao(null));
 			}
-			
+
 		} else if (this instanceof Potencia){
-			
+
 			Numero numeroEsq = (Numero)((esquerda instanceof Numero)?esquerda:null);
-			
+
 			Numero numeroDir = (Numero)((direita instanceof Numero)?direita:null);
-			
+
 			if (numeroEsq != null && numeroDir != null){
 				return new Numero(this.calcularExpressao(null));
 			}
-			
+
 		}
-		
+
 		if (esquerda instanceof Numero && direita != null && direita instanceof Numero){
 			return new Numero(this.calcularExpressao(null));
 		}
@@ -180,28 +180,28 @@ public abstract class Funcao implements Serializable {
 			doubleList.add(((Numero)this).valorNumerico);	
 			return;
 		}
-		
+
 		if (this instanceof Variavel) {
 			doubleList.add(variableValues.get(this.valor));
 			return;
 		}
-		
+
 		esquerda.parseToDoubleList(variableValues, doubleList);
-		
+
 		if (direita != null)
 			direita.parseToDoubleList(variableValues, doubleList);
 	}
-	
+
 	public abstract ArrayList<Double> getConstantes(ArrayList<Double> constantes);
 	public abstract ArrayList<Double> atualizarConstantes(ArrayList<Double> constantes);
 
 	public void expandirExpressao(Funcao no) {
 		// TODO Auto-generated method stub
 		if (no!=null){
-			
+
 			expandirExpressao(no.esquerda);
 			expandirExpressao(no.direita);
-			
+
 			if (no.esquerda instanceof Variavel){
 				Funcao mult = new Multiplicacao();
 				mult.esquerda = new Numero(1);
@@ -216,5 +216,30 @@ public abstract class Funcao implements Serializable {
 			}
 		}
 	}
-	
+
+	public static Funcao criarIndividuoPorOperador(String operador){
+		switch(operador){
+			case("+"):
+				return new Soma();
+			case("-"):
+				return new Subtracao();
+			case("*"):
+				return new Multiplicacao();
+			case("/"):
+				return new Divisao();
+			case("Log"):
+				return new Logaritmo();
+			case("Sin"):
+				return new Seno();
+			case("Cos"):
+				return new Cosseno();
+			case("Tan"):
+				return new Tangente();
+			case("Pow"):
+				return new Potencia();
+			case("Sqrt"):
+				return new RaizQuadrada();
+		}
+		return null;
+	}
 }

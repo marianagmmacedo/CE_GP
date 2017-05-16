@@ -78,10 +78,10 @@ public class Parametros {
 	public static final int NUMERO_NOVOS_INDIVIDUOS = 5;
 	public static final boolean GERAR_NOVOS_INDIVIDUOS = false;
 	
-	//Mutaï¿½ï¿½o de Descendente
-	public static final boolean MUTACAO_CLASSIFICADA = false;
+	//Mutação de Descendente
+	public static final boolean MUTACAO_CLASSIFICADA = true;
 	
-	//
+	//Se ativo, o fitness calculado irá ignorar expressões Infinitas ou NaN ao invés de reescrever o indivíduo
 	public static final boolean GP_CANONICA = true;
 	
 }

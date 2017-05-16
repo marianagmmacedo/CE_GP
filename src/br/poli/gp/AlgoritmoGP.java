@@ -37,6 +37,7 @@ import org.encog.neural.networks.training.propagation.resilient.ResilientPropaga
 import ChartDirector.ChartViewer;
 import br.poli.gp.arvore.Arvore;
 import br.poli.gp.arvore.Funcao;
+import br.poli.gp.arvore.funcao.ClassesFuncoes;
 import br.poli.gp.util.DemoModule;
 import br.poli.gp.util.LineChart;
 import br.poli.gp.util.SplineLineChart;
@@ -361,10 +362,52 @@ public class AlgoritmoGP {
 			}else{
 				//Mutacao so ocorre se o individuo nao for o melhor, para evitar perda de informacoes
 				if (i!=melhorIndividuo){
-					mutarDescendente(i);
-				}					
+					if (Parametros.MUTACAO_CLASSIFICADA){
+						mutarClasseDescendente(i);
+					} else {
+						mutarDescendente(i);
+					}		
+				}
 			}
 		}		
+	}
+	
+	private void mutarClasseDescendente(Individuo individuo){
+		if(individuo.noFuncao.size() != 0){
+			individuo.fitnessJaCalculado = false;
+			
+			//Seleciona um nó aleatório da árvore
+			int noMutacaoFilho = Common.RANDOM.nextInt((individuo.noFuncao.size()));
+			Funcao no = individuo.noFuncao.get(noMutacaoFilho);
+			
+			//Extrai um operador aleatório dada uma classe
+			List<String> lOp = ClassesFuncoes.getClasse(no.valor);
+			if (lOp == null) return; //É nulo caso não haja correspondente para aquela classe
+			String operador = lOp.get(Common.RANDOM.nextInt(lOp.size()));
+			
+			//Se o operador for idêntico ao filho, não faz nada
+			if (operador.equals(no.valor)) return;
+			
+			//Instancia novo operador e herda as características de nó
+			Funcao newNo = Funcao.criarIndividuoPorOperador(operador);
+			newNo.pai = no.pai;
+			newNo.esquerda = no.esquerda;
+			newNo.direita = no.direita;
+			
+			//Substitui na árvore
+			Funcao noPai = newNo.pai;
+			if (noPai!=null){
+				if (noPai.esquerda == no){
+					noPai.esquerda = newNo;
+				} else {
+					noPai.direita = newNo;
+				}
+			} else {
+				individuo.arvore.no = newNo;
+			}
+			
+			individuo.otimizarArvore();
+		}
 	}
 
 	private void mutarDescendente(Individuo individuo) {		

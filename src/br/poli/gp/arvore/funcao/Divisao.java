@@ -2,6 +2,7 @@ package br.poli.gp.arvore.funcao;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import br.poli.gp.arvore.Funcao;
 
@@ -36,6 +37,5 @@ public class Divisao extends Funcao {
 		constantes = esquerda.atualizarConstantes(constantes);
 		constantes = direita.atualizarConstantes(constantes);
 		return constantes;
-	}
-	
+	}	
 }

@@ -28,13 +28,14 @@ public class ThreadMain extends Thread {
 
 			for (String base : stringList){
 				HashMap<Integer, Double> serieTemporal = Common.lerBase(base);
+				
+				double[] mediaDesvio = {Common.CalcularMedia(serieTemporal), Common.CalcularDesvioPadrao(serieTemporal)};
+				
 				if (base.equals("lynx"))
 					Common.NormalizarLN(serieTemporal);
 				else
 					Common.Normalizar2(serieTemporal);
 				
-				double[] mediaDesvio = {Common.CalcularMedia(serieTemporal), Common.CalcularDesvioPadrao(serieTemporal)};
-
 				double[] respostas = new double[30];
 
 				//System.out.println("Base: " + base);

@@ -84,6 +84,8 @@ public class RunMain {
 
 		double[] respostas = new double[30];
 		*/
+		
+		
 		Thread[] tList = new Thread[4];
 		int threadLength = Parametros.Bases.length;
 		int startingIndex = 0;
@@ -104,8 +106,8 @@ public class RunMain {
 
 	static void mainMariana() throws Exception{
 		HashMap<Integer, Double> serieTemporal = Common.lerBase(Parametros.Base);
-		Common.Normalizar2(serieTemporal);
 		double[] mediaDesvio = {Common.CalcularMedia(serieTemporal), Common.CalcularDesvioPadrao(serieTemporal)};
+		Common.Normalizar2(serieTemporal);
 		//		double[] mediaDesvio = new double[2];
 		//		mediaDesvio[0] = 1.0;
 		//		mediaDesvio[1] = 1.0;
