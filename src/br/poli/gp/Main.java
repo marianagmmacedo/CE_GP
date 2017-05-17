@@ -32,7 +32,7 @@ public class Main {
 	public static void main(String[] args) throws IOException {
 		
 		
-		HashMap<Integer, Double> serieTemporal = Common.lerBase(Parametros.Base);
+		HashMap<Integer, Double> serieTemporal = Common.lerBase(Parametros.Bases[0]);
 		Common.Normalizar2(serieTemporal);
 	
 		/*
@@ -61,7 +61,7 @@ public class Main {
 		int tamanhaMaximoArvore = 2;
 		for (int simulacao = 0; simulacao < Parametros.NUMERO_TOTAL_SIMULACAO; simulacao++) {
 			System.out.println(simulacao);
-			AlgoritmoGP gp = new AlgoritmoGP(EInicializacao.Completa, serieTemporal, taxaMutacao, Parametros.NUMERO_TOTAL_FUNCAO, tamanhaMaximoArvore, simulacao, taxaMutacao, taxaMutacao);
+			AlgoritmoGP gp = new AlgoritmoGP(EInicializacao.Completa, serieTemporal, taxaMutacao, Parametros.NUMERO_TOTAL_FUNCAO, tamanhaMaximoArvore, simulacao, taxaMutacao, taxaMutacao, Parametros.Bases[0]);
 			
 			//double[] each = gp.runGP(simulacao);
 			
@@ -150,8 +150,8 @@ public class Main {
 		g2d.dispose();
 
 		//		File directory = new File(".\\");
-		File directory = new File("./");
-		ImageIO.write(awtImage, "png", new File(directory.getAbsolutePath() + Parametros.NOME_CAMINHO_SALVAR_FITNESS+".png"));
+//		File directory = new File("./");
+//		ImageIO.write(awtImage, "png", new File(directory.getAbsolutePath() + Parametros.NOME_CAMINHO_SALVAR_FITNESS+".png"));
 	}
 	
 	public static void heatMap() throws IOException {
@@ -183,8 +183,8 @@ public class Main {
 		content_.printAll(g2d);
 
 		g2d.dispose();
-		File directory = new File("./");
-		ImageIO.write(awtImage, "png", new File(directory.getAbsolutePath() + Parametros.SERIES+"heatmap.png"));
+//		File directory = new File("./");
+//		ImageIO.write(awtImage, "png", new File(directory.getAbsolutePath() + Parametros.SERIES+"heatmap.png"));
        
 	}
 }

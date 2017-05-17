@@ -12,9 +12,14 @@ public class RunMain {
 
 	public static void main(String[] args) throws IOException {
 		
-		for (int i = 0; i < 1; i++) {
-			FishSchoolSearch fss = new FishSchoolSearch();
+//		for (int i = 0; i < 1; i++) {
+		for (int i = 0; i < Parametros.Bases.length; i++) {
+			System.out.println(Parametros.Bases[i]);
+			FishSchoolSearch fss = new FishSchoolSearch(Parametros.Bases[i]);
+			
 		}
+		
+//		}
 		
 	}
 

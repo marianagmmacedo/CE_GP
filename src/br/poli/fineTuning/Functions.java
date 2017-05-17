@@ -9,6 +9,7 @@ import br.poli.gp.AlgoritmoGP;
 import br.poli.gp.Common;
 import br.poli.gp.EInicializacao;
 import br.poli.gp.Parametros;
+import br.poli.mlp.MultiLayerPerceptron;
 
 public class Functions {
 	
@@ -27,7 +28,7 @@ public class Functions {
 		return sum;
 	}
 	
-	public static double calculateFitness(ArrayList<Double> position) throws IOException {
+	public static double calculateFitness(ArrayList<Double> position, String base) throws IOException {
 		switch (Parameters.function) {
 			case "sphere":
 				return calculateSphere(position);
@@ -36,25 +37,40 @@ public class Functions {
 			case "rosenbrock":
 				return calculateRosenbrock(position);
 			case "AG":
-				return calculatePG(position);
+				return calculatePG(position, base);
+			case "MLP":
+				return calculateMLP(position, base);
 			default:
 				break;
 		}
 		
 		return 0.0;
 	}
-
-	private static double calculatePG(ArrayList<Double> position) throws IOException {
+	
+	private static double calculateMLP(ArrayList<Double> position, String b) throws IOException {
 		//System.out.println(Parametros.Base);
-		HashMap<Integer, Double> serieTemporal = Common.lerBase(Parametros.Base);
-		Common.Normalizar2(serieTemporal);
+		HashMap<Integer, Double> serieTemporal = Common.lerBase(b);
+		int validarBase = (int) Math.ceil(serieTemporal.size()*Parametros.TAXA_VALIDACAO);
+		MultiLayerPerceptron mlp = new MultiLayerPerceptron(b, validarBase, position);
+		mlp.forwardBackward();		
+		return mlp.evaluate(b);
+	}
+	
+	private static double calculatePG(ArrayList<Double> position, String b) throws IOException {
+		//System.out.println(Parametros.Base);
+		HashMap<Integer, Double> serieTemporal = Common.lerBase(b);
 		double media = Common.CalcularMedia(serieTemporal);
 		double desvio = Common.CalcularDesvioPadrao(serieTemporal);
+		if (b.equals("lynx"))
+			Common.NormalizarLN(serieTemporal);
+		else
+			Common.Normalizar2(serieTemporal);
+		
 		AlgoritmoGP gp = new AlgoritmoGP(EInicializacao.Completa, serieTemporal, Math.abs(position.get(0)),
 				(int) Math.abs(Math.floor(position.get(1)*Parametros.NUMERO_TOTAL_FUNCAO)), 
 				(int) Math.abs(position.get(2)*Parametros.TAMANHO_MAXIMO_PROFUNDIDADE_ARVORE), 
 				(int) Math.abs(Math.floor(position.get(3)*Parametros.NUMERO_MAXIMO_POPULACAO)), 
-				media, desvio);
+				media, desvio, b);
 				
 		iteration++;
 		return gp.runGP(iteration);

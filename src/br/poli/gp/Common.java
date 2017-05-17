@@ -66,6 +66,7 @@ public class Common {
 			try{
 				File directory = new File("./");
 				String macMari = "/src/Bases/";
+				//System.out.println(nomeBase);
 //				File directory = new File(".\\");
 //				String macCarlos = "\\src\\Bases\\";
 				BufferedReader in = new BufferedReader(new FileReader(directory.getAbsolutePath() + macMari + nomeBase + ".txt"));
@@ -86,7 +87,7 @@ public class Common {
 		}
 		
 		/*
-		 * Divide todos pelo maior valor. (não é uma boa forma para normalizar)
+		 * Divide todos pelo maior valor. (nï¿½o ï¿½ uma boa forma para normalizar)
 		 */
 		public static void Normalizar1(HashMap<Integer, Double> serieTemporal){
 			Double maximoValor = serieTemporal.values().stream().max((x,y) -> Double.compare(x, y)).get();

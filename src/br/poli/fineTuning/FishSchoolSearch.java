@@ -11,25 +11,16 @@ public class FishSchoolSearch {
 	double stepVolitive;
 	double weightSchool;
 	double oldWeightSchool;
+	String baseC;
 	
-	public FishSchoolSearch() throws IOException{
+	public FishSchoolSearch(String b) throws IOException{
 		this.stepIndividual = Parameters.stepIndividual;
 		this.stepVolitive = Parameters.stepVolitive;
+		baseC = b;
 		initializeParameters();
 		this.bestFish = this.population.get(0);
 		updateBestFish();
-		for (int simulation = 0; simulation < 30; simulation++) {
-			for (int iteration = 0; iteration < Parameters.numberMaximumIteration; iteration++) {
-				individualMovement();
-				feeding();
-				instintiveCollectiveMovement();
-				volitiveCollectiveMovement();
-				updateSteps();
-				updateBestFish();
-				//System.out.println(this.bestFish.getFitness());
-			}
-			System.out.println(this.bestFish.getFitness());
-		}
+		
 		
 	}
 
@@ -72,7 +63,7 @@ public class FishSchoolSearch {
 		    	}
 			    	
 			}
-		 	double fit = Functions.calculateFitness(newPosition);
+		 	double fit = Functions.calculateFitness(newPosition, baseC);
 			if(fit < this.population.get(eachFish).getFitness()){
 				this.population.get(eachFish).setFitness(fit);
 				this.population.get(eachFish).setPosition(newPosition);
@@ -177,7 +168,7 @@ public class FishSchoolSearch {
 			    	}
 			    	
 			}
-		 	double fit = Functions.calculateFitness(newPosition);
+		 	double fit = Functions.calculateFitness(newPosition, baseC);
 			if(fit < this.population.get(eachFish).getFitness()){
 				this.population.get(eachFish).setDeltaFitness(this.population.get(eachFish).getFitness()-fit);
 				this.population.get(eachFish).setFitness(fit);
@@ -196,10 +187,24 @@ public class FishSchoolSearch {
 		this.population = new ArrayList<Fish>();
 		this.weightSchool = 0.0;
 		for (int eachFish = 0; eachFish < Parameters.numberMaximumPopulation; eachFish++) {
-			this.population.add(new Fish());
+			this.population.add(new Fish(baseC));
 			this.weightSchool += this.population.get(eachFish).getWeight();
 		}
 		this.oldWeightSchool = this.weightSchool;
 		
+	}
+
+	public double run(int i) throws IOException {
+		for (int iteration = 0; iteration < Parameters.numberMaximumIteration; iteration++) {
+			individualMovement();
+			feeding();
+			instintiveCollectiveMovement();
+			volitiveCollectiveMovement();
+			updateSteps();
+			updateBestFish();
+		}
+		System.out.println("the best fish " + this.bestFish.getFitness());
+		
+		return this.bestFish.getFitness();
 	}
 }

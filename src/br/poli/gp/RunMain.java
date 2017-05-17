@@ -105,9 +105,12 @@ public class RunMain {
 	}
 
 	static void mainMariana() throws Exception{
-		HashMap<Integer, Double> serieTemporal = Common.lerBase(Parametros.Base);
+		HashMap<Integer, Double> serieTemporal = Common.lerBase(Parametros.Bases[0]);
 		double[] mediaDesvio = {Common.CalcularMedia(serieTemporal), Common.CalcularDesvioPadrao(serieTemporal)};
-		Common.Normalizar2(serieTemporal);
+		if (Parametros.Bases[0].equals("lynx"))
+			Common.NormalizarLN(serieTemporal);
+		else
+			Common.Normalizar2(serieTemporal);
 		//		double[] mediaDesvio = new double[2];
 		//		mediaDesvio[0] = 1.0;
 		//		mediaDesvio[1] = 1.0;
@@ -143,7 +146,7 @@ public class RunMain {
 			System.out.println(simulacao);
 			AlgoritmoGP gp = new AlgoritmoGP(EInicializacao.Completa, serieTemporal, taxaMutacao
 					, Parametros.NUMERO_TOTAL_FUNCAO, tamanhaMaximoArvore
-					, numeroPopulacao, mediaDesvio[0], mediaDesvio[1]);
+					, numeroPopulacao, mediaDesvio[0], mediaDesvio[1],Parametros.Bases[0]);
 			//double[] each = gp.runGP(simulacao);
 			double each = gp.runGP(simulacao);
 			meanSim += each;
@@ -188,7 +191,7 @@ public class RunMain {
 		//		}
 
 
-		//		showFitness(meanSimulacao);
+				
 		//		File directory = new File("./");
 		//		
 		//		PrintWriter p = new PrintWriter(new File(directory.getAbsolutePath() + Parametros.NOME_CAMINHO_SALVAR_FITNESS+"_result_final.csv"));
@@ -203,11 +206,12 @@ public class RunMain {
 
 		//heatMap();
 		meanSim /= 30; 
+//		showFitness(meanSimulacao);
 		System.out.println(meanSim);
 		System.out.println("FINISHED");
 	}
 	
-	private static void showFitness(double[] fit) throws IOException {
+	private static void showFitness(double[] fit, String Base) throws IOException {
 
 		// The labels for the chart
 		String[] labels = new String[fit.length];
@@ -247,7 +251,7 @@ public class RunMain {
 
 		//		File directory = new File(".\\");
 		File directory = new File("./");
-		ImageIO.write(awtImage, "png", new File(directory.getAbsolutePath() + Parametros.NOME_CAMINHO_SALVAR_FITNESS+".png"));
+		ImageIO.write(awtImage, "png", new File(directory.getAbsolutePath() + "/resultados/"+Base+"/"+Base+"_mean_"+Parametros.NUMERO_TOTAL_SIMULACAO+".png"));
 	}
 
 	public static void heatMap() throws IOException {
@@ -279,8 +283,8 @@ public class RunMain {
 		content_.printAll(g2d);
 
 		g2d.dispose();
-		File directory = new File("./");
-		ImageIO.write(awtImage, "png", new File(directory.getAbsolutePath() + Parametros.SERIES+"heatmap.png"));
+//		File directory = new File("./");
+//		ImageIO.write(awtImage, "png", new File(directory.getAbsolutePath() + Parametros.SERIES+"heatmap.png"));
 
 	}
 }

@@ -14,13 +14,13 @@ public class Fish {
 	private double deltaFitness;
 	private boolean gotBetter;
 	
-	public Fish() throws IOException{
+	public Fish(String b) throws IOException{
 		this.position = new ArrayList<Double>();
 		this.setWeight(Parameters.weightInitial);
 		for (int dimensions = 0; dimensions < Parameters.numberMaximumDimension; dimensions++) {
 			this.position.add(Functions.createRandomNumberInRange(Parameters.dimensionMax,Parameters.dimensionMin));
 		}
-		this.setFitness(Functions.calculateFitness(this.position));
+		this.setFitness(Functions.calculateFitness(this.position, b));
 		this.setGotBetter(false);
 	}
 

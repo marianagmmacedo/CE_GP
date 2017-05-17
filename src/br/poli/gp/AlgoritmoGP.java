@@ -10,6 +10,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -41,6 +42,7 @@ import br.poli.gp.arvore.funcao.ClassesFuncoes;
 import br.poli.gp.util.DemoModule;
 import br.poli.gp.util.LineChart;
 import br.poli.gp.util.SplineLineChart;
+import br.poli.output.Output;
 
 public class AlgoritmoGP {
 	//jmathplot
@@ -64,9 +66,11 @@ public class AlgoritmoGP {
 	double mediaSerieTemporal;
 	double desvioPadraoSerieTemporal;
 	double fitnessValidacao;
-
+	String base;
+	
 	public AlgoritmoGP(EInicializacao tipoInicializacao, HashMap<Integer, Double> serieTemporal, 
-			double taxaMutacaoCruzamento_, int numeroFuncao_, int tamanhaMaximoArvore_, int numeroPopulacao_, double media, double desvioPadrao) throws IOException{
+			double taxaMutacaoCruzamento_, int numeroFuncao_, int tamanhaMaximoArvore_,
+			int numeroPopulacao_, double media, double desvioPadrao, String baseC) throws IOException{
 		populacao = new ArrayList<Individuo>();
 		this.serieTemporal = serieTemporal;
 		taxaMutacaoCruzamento = taxaMutacaoCruzamento_;
@@ -83,6 +87,7 @@ public class AlgoritmoGP {
 		//		System.out.println(mediaSerieTemporal);
 		desvioPadraoSerieTemporal = desvioPadrao;
 		//		System.out.println(desvioPadraoSerieTemporal);
+		base = baseC;
 		criarNovosIndividuos(numeroPopulacao_, tipoInicializacao);
 	}
 
@@ -121,8 +126,10 @@ public class AlgoritmoGP {
 			//System.out.println("IT: " + iteracao);
 
 			//Gerar novos individuos durante as iteracoes
-			if (Common.RANDOM.nextDouble() > 0.5 && Parametros.GERAR_NOVOS_INDIVIDUOS){
-				criarNovosIndividuos(Parametros.NUMERO_NOVOS_INDIVIDUOS, Parametros.TAMANHO_NOVOS_INDIVIDUOS);
+			if(!Parametros.GP_CANONICA){
+				if (Common.RANDOM.nextDouble() > 0.5 && Parametros.GERAR_NOVOS_INDIVIDUOS){
+					criarNovosIndividuos(Parametros.NUMERO_NOVOS_INDIVIDUOS, Parametros.TAMANHO_NOVOS_INDIVIDUOS);
+				}
 			}
 
 			// Atualizar melhor individuo
@@ -130,15 +137,18 @@ public class AlgoritmoGP {
 			atualizarMelhorIndividuo();
 
 			//Caso o individuo tenha sido alterado
-			if(Common.RANDOM.nextDouble() > 0.5 && Parametros.OTIMIZAR){
+			if(!Parametros.GP_CANONICA){
+				if(Common.RANDOM.nextDouble() > 0.5 && Parametros.OTIMIZAR){
 
-				if (_melhorIndi != this.melhorIndividuo || (iteracao==Parametros.NUMERO_TOTAL_ITERACAO-1)){
-					//System.out.println(this.melhorIndividuo.toString());
-					otimizarMelhorIndividuo();			
+					if (_melhorIndi != this.melhorIndividuo || (iteracao==Parametros.NUMERO_TOTAL_ITERACAO-1)){
+						//System.out.println(this.melhorIndividuo.toString());
+						otimizarMelhorIndividuo();			
+					}
+				}else if(Parametros.OTIMIZAR_SEMPRE){
+					otimizarMelhorIndividuo();
 				}
-			}else if(Parametros.OTIMIZAR_SEMPRE){
-				otimizarMelhorIndividuo();
 			}
+			
 
 
 			if(iteracao%Parametros.ITERACAO_BREAK==0){
@@ -160,6 +170,8 @@ public class AlgoritmoGP {
 
 		calcularFitnessIndividuoFinal(this.melhorIndividuo);
 
+		
+		
 		//Imprimir graficos do fitness
 		//showFitness(getFit);	
 		//showBothExpressionTreinamento();
@@ -167,7 +179,7 @@ public class AlgoritmoGP {
 		//		System.out.println("ANSWER");
 		//		System.out.println(this.melhorIndividuo.toString());
 		//return getFit;
-
+		//System.out.println(fitnessValidacao);
 		return fitnessValidacao;
 	}
 
@@ -229,7 +241,7 @@ public class AlgoritmoGP {
 
 		//		File directory = new File(".\\");
 		File directory = new File("./");
-		ImageIO.write(awtImage, "png", new File(directory.getAbsolutePath() + Parametros.SERIES+this.simulacao+"_bothSeries_Treinamento.png"));
+		ImageIO.write(awtImage, "png", new File(directory.getAbsolutePath() +  "/resultados/"+base+"/"+base +this.simulacao+"_bothSeries_Treinamento.png"));
 
 	}
 
@@ -279,7 +291,7 @@ public class AlgoritmoGP {
 
 		//		File directory = new File(".\\");
 		File directory = new File("./");
-		ImageIO.write(awtImage, "png", new File(directory.getAbsolutePath() + Parametros.SERIES+this.simulacao+"_bothSeries.png"));
+		ImageIO.write(awtImage, "png", new File(directory.getAbsolutePath() +  "/resultados/"+base+"/"+base+this.simulacao+"_bothSeries.png"));
 
 	}
 
@@ -292,6 +304,9 @@ public class AlgoritmoGP {
 		}
 		double fitness = 0.0;
 		int all = 0;
+		
+		Output.getOutputByList(base).texto[1] += (simulacao+1) + " : " + i.toString() +"\n";
+		Output.getOutputByList(base).texto[2] += (simulacao+1) + " : " + "\n\n" + "x <- c(";
 		for(int walk = serieTemporal.size()-(this.tamanhoJanela)-validarBase; walk < (serieTemporal.size()-(this.tamanhoJanela)); walk++){
 			int aux = 0;
 			for (int numeroJanela = 0; numeroJanela < this.tamanhoJanela; numeroJanela++) {
@@ -301,14 +316,25 @@ public class AlgoritmoGP {
 
 			this.serie[all] = serieTemporal.get(walk+this.tamanhoJanela);
 			this.previsto[all] = i.calcularValor(hm);
-			fitness += Math.pow( ( ((this.serie[all]*this.desvioPadraoSerieTemporal) + mediaSerieTemporal)  - ((this.previsto[all]*this.desvioPadraoSerieTemporal) + mediaSerieTemporal) ) , 2);
+			
+			double fitTmp = Math.pow( ( ((this.serie[all]*this.desvioPadraoSerieTemporal) + mediaSerieTemporal)  - ((this.previsto[all]*this.desvioPadraoSerieTemporal) + mediaSerieTemporal) ) , 2);
+			
+			Output.getOutputByList(base).texto[2] += fitTmp  +  ", ";
+			
+			fitness += fitTmp;
 			//fitness += Math.pow(Math.pow(Math.E, this.serie[all]) - Math.pow(Math.E, this.previsto[all]), 2);
 			//System.out.println("serie"+this.serie[all]);
 			//			System.out.println("previsto"+this.previsto[all]);
 
 			all++;
 
-		}	
+		}
+		
+		int indiceUltimaVirgula = Output.getOutputByList(base).texto[2].lastIndexOf(',');
+		Output.getOutputByList(base).texto[2] = Output.getOutputByList(base).texto[2].substring(0, indiceUltimaVirgula) + ") \n\n";
+		
+		
+
 		//System.out.println("validacao");
 		//System.out.println(Math.sqrt(fitness/(validarBase)));
 		fitnessValidacao = Math.sqrt(fitness/(validarBase));
@@ -376,25 +402,25 @@ public class AlgoritmoGP {
 		if(individuo.noFuncao.size() != 0){
 			individuo.fitnessJaCalculado = false;
 			
-			//Seleciona um nó aleatório da árvore
+			//Seleciona um nï¿½ aleatï¿½rio da ï¿½rvore
 			int noMutacaoFilho = Common.RANDOM.nextInt((individuo.noFuncao.size()));
 			Funcao no = individuo.noFuncao.get(noMutacaoFilho);
 			
-			//Extrai um operador aleatório dada uma classe
+			//Extrai um operador aleatï¿½rio dada uma classe
 			List<String> lOp = ClassesFuncoes.getClasse(no.valor);
-			if (lOp == null) return; //É nulo caso não haja correspondente para aquela classe
+			if (lOp == null) return; //ï¿½ nulo caso nï¿½o haja correspondente para aquela classe
 			String operador = lOp.get(Common.RANDOM.nextInt(lOp.size()));
 			
-			//Se o operador for idêntico ao filho, não faz nada
+			//Se o operador for idï¿½ntico ao filho, nï¿½o faz nada
 			if (operador.equals(no.valor)) return;
 			
-			//Instancia novo operador e herda as características de nó
+			//Instancia novo operador e herda as caracterï¿½sticas de nï¿½
 			Funcao newNo = Funcao.criarIndividuoPorOperador(operador);
 			newNo.pai = no.pai;
 			newNo.esquerda = no.esquerda;
 			newNo.direita = no.direita;
 			
-			//Substitui na árvore
+			//Substitui na ï¿½rvore
 			Funcao noPai = newNo.pai;
 			if (noPai!=null){
 				if (noPai.esquerda == no){
@@ -870,6 +896,6 @@ public class AlgoritmoGP {
 
 		//		File directory = new File(".\\");
 		File directory = new File("./");
-		ImageIO.write(awtImage, "png", new File(directory.getAbsolutePath() + Parametros.CONVERGENCIA+this.simulacao+".png"));
+		ImageIO.write(awtImage, "png", new File(directory.getAbsolutePath() + "/resultados/"+base+"/"+base+"_convergencia_"+this.simulacao+".png"));
 	}
 }

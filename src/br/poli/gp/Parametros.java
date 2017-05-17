@@ -4,14 +4,15 @@ public class Parametros {
 	
 	// Configuracao experimento
 	public static final int NUMERO_TOTAL_SIMULACAO = 30;
-	public static final int NUMERO_TOTAL_ITERACAO = 6000;
-	public static final int ITERACAO_BREAK = 20;
+	public static final int NUMERO_TOTAL_ITERACAO = 50;
+	public static final int ITERACAO_BREAK = 1;
 	public static final String TIPO_DE_OTIMIZACAO = "MINIMIZACAO";
 	
 	// Bases
 	public static final String[] Bases = {"sunspot", "lynx", "stock", "redwine", "accidentalDeathUSA", "airlines",
-										  "coloradoRiver", "dowJones", "electricity", "lakeerie", "ibm", "nsw",
+										"coloradoRiver", "dowJones", "electricity", "lakeerie", "ibm", "nsw",
 										  "pollution"};
+
 	
 	//public static final String Base = "ibm"; 
 	//public static final String Base = "sunspot"; 
@@ -24,7 +25,7 @@ public class Parametros {
 	//public static final String Base = "airlines"; 
 	//public static final String Base = "coloradoRiver"; OK
 	//public static final String Base = "dowJones"; OK
-	public static final String Base = "electricity"; 
+	//public static final String Base = "electricity"; 
 	//public static final String Base = "lakeerie"; 
 	//public static final String Base = "lynx"; 
 	//public static final String Base = "nsw"; 
@@ -45,18 +46,23 @@ public class Parametros {
 	
 	
 	//Output
-	public static final String NOME_CAMINHO_SALVAR_FITNESS = "/resultados/"+Base+"/"+Base+"_mean_"+NUMERO_TOTAL_SIMULACAO;
-	public static final String SERIES = "/resultados/"+Base+"/"+Base;
-	public static final String CONVERGENCIA = "/resultados/"+Base+"/"+Base+"_convergencia_";
+//	public static final String NOME_CAMINHO_SALVAR_FITNESS = "/resultados/"+Base+"/"+Base+"_mean_"+NUMERO_TOTAL_SIMULACAO;
+//	public static final String SERIES = "/resultados/"+Base+"/"+Base;
+//	public static final String CONVERGENCIA = "/resultados/"+Base+"/"+Base+"_convergencia_";
 
 	//Otimizacao
-	public static final boolean OTIMIZAR = false;
+	public static final boolean OTIMIZAR = true;
 	public static final boolean OTIMIZAR_SEMPRE = false;
 	public static final boolean ESTRATEGIA_EVOLUCAO_WORST = false;
 	public static final boolean SIMULATED_ANNEALING = false;
 	public static final boolean HILL_CLIMBING = false;
 	public static final boolean VARIAR_JANELA = false;
-	public static final boolean ESTRATEGIA_EVOLUCAO = false;
+	public static final boolean ESTRATEGIA_EVOLUCAO = true;
+	//Mutaï¿½ï¿½o de Descendente
+	public static final boolean MUTACAO_CLASSIFICADA = false;
+	
+	//Se ativo, o fitness calculado irï¿½ ignorar expressï¿½es Infinitas ou NaN ao invï¿½s de reescrever o indivï¿½duo
+	public static final boolean GP_CANONICA = false;
 	
 	//Configuracao Simulated Annealing
 	public static final double TEMPERATURA_FINAL_SIM_ANN = 0.1;
@@ -71,17 +77,13 @@ public class Parametros {
 	//Configuracao Estrategia Evolucionaria
 	public static final int ESTRATEGIA_EVOLUCAO_ITERACAO = 20;
 	public static final double TAXA_VALIDACAO = 0.20;
-	public static final boolean ESTRATEGIA_EVOLUCAO_TODOS = false;
+	public static final boolean ESTRATEGIA_EVOLUCAO_TODOS = true;
 	
 	//Adicionar Novos Individuos enquanto roda o codigo
 	public static final int TAMANHO_NOVOS_INDIVIDUOS = 4;
 	public static final int NUMERO_NOVOS_INDIVIDUOS = 5;
-	public static final boolean GERAR_NOVOS_INDIVIDUOS = false;
+	public static final boolean GERAR_NOVOS_INDIVIDUOS = true;
 	
-	//Mutação de Descendente
-	public static final boolean MUTACAO_CLASSIFICADA = true;
 	
-	//Se ativo, o fitness calculado irá ignorar expressões Infinitas ou NaN ao invés de reescrever o indivíduo
-	public static final boolean GP_CANONICA = true;
 	
 }
