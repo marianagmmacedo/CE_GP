@@ -20,7 +20,7 @@ public class Fish {
 		for (int dimensions = 0; dimensions < Parameters.numberMaximumDimension; dimensions++) {
 			this.position.add(Functions.createRandomNumberInRange(Parameters.dimensionMax,Parameters.dimensionMin));
 		}
-		this.setFitness(Functions.calculateFitness(this.position, b));
+		this.setFitness(Functions.calculateFitness(this.position, b, -1));
 		this.setGotBetter(false);
 	}
 

@@ -10,6 +10,7 @@ import java.util.Random;
 
 import br.poli.gp.Common;
 import br.poli.gp.Parametros;
+import br.poli.output.Output;
 
 
 
@@ -48,12 +49,14 @@ public class MultiLayerPerceptron {
 	static double media;
 	static double desvio;
 	static int sizeValidacao;
+	static int sim;
 	// ok = construtor 
 	public MultiLayerPerceptron(String nomeBASE, int validarSize
-			, ArrayList<Double> inputFSS) throws IOException{
+			, ArrayList<Double> inputFSS, int simulacao) throws IOException{
+		sim = simulacao;
 		sizeValidacao = validarSize;
 		random = new Random();
-		totalIteration = 100;
+		totalIteration = 200;
 		tamanhoJanela = 2;
 		//String csvFile1 = MOEADDRAparameters.pathDatabase;
 		readData(nomeBASE);
@@ -356,7 +359,9 @@ public class MultiLayerPerceptron {
 
 
 	public double evaluate(String nomeBase) {
-
+		Output o = Output.getOutputByList(nomeBase);
+		Output.getOutputByList(nomeBase).texto[1] = "";
+		Output.getOutputByList(nomeBase).texto[2] = "";
 		ArrayList<Double[]> newNet = new ArrayList<Double[]>();
 		ArrayList<Double[]> newFnet = new ArrayList<Double[]>();
 		
@@ -370,6 +375,8 @@ public class MultiLayerPerceptron {
 			
 		}
 		int error = 0;
+		
+		Output.getOutputByList(nomeBase).texto[2] += (sim+1) + " : " + "\n\n" + "x <- c(";
 		// Para cada iteracao
 		for (int iteration = 1; iteration <= totalIteration; iteration++) {
 			int eachLayer = 0;
@@ -456,6 +463,13 @@ public class MultiLayerPerceptron {
 				errorOutput[i] = errorOutputTEMP[i];
 //
 			}
+			
+			if(nomeBase.equals("lynx")){
+				Output.getOutputByList(nomeBase).texto[2] +=  (Math.pow(Math.E, (double) errorOutputTEMP[0]))  +  ", ";
+			}else{
+				Output.getOutputByList(nomeBase).texto[2] +=  (((double) errorOutputTEMP[0]*desvio) + media)  +  ", ";
+			}
+			
 //			System.out.println("errorOutputTEMP");
 //			System.out.println(errorOutputTEMP[0]);
 //			System.out.println(errorOutputTEMP[1]);
@@ -479,15 +493,17 @@ public class MultiLayerPerceptron {
 //			System.out.println(errorOutput[i]);
 			if(nomeBase.equals("lynx")){
 				answer[i] = Math.pow(Math.E, (double) errorOutput[i]);
-    			System.out.println("------answer---E---"+ answer[i]);
+    			//System.out.println("------answer---E---"+ answer[i]);
 				
 			}else{
 				answer[i] =  ((double) errorOutput[i]*desvio) + media;
-				System.out.println("------answer---mD---"+ answer[i]);
+				//System.out.println("------answer---mD---"+ answer[i]);
 			}
 			
 			
 		}
+		int indiceUltimaVirgula = Output.getOutputByList(nomeBase).texto[2].lastIndexOf(',');
+		Output.getOutputByList(nomeBase).texto[2] = Output.getOutputByList(nomeBase).texto[2].substring(0, indiceUltimaVirgula) + ") \n\n";
 		
 //		System.out.println("------evaluate2");
 		return answer[0];

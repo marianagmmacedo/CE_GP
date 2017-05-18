@@ -12,6 +12,7 @@ public class FishSchoolSearch {
 	double weightSchool;
 	double oldWeightSchool;
 	String baseC;
+	int simulacao;
 	
 	public FishSchoolSearch(String b) throws IOException{
 		this.stepIndividual = Parameters.stepIndividual;
@@ -63,7 +64,7 @@ public class FishSchoolSearch {
 		    	}
 			    	
 			}
-		 	double fit = Functions.calculateFitness(newPosition, baseC);
+		 	double fit = Functions.calculateFitness(newPosition, baseC, simulacao);
 			if(fit < this.population.get(eachFish).getFitness()){
 				this.population.get(eachFish).setFitness(fit);
 				this.population.get(eachFish).setPosition(newPosition);
@@ -168,7 +169,7 @@ public class FishSchoolSearch {
 			    	}
 			    	
 			}
-		 	double fit = Functions.calculateFitness(newPosition, baseC);
+		 	double fit = Functions.calculateFitness(newPosition, baseC, simulacao);
 			if(fit < this.population.get(eachFish).getFitness()){
 				this.population.get(eachFish).setDeltaFitness(this.population.get(eachFish).getFitness()-fit);
 				this.population.get(eachFish).setFitness(fit);
@@ -195,6 +196,7 @@ public class FishSchoolSearch {
 	}
 
 	public double run(int i) throws IOException {
+		simulacao = i;
 		for (int iteration = 0; iteration < Parameters.numberMaximumIteration; iteration++) {
 			individualMovement();
 			feeding();

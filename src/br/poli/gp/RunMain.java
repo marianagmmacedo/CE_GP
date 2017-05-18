@@ -92,13 +92,12 @@ public class RunMain {
 		int indexFactor = threadLength / tList.length;
 
 		for (int i = 0; i < tList.length; i++){
-			if (startingIndex + indexFactor + 1 < threadLength)
+			if (startingIndex + indexFactor + 1 < threadLength){
 				tList[i] = new ThreadMain(startingIndex, startingIndex + indexFactor);
-			else
+			}else{
 				tList[i] = new ThreadMain(startingIndex, threadLength);
-			
+			}
 			tList[i].start();
-			
 			startingIndex += indexFactor;
 		}
 		
