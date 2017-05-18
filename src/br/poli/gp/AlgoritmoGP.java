@@ -640,7 +640,7 @@ public class AlgoritmoGP {
 				//				System.out.println(melhorIndividuo.fitness);
 				if(otimizadoIndividuo.fitness < melhorIndividuo.fitness){
 					melhorIndividuo = (Individuo) Common.DeepCopy(otimizadoIndividuo);
-					System.out.println("melhor");
+					//System.out.println("melhor");
 				}
 
 			}
@@ -660,7 +660,7 @@ public class AlgoritmoGP {
 				}
 				if(otimizadoIndividuo.fitness < melhorIndividuo.fitness){
 					melhorIndividuo = (Individuo) Common.DeepCopy(otimizadoIndividuo);
-					System.out.println("melhor");
+					//System.out.println("melhor");
 				}
 
 			}
@@ -700,7 +700,7 @@ public class AlgoritmoGP {
 					}
 					if(otimizadoIndividuo.fitness < this.populacao.get(eachPOP).fitness){
 						this.populacao.set(eachPOP, (Individuo) Common.DeepCopy(otimizadoIndividuo));
-						System.out.println("melhor");
+						//System.out.println("melhor");
 					}
 
 				}

@@ -43,6 +43,7 @@ public class RunMain {
 	
 	static void mainCarlos() throws Exception{
 
+		System.out.println("Este é o main Certo!");
 		/*Individuo i = new Individuo(3, 9);
 		System.out.println(i);
 		i.expandirIndividuo();
