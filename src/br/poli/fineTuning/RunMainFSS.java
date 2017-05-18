@@ -11,7 +11,7 @@ import br.poli.gp.EInicializacao;
 import br.poli.gp.Parametros;
 import br.poli.output.Output;
 
-public class RunMain {
+public class RunMainFSS {
 
 	public static void main(String[] args) throws IOException {
 		double[] respostas = new double[5];

@@ -14,12 +14,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
-
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
-
 import org.encog.util.file.Directory;
-
 import br.poli.gp.arvore.Arvore;
 import br.poli.gp.util.ContourChart;
 import br.poli.gp.util.DemoModule;
@@ -28,13 +25,11 @@ import ChartDirector.ChartViewer;
 
 public class RunMain {
 
-
 	static double[] dataXH;
 	static double[] dataYH1;
 	static double[] dataZH;
 
 	public static void main(String[] args) throws Exception {
-
 		//mainMariana();
 		mainCarlos();
 	}
@@ -43,7 +38,7 @@ public class RunMain {
 	
 	static void mainCarlos() throws Exception{
 
-		System.out.println("Este é o main Certo!");
+		System.out.println("Este e o main Certo!");
 		/*Individuo i = new Individuo(3, 9);
 		System.out.println(i);
 		i.expandirIndividuo();

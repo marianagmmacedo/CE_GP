@@ -4,7 +4,7 @@ public class Parametros {
 	
 	// Configuracao experimento
 	public static final int NUMERO_TOTAL_SIMULACAO = 30;
-	public static final int NUMERO_TOTAL_ITERACAO = 100;
+	public static final int NUMERO_TOTAL_ITERACAO = 100;//100
 	public static final int ITERACAO_BREAK = 1;
 	public static final String TIPO_DE_OTIMIZACAO = "MINIMIZACAO";
 	
@@ -40,8 +40,8 @@ public class Parametros {
 	// 3
 	
 	public static final double CHANCE_CRIACAO_VARIAVEL = 0.5d; 
-	public static final double TAXA_CRUZAMENTO_MUTACAO = 0.05d;
-	public static final String TAXA_CRUZAMENTO_MUTACAO_DECRESCENTE = "Nenhuma"; //"LINEAR", "EXPONENCIAL" ou "Nenhuma"
+	public static final double TAXA_CRUZAMENTO_MUTACAO = 1.00d;
+	public static final String TAXA_CRUZAMENTO_MUTACAO_DECRESCENTE = "EXPONENCIAL"; //"LINEAR", "EXPONENCIAL" ou "Nenhuma"
 	public static final double TAXA_CRUZAMENTO_MUTACAO_DECAIMENTO_EXPONENCIAL = 2.0d;
 	
 	

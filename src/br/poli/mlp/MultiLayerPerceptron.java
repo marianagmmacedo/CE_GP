@@ -20,43 +20,43 @@ public class MultiLayerPerceptron {
 	
 	// ok = inicializado
 	// emite sinal recebe sinal
-	static int numberHiddenLayers; // ok
-	static int numberLayers; // ok
-	static int numberInputNeurons; // ok
-	static int[] numberNeurons; // ok
-	static int numberOutputNeurons; // ok
+	int numberHiddenLayers; // ok
+	int numberLayers; // ok
+	int numberInputNeurons; // ok
+	int[] numberNeurons; // ok
+	int numberOutputNeurons; // ok
 	
-	static ArrayList<Double[]> bias; // ok numero de camadas com numero de neuronios
+	ArrayList<Double[]> bias; // ok numero de camadas com numero de neuronios
 	Double [][] delta; // ok numero de camadas com numero de neuronios
 	Double [][] oldDelta; //ok numero de camadas com numero de neuronios
 	
-	static ArrayList<Double[][]> weight; // ok numero de camadas com numero de neuronio que emite para que recebe
+	ArrayList<Double[][]> weight; // ok numero de camadas com numero de neuronio que emite para que recebe
 	ArrayList<Double[][]> oldWeight; // ok numero de camadas com numero de neuronio que emite para que recebe
 
 	
 	Double [] netOutput; // ok numero da entrada com a net da resposta
 	
-	static Double [][] input; // tabela de entrada
+	Double [][] input; // tabela de entrada
 
-	static Double [][] output; // tabela de saida (resposta - f(net))
-	static Double [] errorOutput;
-	static Double alfa;
-	static Double beta;
+	Double [][] output; // tabela de saida (resposta - f(net))
+	Double [] errorOutput;
+	Double alfa;
+	Double beta;
 	public Random random;
 	int totalIteration;
-	static ArrayList<Double[]> sensibility;
-	static int tamanhoJanela;
-	static double media;
-	static double desvio;
-	static int sizeValidacao;
-	static int sim;
+	ArrayList<Double[]> sensibility;
+	int tamanhoJanela;
+	double media;
+	double desvio;
+	int sizeValidacao;
+	int sim;
 	// ok = construtor 
 	public MultiLayerPerceptron(String nomeBASE, int validarSize
 			, ArrayList<Double> inputFSS, int simulacao) throws IOException{
 		sim = simulacao;
 		sizeValidacao = validarSize;
 		random = new Random();
-		totalIteration = 200;
+		totalIteration = 100;
 		tamanhoJanela = 2;
 		//String csvFile1 = MOEADDRAparameters.pathDatabase;
 		readData(nomeBASE);
@@ -306,7 +306,7 @@ public class MultiLayerPerceptron {
 
 
 	
-	public static void readData(String nomeBase) throws IOException{
+	public void readData(String nomeBase) throws IOException{
 		HashMap<Integer, Double> serieTemporal = Common.lerBase(nomeBase);
 		media = Common.CalcularMedia(serieTemporal);
 		desvio = Common.CalcularDesvioPadrao(serieTemporal);
@@ -358,10 +358,7 @@ public class MultiLayerPerceptron {
 
 
 
-	public double evaluate(String nomeBase) {
-		Output o = Output.getOutputByList(nomeBase);
-		Output.getOutputByList(nomeBase).texto[1] = "";
-		Output.getOutputByList(nomeBase).texto[2] = "";
+	public double evaluate(String nomeBase, boolean save) {
 		ArrayList<Double[]> newNet = new ArrayList<Double[]>();
 		ArrayList<Double[]> newFnet = new ArrayList<Double[]>();
 		
@@ -375,8 +372,10 @@ public class MultiLayerPerceptron {
 			
 		}
 		int error = 0;
+		if(save){
+			Output.getOutputByList(nomeBase).texto[2] += (sim+1) + " : " + "\n\n" + "x <- c(";
+		}
 		
-		Output.getOutputByList(nomeBase).texto[2] += (sim+1) + " : " + "\n\n" + "x <- c(";
 		// Para cada iteracao
 		for (int iteration = 1; iteration <= totalIteration; iteration++) {
 			int eachLayer = 0;
@@ -464,11 +463,14 @@ public class MultiLayerPerceptron {
 //
 			}
 			
-			if(nomeBase.equals("lynx")){
-				Output.getOutputByList(nomeBase).texto[2] +=  (Math.pow(Math.E, (double) errorOutputTEMP[0]))  +  ", ";
-			}else{
-				Output.getOutputByList(nomeBase).texto[2] +=  (((double) errorOutputTEMP[0]*desvio) + media)  +  ", ";
+			if(save){
+				if(nomeBase.equals("lynx")){
+					Output.getOutputByList(nomeBase).texto[2] +=  (Math.pow(Math.E, (double) errorOutputTEMP[0]))  +  ", ";
+				}else{
+					Output.getOutputByList(nomeBase).texto[2] +=  (((double) errorOutputTEMP[0]*desvio) + media)  +  ", ";
+				}
 			}
+			
 			
 //			System.out.println("errorOutputTEMP");
 //			System.out.println(errorOutputTEMP[0]);
@@ -502,8 +504,11 @@ public class MultiLayerPerceptron {
 			
 			
 		}
-		int indiceUltimaVirgula = Output.getOutputByList(nomeBase).texto[2].lastIndexOf(',');
-		Output.getOutputByList(nomeBase).texto[2] = Output.getOutputByList(nomeBase).texto[2].substring(0, indiceUltimaVirgula) + ") \n\n";
+		if(save){
+			int indiceUltimaVirgula = Output.getOutputByList(nomeBase).texto[2].lastIndexOf(',');
+			Output.getOutputByList(nomeBase).texto[2] = Output.getOutputByList(nomeBase).texto[2].substring(0, indiceUltimaVirgula) + ") \n\n";
+			
+		}
 		
 //		System.out.println("------evaluate2");
 		return answer[0];

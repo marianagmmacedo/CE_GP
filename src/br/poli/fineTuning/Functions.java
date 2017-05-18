@@ -28,7 +28,7 @@ public class Functions {
 		return sum;
 	}
 	
-	public static double calculateFitness(ArrayList<Double> position, String base, int simulation) throws IOException {
+	public static double calculateFitness(ArrayList<Double> position, String base, int simulation, boolean save) throws IOException {
 		switch (Parameters.function) {
 			case "sphere":
 				return calculateSphere(position);
@@ -39,7 +39,7 @@ public class Functions {
 			case "AG":
 				return calculatePG(position, base);
 			case "MLP":
-				return calculateMLP(position, base, simulation);
+				return calculateMLP(position, base, simulation, save);
 			default:
 				break;
 		}
@@ -47,13 +47,13 @@ public class Functions {
 		return 0.0;
 	}
 	
-	private static double calculateMLP(ArrayList<Double> position, String b, int sim) throws IOException {
+	private static double calculateMLP(ArrayList<Double> position, String b, int sim, boolean save) throws IOException {
 		//System.out.println(Parametros.Base);
 		HashMap<Integer, Double> serieTemporal = Common.lerBase(b);
 		int validarBase = (int) Math.ceil(serieTemporal.size()*Parametros.TAXA_VALIDACAO);
 		MultiLayerPerceptron mlp = new MultiLayerPerceptron(b, validarBase, position, sim);
 		mlp.forwardBackward();		
-		return mlp.evaluate(b);
+		return mlp.evaluate(b, save);
 	}
 	
 	private static double calculatePG(ArrayList<Double> position, String b) throws IOException {

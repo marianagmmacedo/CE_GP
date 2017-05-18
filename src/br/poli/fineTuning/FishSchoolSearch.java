@@ -64,7 +64,7 @@ public class FishSchoolSearch {
 		    	}
 			    	
 			}
-		 	double fit = Functions.calculateFitness(newPosition, baseC, simulacao);
+		 	double fit = Functions.calculateFitness(newPosition, baseC, simulacao, false);
 			if(fit < this.population.get(eachFish).getFitness()){
 				this.population.get(eachFish).setFitness(fit);
 				this.population.get(eachFish).setPosition(newPosition);
@@ -169,7 +169,7 @@ public class FishSchoolSearch {
 			    	}
 			    	
 			}
-		 	double fit = Functions.calculateFitness(newPosition, baseC, simulacao);
+		 	double fit = Functions.calculateFitness(newPosition, baseC, simulacao, false);
 			if(fit < this.population.get(eachFish).getFitness()){
 				this.population.get(eachFish).setDeltaFitness(this.population.get(eachFish).getFitness()-fit);
 				this.population.get(eachFish).setFitness(fit);
@@ -205,8 +205,8 @@ public class FishSchoolSearch {
 			updateSteps();
 			updateBestFish();
 		}
-		System.out.println("the best fish " + this.bestFish.getFitness());
 		
-		return this.bestFish.getFitness();
+		double fit = Functions.calculateFitness(this.bestFish.getPosition(), baseC, simulacao, true);
+		return fit;
 	}
 }
