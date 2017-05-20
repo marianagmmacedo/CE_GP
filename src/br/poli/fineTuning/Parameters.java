@@ -18,7 +18,7 @@ public class Parameters {
 	//public static String function = "rosenbrock";
 	public static double dimensionMin = 0.30;
 	public static double dimensionMax = 0.70;
-	public static String function = "MLP";
+	public static String function = "GP";
 		
 	// FSS
 	public static double stepIndividual = 0.1;

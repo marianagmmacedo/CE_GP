@@ -11,8 +11,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.EmptyStackException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Stack;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
@@ -25,29 +27,38 @@ import br.poli.output.Output;
 
 public class ThreadMain extends Thread {
 
-	int startingIndex;
-	int endingIndex;
+	static Stack<String> stackString;
 	
-
-	public ThreadMain(int startingIndex, int endingIndex){
-		this.startingIndex = startingIndex; 
-		this.endingIndex = endingIndex;
+	public static void startStack(String[] listString){
+		stackString = new Stack<String>();
+		for(String s : listString){
+			stackString.push(s);
+		}
+	}
+	
+	public static void startStack(){
+		stackString = new Stack<String>();
+		for(String s : Parametros.Bases){
+			stackString.push(s);
+		}
+	}
+	
+	public static void startMultiThreading(int threadCount){
+		Thread[] tList = new Thread[threadCount];
+		
+		for (int i = 0; i < threadCount; i++){
+			tList[i] = new ThreadMain();
+			tList[i].start();
+		}
 	}
 
 	public void run() {
-		System.out.println("Thread Running!");
-		System.out.println("StartingIndex: "+ startingIndex + "EndingIndex: " + endingIndex);
+		System.out.println("Thread Running!");		
 		
-		
-		
-		try{			
-			ArrayList<String> stringList = new ArrayList<String>();
-
-			for (int i = startingIndex; i < endingIndex; i++){
-				stringList.add(Parametros.Bases[i]);	
-			}
-
-			for (String base : stringList){
+		try{
+			while (true){
+				String base = stackString.pop();
+				
 				HashMap<Integer, Double> serieTemporal = Common.lerBase(base);
 				Output.outputList.add(new Output(base));
 				
@@ -66,16 +77,16 @@ public class ThreadMain extends Thread {
 
 					System.out.println(base + ", Sim: " + (i + 1));
 					
-					FishSchoolSearch fss = new FishSchoolSearch(base);
-					double d = fss.run(i);
+					//FishSchoolSearch fss = new FishSchoolSearch(base);
+					//double d = fss.run(i);
 					
 					
-//					AlgoritmoGP gp = new AlgoritmoGP(EInicializacao.Completa, serieTemporal, Parametros.TAXA_CRUZAMENTO_MUTACAO
-//							, Parametros.NUMERO_TOTAL_FUNCAO, Parametros.TAMANHO_MAXIMO_PROFUNDIDADE_ARVORE
-//							, Parametros.NUMERO_MAXIMO_POPULACAO, mediaDesvio[0], mediaDesvio[1], base);
-//
-//					double d = gp.runGP(i);
+					AlgoritmoGP gp = new AlgoritmoGP(EInicializacao.Completa, serieTemporal, Parametros.TAXA_CRUZAMENTO_MUTACAO
+							, Parametros.NUMERO_TOTAL_FUNCAO, Parametros.TAMANHO_MAXIMO_PROFUNDIDADE_ARVORE
+							, Parametros.NUMERO_MAXIMO_POPULACAO, mediaDesvio[0], mediaDesvio[1], base);
 
+					double d = gp.runGP(i);
+					
 					if (!(Double.isInfinite(d) || Double.isNaN(d))){
 						respostas[i]=d;
 						i++;
@@ -88,7 +99,7 @@ public class ThreadMain extends Thread {
 //				System.out.println("base: " + base + "/med: " + media + "/desvio: " + desvio);
 				
 				File directory = new File("./");
-				File f = new File(directory.getAbsolutePath()+"/resultados/thread_"+ base + "_FSS_MLP.txt");
+				File f = new File(directory.getAbsolutePath()+"/resultados/thread_"+ base + "_MLP_FSS.txt");
 				PrintWriter gravarArq = new PrintWriter(f);
 			    
 				Output out = Output.getOutputByList(base);
@@ -101,6 +112,8 @@ public class ThreadMain extends Thread {
 
 			    gravarArq.close();
 			}
+		} catch (EmptyStackException e) {
+			System.out.println("Thread terminou pois não há mais base a ser processada.");
 		} catch (Exception e) {
 			System.out.println(e.toString());
 			System.out.println(e.getMessage());
