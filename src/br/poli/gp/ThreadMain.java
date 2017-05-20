@@ -82,14 +82,14 @@ public class ThreadMain extends Thread {
 //					mlp.forwardBackward();
 //					double d = mlp.evaluate(base, false);
 					
-//					FishSchoolSearch fss = new FishSchoolSearch(base);
-//					double d = fss.run(i);
+					FishSchoolSearch fss = new FishSchoolSearch(base);
+					double d = fss.run(i);
 					
-					AlgoritmoGP gp = new AlgoritmoGP(EInicializacao.Completa, serieTemporal, Parametros.TAXA_CRUZAMENTO_MUTACAO
-							, Parametros.NUMERO_TOTAL_FUNCAO, Parametros.TAMANHO_MAXIMO_PROFUNDIDADE_ARVORE
-							, Parametros.NUMERO_MAXIMO_POPULACAO, mediaDesvio[0], mediaDesvio[1], base);
-
-					double d = gp.runGP(i);
+//					AlgoritmoGP gp = new AlgoritmoGP(EInicializacao.Completa, serieTemporal, Parametros.TAXA_CRUZAMENTO_MUTACAO
+//							, Parametros.NUMERO_TOTAL_FUNCAO, Parametros.TAMANHO_MAXIMO_PROFUNDIDADE_ARVORE
+//							, Parametros.NUMERO_MAXIMO_POPULACAO, mediaDesvio[0], mediaDesvio[1], base);
+//
+//					double d = gp.runGP(i);
 					
 					if (!(Double.isInfinite(d) || Double.isNaN(d))){
 						respostas[i]=d;
@@ -104,7 +104,7 @@ public class ThreadMain extends Thread {
 				
 				File directory = new File("./");
 
-				File f = new File(directory.getAbsolutePath()+"/resultados/thread_"+ base + "_GP_withSimplification.txt");
+				File f = new File(directory.getAbsolutePath()+"/resultados/thread_"+ base + "_GP_S_FSS.txt");
 
 				PrintWriter gravarArq = new PrintWriter(f);
 			    

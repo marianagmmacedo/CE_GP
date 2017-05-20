@@ -6,7 +6,7 @@ public class Parameters {
 	public static int numberMaximumSimulation = 1;
 	public static int numberMaximumIteration = 60;//60
 	public static int numberMaximumPopulation = 30;
-	public static int numberMaximumDimension = 200; //4,6
+	public static int numberMaximumDimension = 4; //4,6
 //	public static double dimensionMin = -100.0;
 //	public static double dimensionMax = 100.0;
 //	public static double dimensionMin = -5.12;

@@ -83,7 +83,7 @@ public class Parametros {
 	public static final int TAMANHO_NOVOS_INDIVIDUOS = 4;
 	public static final int NUMERO_NOVOS_INDIVIDUOS = 5;
 	public static final boolean GERAR_NOVOS_INDIVIDUOS = false;
-	public static final boolean SIMPLIFICAR_ARVORE = false;
+	public static final boolean SIMPLIFICAR_ARVORE = true;
 	
 	
 }
