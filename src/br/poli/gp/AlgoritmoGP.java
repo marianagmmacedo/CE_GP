@@ -613,6 +613,8 @@ public class AlgoritmoGP {
 
 	private void otimizarMelhorIndividuo() {
 
+		this.melhorIndividuo.expandirIndividuo();
+		
 		if(Parametros.SIMULATED_ANNEALING){
 			double temperatura = Parametros.TEMPERATURA_INICIAL_SIM_ANN;
 			double[] position = getConstantes(this.melhorIndividuo);

@@ -14,6 +14,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.Stack;
+
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import org.encog.util.file.Directory;
@@ -30,7 +32,7 @@ public class RunMain {
 	static double[] dataZH;
 
 	public static void main(String[] args) throws Exception {
-		//mainMariana();
+		//mainMariana();		
 		mainCarlos();
 	}
 
@@ -81,22 +83,11 @@ public class RunMain {
 		double[] respostas = new double[30];
 		*/
 		
-		
-		Thread[] tList = new Thread[4];
-		int threadLength = Parametros.Bases.length;
-		int startingIndex = 0;
-		int indexFactor = threadLength / tList.length;
-
-		for (int i = 0; i < tList.length; i++){
-			if (startingIndex + indexFactor + 1 < threadLength){
-				tList[i] = new ThreadMain(startingIndex, startingIndex + indexFactor);
-			}else{
-				tList[i] = new ThreadMain(startingIndex, threadLength);
-			}
-			tList[i].start();
-			startingIndex += indexFactor;
-		}
-		
+		//Esse método já puxa todas as bases do array bases[] e transforma em thread
+		ThreadMain.startStack();
+		//Esse método escolhe qnts threads vão rodar de forma uniforme nesse caso eu mandei rodar 13 de uma vez,
+		//se n houver 13 bases ele só termina sem duplicidade :D
+		ThreadMain.startMultiThreading(13);
 	}
 
 	static void mainMariana() throws Exception{

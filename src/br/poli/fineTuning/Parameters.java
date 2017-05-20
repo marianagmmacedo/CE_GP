@@ -16,11 +16,17 @@ public class Parameters {
 //	public static String function = "sphere";
 //	public static String function = "rotated rastrigin";
 	//public static String function = "rosenbrock";
+<<<<<<< HEAD
 //	public static double dimensionMin = 0.30;
 //	public static double dimensionMax = 0.70;
 	public static double dimensionMin = 0.000001;
 	public static double dimensionMax = 1.0;
 	public static String function = "MLP";
+=======
+	public static double dimensionMin = 0.30;
+	public static double dimensionMax = 0.70;
+	public static String function = "GP";
+>>>>>>> 5bf2c5f3d7876c73ea61e530f0dd6d8a6e5214c1
 		
 	// FSS
 	public static double stepIndividual = 0.1;

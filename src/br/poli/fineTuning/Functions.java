@@ -36,7 +36,7 @@ public class Functions {
 				return calculateRotatedRastrigin(position);
 			case "rosenbrock":
 				return calculateRosenbrock(position);
-			case "AG":
+			case "GP":
 				return calculatePG(position, base);
 			case "MLP":
 				return calculateMLP(position, base, simulation, save);
