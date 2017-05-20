@@ -85,7 +85,8 @@ public class RunMain {
 		
 		//Esse método já puxa todas as bases do array bases[] e transforma em thread
 		ThreadMain.startStack();
-		//Esse método escolhe qnts threads vão rodar de forma uniforme nesse caso eu mandei rodar 13 de uma vez, se n houver 13 bases ele só termina
+		//Esse método escolhe qnts threads vão rodar de forma uniforme nesse caso eu mandei rodar 13 de uma vez,
+		//se n houver 13 bases ele só termina sem duplicidade :D
 		ThreadMain.startMultiThreading(13);
 	}
 
