@@ -54,7 +54,10 @@ public class Individuo implements Serializable {
 	}
 	
 	public void otimizarArvore(){
-		arvore.otimizarArvore(noFuncao);
+		if(Parametros.SIMPLIFICAR_ARVORE){
+			arvore.otimizarArvore(noFuncao);
+		}
+		
 	}
 		
 	public String toString(){

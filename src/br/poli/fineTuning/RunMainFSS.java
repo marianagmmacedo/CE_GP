@@ -14,10 +14,14 @@ import br.poli.output.Output;
 public class RunMainFSS {
 
 	public static void main(String[] args) throws IOException {
+		
+//		{"sunspot0", "lynx1", "stock2", "redwine3", "accidentalDeathUSA4", "airlines5",
+//			"coloradoRiver6", "dowJones7", "electricity8", "lakeerie9", "ibm10", "nsw11",
+//			  "pollution12"};
 		double[] respostas = new double[5];
-		for (int i = 0; i < 5; i++) {
-			Output.outputList.add(new Output(Parametros.Bases[0]));
-			FishSchoolSearch fss = new FishSchoolSearch(Parametros.Bases[0]);
+		for (int i = 0; i < 2; i++) {
+			Output.outputList.add(new Output(Parametros.Bases[4]));
+			FishSchoolSearch fss = new FishSchoolSearch(Parametros.Bases[4]);
 			respostas[i] = fss.run(i);
 			double media = Common.CalcularMedia(respostas);
 			double desvio = Common.CalcularDesvioPadrao(respostas);
@@ -25,10 +29,10 @@ public class RunMainFSS {
 	//		System.out.println("base: " + base + "/med: " + media + "/desvio: " + desvio);
 			
 			File directory = new File("./");
-			File f = new File(directory.getAbsolutePath()+"/resultados/thread_"+ Parametros.Bases[0] + "_FSS_MLP.txt");
+			File f = new File(directory.getAbsolutePath()+"/resultados/thread_"+ Parametros.Bases[4] + "_FSS_MLP.txt");
 			PrintWriter gravarArq = new PrintWriter(f);
 		    
-			Output out = Output.getOutputByList(Parametros.Bases[0]);
+			Output out = Output.getOutputByList(Parametros.Bases[4]);
 			
 			out.texto[0] = "med: " + media + "/desvio: " + desvio;
 			

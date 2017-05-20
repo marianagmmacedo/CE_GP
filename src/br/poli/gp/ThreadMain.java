@@ -21,6 +21,7 @@ import ChartDirector.ChartViewer;
 import br.poli.fineTuning.FishSchoolSearch;
 import br.poli.gp.util.DemoModule;
 import br.poli.gp.util.LineChart;
+import br.poli.mlp.MultiLayerPerceptron;
 import br.poli.output.Output;
 
 public class ThreadMain extends Thread {
@@ -66,15 +67,19 @@ public class ThreadMain extends Thread {
 
 					System.out.println(base + ", Sim: " + (i + 1));
 					
-					FishSchoolSearch fss = new FishSchoolSearch(base);
-					double d = fss.run(i);
+//					MultiLayerPerceptron mlp = new MultiLayerPerceptron(base, 20, null, -1);
+//					mlp.forwardBackward();
+//					double d = mlp.evaluate(base, false);
+					
+//					FishSchoolSearch fss = new FishSchoolSearch(base);
+//					double d = fss.run(i);
 					
 					
-//					AlgoritmoGP gp = new AlgoritmoGP(EInicializacao.Completa, serieTemporal, Parametros.TAXA_CRUZAMENTO_MUTACAO
-//							, Parametros.NUMERO_TOTAL_FUNCAO, Parametros.TAMANHO_MAXIMO_PROFUNDIDADE_ARVORE
-//							, Parametros.NUMERO_MAXIMO_POPULACAO, mediaDesvio[0], mediaDesvio[1], base);
-//
-//					double d = gp.runGP(i);
+					AlgoritmoGP gp = new AlgoritmoGP(EInicializacao.Completa, serieTemporal, Parametros.TAXA_CRUZAMENTO_MUTACAO
+							, Parametros.NUMERO_TOTAL_FUNCAO, Parametros.TAMANHO_MAXIMO_PROFUNDIDADE_ARVORE
+							, Parametros.NUMERO_MAXIMO_POPULACAO, mediaDesvio[0], mediaDesvio[1], base);
+
+					double d = gp.runGP(i);
 
 					if (!(Double.isInfinite(d) || Double.isNaN(d))){
 						respostas[i]=d;
@@ -88,7 +93,7 @@ public class ThreadMain extends Thread {
 //				System.out.println("base: " + base + "/med: " + media + "/desvio: " + desvio);
 				
 				File directory = new File("./");
-				File f = new File(directory.getAbsolutePath()+"/resultados/thread_"+ base + "_FSS_MLP.txt");
+				File f = new File(directory.getAbsolutePath()+"/resultados/thread_"+ base + "_GP_withSimplification.txt");
 				PrintWriter gravarArq = new PrintWriter(f);
 			    
 				Output out = Output.getOutputByList(base);

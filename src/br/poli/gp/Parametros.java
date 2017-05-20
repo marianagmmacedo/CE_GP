@@ -4,7 +4,7 @@ public class Parametros {
 	
 	// Configuracao experimento
 	public static final int NUMERO_TOTAL_SIMULACAO = 30;
-	public static final int NUMERO_TOTAL_ITERACAO = 100;//100
+	public static final int NUMERO_TOTAL_ITERACAO = 6000;//100
 	public static final int ITERACAO_BREAK = 1;
 	public static final String TIPO_DE_OTIMIZACAO = "MINIMIZACAO";
 	
@@ -51,18 +51,18 @@ public class Parametros {
 //	public static final String CONVERGENCIA = "/resultados/"+Base+"/"+Base+"_convergencia_";
 
 	//Otimizacao
-	public static final boolean OTIMIZAR = true;
+	public static final boolean OTIMIZAR = false;
 	public static final boolean OTIMIZAR_SEMPRE = false;
 	public static final boolean ESTRATEGIA_EVOLUCAO_WORST = false;
 	public static final boolean SIMULATED_ANNEALING = false;
 	public static final boolean HILL_CLIMBING = false;
 	public static final boolean VARIAR_JANELA = false;
-	public static final boolean ESTRATEGIA_EVOLUCAO = true;
+	public static final boolean ESTRATEGIA_EVOLUCAO = false;
 	//Muta��o de Descendente
 	public static final boolean MUTACAO_CLASSIFICADA = false;
 	
 	//Se ativo, o fitness calculado ir� ignorar express�es Infinitas ou NaN ao inv�s de reescrever o indiv�duo
-	public static final boolean GP_CANONICA = false;
+	public static final boolean GP_CANONICA = true;
 	
 	//Configuracao Simulated Annealing
 	public static final double TEMPERATURA_FINAL_SIM_ANN = 0.1;
@@ -77,12 +77,13 @@ public class Parametros {
 	//Configuracao Estrategia Evolucionaria
 	public static final int ESTRATEGIA_EVOLUCAO_ITERACAO = 20;
 	public static final double TAXA_VALIDACAO = 0.20;
-	public static final boolean ESTRATEGIA_EVOLUCAO_TODOS = true;
+	public static final boolean ESTRATEGIA_EVOLUCAO_TODOS = false;
 	
 	//Adicionar Novos Individuos enquanto roda o codigo
 	public static final int TAMANHO_NOVOS_INDIVIDUOS = 4;
 	public static final int NUMERO_NOVOS_INDIVIDUOS = 5;
-	public static final boolean GERAR_NOVOS_INDIVIDUOS = true;
+	public static final boolean GERAR_NOVOS_INDIVIDUOS = false;
+	public static final boolean SIMPLIFICAR_ARVORE = false;
 	
 	
 	

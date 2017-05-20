@@ -1,0 +1,9 @@
+med: 15.0371251035794/desvio: 0.0
+
+
+Funcoes: 
+
+Erros: 
+
+
+
