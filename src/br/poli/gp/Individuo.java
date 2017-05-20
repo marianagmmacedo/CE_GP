@@ -23,7 +23,7 @@ public class Individuo implements Serializable {
 		arvore.no = Arvore.criarNovaExpressaoAleatoria(1, tamanhoProfundidade, arvore, numeroFuncao);
 		noFuncao = new ArrayList<Funcao>();
 		fitnessJaCalculado = false;
-				
+			
 		otimizarArvore();
 	}
 	
@@ -40,7 +40,7 @@ public class Individuo implements Serializable {
 			arvore.no = Arvore.criarNovaExpressaoAleatoria(1, TAMANHO_MAXIMO_PROFUNDIDADE_ARVORE/2, arvore, numeroFuncao);
 		else if (tipoInicializacao == EInicializacao.Mutacao)
 			arvore.no = Arvore.criarNovaExpressaoAleatoria(1, Parametros.TAMANHO_MAXIMO_MUTACAO_PROFUNDIDADE, arvore, numeroFuncao);
-				
+			
 		otimizarArvore();
 	}
 	

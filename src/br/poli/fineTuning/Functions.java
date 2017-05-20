@@ -28,7 +28,7 @@ public class Functions {
 		return sum;
 	}
 	
-	public static double calculateFitness(ArrayList<Double> position, String base, int simulation, boolean save) throws IOException {
+	public static double calculateFitness(ArrayList<Double> position, String base, int simulation, boolean save, boolean isLogging) throws IOException {
 		switch (Parameters.function) {
 			case "sphere":
 				return calculateSphere(position);
@@ -37,7 +37,7 @@ public class Functions {
 			case "rosenbrock":
 				return calculateRosenbrock(position);
 			case "GP":
-				return calculatePG(position, base);
+				return calculatePG(position, base, isLogging);
 			case "MLP":
 				return calculateMLP(position, base, simulation, save);
 			default:
@@ -56,7 +56,7 @@ public class Functions {
 		return mlp.evaluate(b, save);
 	}
 	
-	private static double calculatePG(ArrayList<Double> position, String b) throws IOException {
+	private static double calculatePG(ArrayList<Double> position, String b, boolean isLogging) throws IOException {
 		//System.out.println(Parametros.Base);
 		HashMap<Integer, Double> serieTemporal = Common.lerBase(b);
 		double media = Common.CalcularMedia(serieTemporal);
@@ -70,7 +70,7 @@ public class Functions {
 				(int) Math.abs(Math.floor(position.get(1)*Parametros.NUMERO_TOTAL_FUNCAO)), 
 				(int) Math.abs(position.get(2)*Parametros.TAMANHO_MAXIMO_PROFUNDIDADE_ARVORE), 
 				(int) Math.abs(Math.floor(position.get(3)*Parametros.NUMERO_MAXIMO_POPULACAO)), 
-				media, desvio, b);
+				media, desvio, b, isLogging);
 				
 		iteration++;
 		return gp.runGP(iteration);

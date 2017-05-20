@@ -84,10 +84,10 @@ public class RunMain {
 		*/
 		
 		//Esse método já puxa todas as bases do array bases[] e transforma em thread
-		ThreadMain.startStack();
+		ThreadMain.startStack(new String[]{"sunspot", "ibm", "nsw", "lynx", "dowJones", "stock", "redwine", "accidentalDeathUSA", "airlines"});
 		//Esse método escolhe qnts threads vão rodar de forma uniforme nesse caso eu mandei rodar 13 de uma vez,
 		//se n houver 13 bases ele só termina sem duplicidade :D
-		ThreadMain.startMultiThreading(13);
+		ThreadMain.startMultiThreading(10);
 	}
 
 	static void mainMariana() throws Exception{
@@ -132,7 +132,7 @@ public class RunMain {
 			System.out.println(simulacao);
 			AlgoritmoGP gp = new AlgoritmoGP(EInicializacao.Completa, serieTemporal, taxaMutacao
 					, Parametros.NUMERO_TOTAL_FUNCAO, tamanhaMaximoArvore
-					, numeroPopulacao, mediaDesvio[0], mediaDesvio[1],Parametros.Bases[0]);
+					, numeroPopulacao, mediaDesvio[0], mediaDesvio[1],Parametros.Bases[0], true);
 			//double[] each = gp.runGP(simulacao);
 			double each = gp.runGP(simulacao);
 			meanSim += each;

@@ -4,7 +4,7 @@ public class Parametros {
 	
 	// Configuracao experimento
 	public static final int NUMERO_TOTAL_SIMULACAO = 30;
-	public static final int NUMERO_TOTAL_ITERACAO = 6000;//100
+	public static final int NUMERO_TOTAL_ITERACAO = 100;//100
 	public static final int ITERACAO_BREAK = 1;
 	public static final String TIPO_DE_OTIMIZACAO = "MINIMIZACAO";
 	
@@ -35,7 +35,7 @@ public class Parametros {
 	public static final int TAMANHO_MAXIMO_PROFUNDIDADE_ARVORE = 6;
 	public static final int NUMERO_TOTAL_FUNCAO = 9;
 	public static final int NUMERO_TOTAL_VARIAVEL = 2; //(TAMANHO DA JANELA)
-	public static final int NUMERO_MAXIMO_POPULACAO = 1000; //20
+	public static final int NUMERO_MAXIMO_POPULACAO = 20; //20
 	public static final int TAMANHO_MAXIMO_MUTACAO_PROFUNDIDADE = 3;
 	// 3
 	
@@ -62,7 +62,7 @@ public class Parametros {
 	public static final boolean MUTACAO_CLASSIFICADA = false;
 	
 	//Se ativo, o fitness calculado ir� ignorar express�es Infinitas ou NaN ao inv�s de reescrever o indiv�duo
-	public static final boolean GP_CANONICA = true;
+	public static final boolean GP_CANONICA = false;
 	
 	//Configuracao Simulated Annealing
 	public static final double TEMPERATURA_FINAL_SIM_ANN = 0.1;

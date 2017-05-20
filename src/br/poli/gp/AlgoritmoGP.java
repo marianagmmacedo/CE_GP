@@ -67,10 +67,11 @@ public class AlgoritmoGP {
 	double desvioPadraoSerieTemporal;
 	double fitnessValidacao;
 	String base;
+	boolean isLogging;
 	
 	public AlgoritmoGP(EInicializacao tipoInicializacao, HashMap<Integer, Double> serieTemporal, 
 			double taxaMutacaoCruzamento_, int numeroFuncao_, int tamanhaMaximoArvore_,
-			int numeroPopulacao_, double media, double desvioPadrao, String baseC) throws IOException{
+			int numeroPopulacao_, double media, double desvioPadrao, String baseC, boolean isLogging) throws IOException{
 		populacao = new ArrayList<Individuo>();
 		this.serieTemporal = serieTemporal;
 		taxaMutacaoCruzamento = taxaMutacaoCruzamento_;
@@ -88,6 +89,7 @@ public class AlgoritmoGP {
 		desvioPadraoSerieTemporal = desvioPadrao;
 		//		System.out.println(desvioPadraoSerieTemporal);
 		base = baseC;
+		this.isLogging = isLogging;
 		criarNovosIndividuos(numeroPopulacao_, tipoInicializacao);
 	}
 
@@ -168,7 +170,10 @@ public class AlgoritmoGP {
 			//System.out.println("IT: " + iteracao + "/" + Parametros.NUMERO_TOTAL_ITERACAO + "  /  " + this.melhorIndividuo.fitness);
 		}
 
-		calcularFitnessIndividuoFinal(this.melhorIndividuo);
+		if (isLogging)
+			calcularFitnessIndividuoFinal(this.melhorIndividuo);
+		else
+			calcularFitnessIndividuoFinalSemLog(this.melhorIndividuo);
 
 		
 		
@@ -293,6 +298,70 @@ public class AlgoritmoGP {
 		File directory = new File("./");
 		ImageIO.write(awtImage, "png", new File(directory.getAbsolutePath() +  "/resultados/"+base+"/"+base+this.simulacao+"_bothSeries.png"));
 
+	}
+	
+	private void calcularFitnessIndividuoFinalSemLog(Individuo i) {
+		HashMap<String, Double> hm = new HashMap<String, Double>();
+		this.serie = new double[validarBase];
+		this.previsto = new double[validarBase];
+		for (int numeroJanela = 0; numeroJanela < this.tamanhoJanela; numeroJanela++) {
+			hm.put("X"+numeroJanela, 0d);
+		}
+		double fitness = 0.0;
+		int all = 0;
+		
+		for(int walk = serieTemporal.size()-(this.tamanhoJanela)-validarBase; walk < (serieTemporal.size()-(this.tamanhoJanela)); walk++){
+			int aux = 0;
+			for (int numeroJanela = 0; numeroJanela < this.tamanhoJanela; numeroJanela++) {
+				hm.replace("X"+numeroJanela, (serieTemporal.get(walk+aux) ));
+				aux++;
+			}
+
+			this.serie[all] = serieTemporal.get(walk+this.tamanhoJanela);
+			this.previsto[all] = i.calcularValor(hm);
+			
+			double fitTmp = Math.pow( ( ((this.serie[all]*this.desvioPadraoSerieTemporal) + mediaSerieTemporal)  - ((this.previsto[all]*this.desvioPadraoSerieTemporal) + mediaSerieTemporal) ) , 2);
+			
+			fitness += fitTmp;
+			//fitness += Math.pow(Math.pow(Math.E, this.serie[all]) - Math.pow(Math.E, this.previsto[all]), 2);
+			//System.out.println("serie"+this.serie[all]);
+			//			System.out.println("previsto"+this.previsto[all]);
+
+			all++;
+
+		}
+				
+		//System.out.println("validacao");
+		//System.out.println(Math.sqrt(fitness/(validarBase)));
+		fitnessValidacao = Math.sqrt(fitness/(validarBase));
+
+		hm = new HashMap<String, Double>();
+		this.serieTreinamento = new double[(serieTemporal.size()-this.tamanhoJanela-validarBase)];
+		this.previstoTreinamento = new double[(serieTemporal.size()-this.tamanhoJanela-validarBase)];
+		for (int numeroJanela = 0; numeroJanela < this.tamanhoJanela; numeroJanela++) {
+			hm.put("X"+numeroJanela, 0d);
+		}
+		double fitness2 = 0.0;
+		int all2 = 0;
+		for(int walk = 0; walk < (serieTemporal.size()-this.tamanhoJanela-validarBase); walk++){
+			int aux = 0;
+			for (int numeroJanela = 0; numeroJanela < this.tamanhoJanela; numeroJanela++) {
+				hm.replace("X"+numeroJanela, (serieTemporal.get(walk+aux) ));
+				aux++;
+			}
+
+			this.serieTreinamento[all2] = serieTemporal.get(walk+this.tamanhoJanela);
+			this.previstoTreinamento[all2] = i.calcularValor(hm);
+			fitness2 += Math.pow( ( ((this.serieTreinamento[all2]*this.desvioPadraoSerieTemporal) + mediaSerieTemporal)  - ((this.previstoTreinamento[all2]*this.desvioPadraoSerieTemporal) + mediaSerieTemporal) ) , 2);
+			//fitness2 += Math.pow(Math.pow(Math.E, this.serieTreinamento[all2]) - Math.pow(Math.E, this.previstoTreinamento[all2]), 2);
+			//System.out.println("serie"+this.serie[all]);
+			//			System.out.println("previsto"+this.previsto[all]);
+
+			all2++;
+
+		}	
+		//System.out.println("treinamento");
+		//System.out.println(Math.sqrt(fitness2/(serieTemporal.size()-this.tamanhoJanela-validarBase)));
 	}
 
 	private void calcularFitnessIndividuoFinal(Individuo i) {
@@ -442,6 +511,7 @@ public class AlgoritmoGP {
 			int noMutacaoFilho = Common.RANDOM.nextInt((individuo.noFuncao.size()));
 			Funcao fFilho = individuo.noFuncao.get(noMutacaoFilho);
 			fFilho.crossover((new Individuo(EInicializacao.Mutacao, numeroFuncao, tamanhaMaximoArvore)).arvore.no);
+			
 			individuo.otimizarArvore();
 		}
 	}

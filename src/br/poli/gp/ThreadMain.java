@@ -77,15 +77,15 @@ public class ThreadMain extends Thread {
 
 					System.out.println(base + ", Sim: " + (i + 1));
 					
-					//FishSchoolSearch fss = new FishSchoolSearch(base);
-					//double d = fss.run(i);
+					FishSchoolSearch fss = new FishSchoolSearch(base);
+					double d = fss.run(i);
 					
 					
-					AlgoritmoGP gp = new AlgoritmoGP(EInicializacao.Completa, serieTemporal, Parametros.TAXA_CRUZAMENTO_MUTACAO
-							, Parametros.NUMERO_TOTAL_FUNCAO, Parametros.TAMANHO_MAXIMO_PROFUNDIDADE_ARVORE
-							, Parametros.NUMERO_MAXIMO_POPULACAO, mediaDesvio[0], mediaDesvio[1], base);
+					//AlgoritmoGP gp = new AlgoritmoGP(EInicializacao.Completa, serieTemporal, Parametros.TAXA_CRUZAMENTO_MUTACAO
+					//		, Parametros.NUMERO_TOTAL_FUNCAO, Parametros.TAMANHO_MAXIMO_PROFUNDIDADE_ARVORE
+					//		, Parametros.NUMERO_MAXIMO_POPULACAO, mediaDesvio[0], mediaDesvio[1], base);
 
-					double d = gp.runGP(i);
+					//double d = gp.runGP(i);
 					
 					if (!(Double.isInfinite(d) || Double.isNaN(d))){
 						respostas[i]=d;
