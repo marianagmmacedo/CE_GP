@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Random;
 
+import br.poli.fineTuning.Parameters;
 import br.poli.gp.Common;
 import br.poli.gp.Parametros;
 import br.poli.output.Output;
@@ -53,20 +54,32 @@ public class MultiLayerPerceptron {
 	// ok = construtor 
 	public MultiLayerPerceptron(String nomeBASE, int validarSize
 			, ArrayList<Double> inputFSS, int simulacao) throws IOException{
+		boolean hasInput = Parameters.hasInput;
 		sim = simulacao;
-		sizeValidacao = validarSize;
 		random = new Random();
-		totalIteration = 100;
+		totalIteration = 6000;
 		tamanhoJanela = 2;
 		//String csvFile1 = MOEADDRAparameters.pathDatabase;
 		readData(nomeBASE);
+		//sizeValidacao = validarSize;
+		sizeValidacao = (int)Math.ceil(input.length*0.20);
 //		System.out.println(getOutput()[0][0]);
 		
-		alfa = inputFSS.get(0)*0.00001; //(0.001)
-		beta = inputFSS.get(1)*0.00001; //(0.002)
-		numberInputNeurons = (int) Math.ceil(inputFSS.get(2)); //2
-		numberOutputNeurons = (int) Math.ceil(inputFSS.get(3)); //1
-		numberHiddenLayers = (int) Math.ceil(inputFSS.get(4)); //1
+		if(inputFSS==null){
+			alfa = 0.00001; //(0.001)
+			beta = 0.00002; //(0.002)
+			numberInputNeurons = 2;
+			numberOutputNeurons = 1;
+			numberHiddenLayers = 1;
+		}else{
+			alfa = inputFSS.get(0)*0.00001; 
+			beta = inputFSS.get(1)*0.00001; 
+			numberInputNeurons = (int) Math.ceil(inputFSS.get(2)); //2
+			numberOutputNeurons = (int) Math.ceil(inputFSS.get(3)); //1
+			numberHiddenLayers = (int) Math.ceil(inputFSS.get(4)); //1
+		}
+		
+		
 		oldWeight = new ArrayList<Double[][]>();
 		weight  = new ArrayList<Double[][]>();
 		sensibility = new ArrayList<Double[]>();
@@ -78,9 +91,14 @@ public class MultiLayerPerceptron {
 		numberNeurons[0] = numberInputNeurons;
 		
 		for (int i = 1; i < numberLayers-1; i++) {
-			numberNeurons[i] = (int) (int) Math.ceil(inputFSS.get(5));//2
+			if(inputFSS==null){
+				numberNeurons[i] = 2;
+			}else{
+				numberNeurons[i] = (int) (int) Math.ceil(inputFSS.get(5));
+			}
+			
 		}
-		
+		int aux = 5;
 		numberNeurons[numberLayers-1] = numberOutputNeurons;
 		for (int i = 0; i < numberLayers-1; i++) {	
 			int count = 0;
@@ -89,9 +107,15 @@ public class MultiLayerPerceptron {
 			
 			for (int j = 0; j < numberNeurons[i]; j++) {
 				for (int k = 0; k < numberNeurons[i+1]; k++) {
-					pesosInternos[j][k] = random.nextDouble();
+					if(hasInput){
+						pesosInternos[j][k] = inputFSS.get(aux);
+					}else{
+						pesosInternos[j][k] = random.nextDouble();
+					}
+					
 					arrayZero[j][k] = 0.0;
 					count++;
+					aux++;
 				}
 			}
 			oldWeight.add(arrayZero);
@@ -107,8 +131,14 @@ public class MultiLayerPerceptron {
 		for (int i = 1; i < numberLayers; i++) {
 			Double[] b = new Double[numberNeurons[i]];
 			for (int j = 0; j < numberNeurons[i]; j++) {
-				b[j] = random.nextDouble();
-				count++;
+				if(hasInput){
+					b[j] = inputFSS.get(aux);
+				}else{
+					b[j] = random.nextDouble();
+				}
+				
+				count++; 
+				aux++;
 				
 			}
 			biasX.add(b);
@@ -510,7 +540,7 @@ public class MultiLayerPerceptron {
 			
 		}
 		
-//		System.out.println("------evaluate2");
+//		System.out.println("------evaluate2        " + answer[0]);
 		return answer[0];
 	}
 	

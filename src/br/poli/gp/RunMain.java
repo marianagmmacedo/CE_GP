@@ -83,11 +83,11 @@ public class RunMain {
 		double[] respostas = new double[30];
 		*/
 		
-		//Esse método já puxa todas as bases do array bases[] e transforma em thread
-		ThreadMain.startStack(new String[]{"coloradoRiver"});
-		//Esse método escolhe qnts threads vão rodar de forma uniforme nesse caso eu mandei rodar 13 de uma vez,
-		//se n houver 13 bases ele só termina sem duplicidade :D
-		ThreadMain.startMultiThreading(10);
+		//Esse mï¿½todo jï¿½ puxa todas as bases do array bases[] e transforma em thread
+		ThreadMain.startStack();
+		//Esse mï¿½todo escolhe qnts threads vï¿½o rodar de forma uniforme nesse caso eu mandei rodar 13 de uma vez,
+		//se n houver 13 bases ele sï¿½ termina sem duplicidade :D
+		ThreadMain.startMultiThreading(4);
 	}
 
 	static void mainMariana() throws Exception{

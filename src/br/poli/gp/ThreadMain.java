@@ -23,6 +23,7 @@ import ChartDirector.ChartViewer;
 import br.poli.fineTuning.FishSchoolSearch;
 import br.poli.gp.util.DemoModule;
 import br.poli.gp.util.LineChart;
+import br.poli.mlp.MultiLayerPerceptron;
 import br.poli.output.Output;
 
 public class ThreadMain extends Thread {
@@ -77,9 +78,12 @@ public class ThreadMain extends Thread {
 
 					System.out.println(base + ", Sim: " + (i + 1));
 					
+//					MultiLayerPerceptron mlp = new MultiLayerPerceptron(base, 20, null, -1);
+//					mlp.forwardBackward();
+//					double d = mlp.evaluate(base, false);
+					
 					FishSchoolSearch fss = new FishSchoolSearch(base);
 					double d = fss.run(i);
-					
 					
 					//AlgoritmoGP gp = new AlgoritmoGP(EInicializacao.Completa, serieTemporal, Parametros.TAXA_CRUZAMENTO_MUTACAO
 					//		, Parametros.NUMERO_TOTAL_FUNCAO, Parametros.TAMANHO_MAXIMO_PROFUNDIDADE_ARVORE
@@ -99,7 +103,9 @@ public class ThreadMain extends Thread {
 //				System.out.println("base: " + base + "/med: " + media + "/desvio: " + desvio);
 				
 				File directory = new File("./");
-				File f = new File(directory.getAbsolutePath()+"/resultados/thread_"+ base + "_MLP_FSS.txt");
+
+				File f = new File(directory.getAbsolutePath()+"/resultados/thread_"+ base + "_GP_S_FSS.txt");
+
 				PrintWriter gravarArq = new PrintWriter(f);
 			    
 				Output out = Output.getOutputByList(base);
@@ -113,7 +119,7 @@ public class ThreadMain extends Thread {
 			    gravarArq.close();
 			}
 		} catch (EmptyStackException e) {
-			System.out.println("Thread terminou pois não há mais base a ser processada.");
+			System.out.println("Thread terminou pois nï¿½o hï¿½ mais base a ser processada.");
 		} catch (Exception e) {
 			System.out.println(e.toString());
 			System.out.println(e.getMessage());

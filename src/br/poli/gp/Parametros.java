@@ -4,7 +4,7 @@ public class Parametros {
 	
 	// Configuracao experimento
 	public static final int NUMERO_TOTAL_SIMULACAO = 30;
-	public static final int NUMERO_TOTAL_ITERACAO = 100;//100
+	public static final int NUMERO_TOTAL_ITERACAO = 100;//100,6000
 	public static final int ITERACAO_BREAK = 1;
 	public static final String TIPO_DE_OTIMIZACAO = "MINIMIZACAO";
 	
@@ -83,7 +83,7 @@ public class Parametros {
 	public static final int TAMANHO_NOVOS_INDIVIDUOS = 4;
 	public static final int NUMERO_NOVOS_INDIVIDUOS = 5;
 	public static final boolean GERAR_NOVOS_INDIVIDUOS = false;
-	
+	public static final boolean SIMPLIFICAR_ARVORE = true;
 	
 	
 }
