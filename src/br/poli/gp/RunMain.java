@@ -84,7 +84,7 @@ public class RunMain {
 		*/
 		
 		//Esse método já puxa todas as bases do array bases[] e transforma em thread
-		ThreadMain.startStack(new String[]{"sunspot", "ibm", "nsw", "lynx", "dowJones", "stock", "redwine", "accidentalDeathUSA", "airlines"});
+		ThreadMain.startStack(new String[]{"coloradoRiver"});
 		//Esse método escolhe qnts threads vão rodar de forma uniforme nesse caso eu mandei rodar 13 de uma vez,
 		//se n houver 13 bases ele só termina sem duplicidade :D
 		ThreadMain.startMultiThreading(10);
