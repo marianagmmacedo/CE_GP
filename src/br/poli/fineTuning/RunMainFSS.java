@@ -21,6 +21,12 @@ public class RunMainFSS {
 		double[] respostas = new double[5];
 		for (int i = 0; i < 2; i++) {
 			Output.outputList.add(new Output(Parametros.Bases[4]));
+//			PSO pso = new PSO(Parametros.Bases[4]);
+//			pso.run(i);
+//			FireflyAlgorithm fa = new FireflyAlgorithm(Parametros.Bases[4]);
+//			fa.run(i);
+//			ABC abc = new ABC(Parametros.Bases[4]);
+//			respostas[i] = abc.run(i);
 			FishSchoolSearch fss = new FishSchoolSearch(Parametros.Bases[4]);
 			respostas[i] = fss.run(i);
 			double media = Common.CalcularMedia(respostas);

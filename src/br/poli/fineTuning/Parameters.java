@@ -26,10 +26,38 @@ public class Parameters {
 	public static String function = "GP";
 		
 	// FSS
-	public static double stepIndividual = 0.1;
+	public static double stepIndividual = 0.4;
 	public static double weightInitial = 2.0;
 	public static double maximumWeight = 10.0;
 	public static double stepVolitive = 2*stepIndividual;
 	public static boolean hasInput = false;
 	
+	// PSO
+	//public static String topology = "global";
+    public static String topology = "local";
+//		public static String topology = "focal";
+	public static int numberNeigbors = 2;
+	public static double velocityMax = 5.0;
+	public static double velocityMin = -5.0;
+	public static double w = 0.8;
+	public static double wInitial = 0.9;
+	public static double wFinal = 0.4;
+	public static boolean nonW = false;
+	public static boolean decrementW = true;
+	public static boolean clerc = false;
+	public static double c1 = 2.05;
+	public static double c2 = 2.05;
+	//public static String function = "sphere";
+//	public static String function = "rotated rastrigin";
+	//public static String function = "rosenbrock";
+	
+	// FA
+	public static double brightnessInitial = 0.4;
+	public static double alpha = 1.0;
+	public static double gamma = 1.0;
+	
+	// ABC
+	public static double numberEmployedBees = 0.5;
+	public static double numberOnlookers = 0.5;
+	public static double numberScouts = 0.2;
 }

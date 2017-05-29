@@ -207,6 +207,7 @@ public class FishSchoolSearch {
 		}
 		
 		double fit = Functions.calculateFitness(this.bestFish.getPosition(), baseC, simulacao, true, true);
+		System.out.println(fit);
 		return fit;
 	}
 }
